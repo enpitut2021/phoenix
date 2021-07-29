@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 void main() {
   runApp(const MyApp());
@@ -38,16 +39,28 @@ class _SuggestMenusState extends State<SuggestMenus> {
     );
   }
 
+  List _shuffle(List items) {
+    var random = new math.Random();
+    for (var i = items.length - 1; i > 0; i--) {
+      var n = random.nextInt(i + 1);
+      var temp = items[i];
+      items[i] = items[n];
+      items[n] = temp;
+    }
+    return items;
+  }
+
   Widget _buildSuggestions() {
     //このリストはあとでjsonからとってくるようにする
     final List<String> Menus = <String>['カレーライス', '親子丼', 'ハンバーグ'];
+    final randomMenus = _shuffle(Menus);
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: Menus.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
           height: 50,
-          child: _tile(Menus[index]),
+          child: _tile(randomMenus[index]),
         );
       },
     );
