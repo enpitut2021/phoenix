@@ -15,19 +15,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SuggestMenu(),
+      home: SuggestMenus(),
     );
   }
 }
 
-class SuggestMenu extends StatefulWidget {
-  const SuggestMenu({Key? key}) : super(key: key);
+class SuggestMenus extends StatefulWidget {
+  const SuggestMenus({Key? key}) : super(key: key);
 
   @override
-  _SuggestMenuState createState() => _SuggestMenuState();
+  _SuggestMenusState createState() => _SuggestMenusState();
 }
 
-class _SuggestMenuState extends State<SuggestMenu> {
+class _SuggestMenusState extends State<SuggestMenus> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,14 +39,23 @@ class _SuggestMenuState extends State<SuggestMenu> {
   }
 
   Widget _buildSuggestions() {
+    //このリストはあとでjsonからとってくるようにする
+    final List<String> Menus = <String>['カレーライス', '親子丼', 'ハンバーグ'];
     return ListView.builder(
       padding: const EdgeInsets.all(16),
+      itemCount: Menus.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
           height: 50,
-          child: Center(child: Text('カレーライス')),
+          child: _tile(Menus[index]),
         );
       },
+    );
+  }
+
+  Widget _tile(String menu) {
+    return Card(
+      child: ListTile(title: Text(menu)),
     );
   }
 }
