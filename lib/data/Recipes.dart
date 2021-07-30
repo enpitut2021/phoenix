@@ -23,3 +23,8 @@ class material{//ingredient or spice
 
   material({required this.name,required this.amount});
 }
+
+class RecipeArgument {
+  Recipe recipe;
+  RecipeArgument(this.recipe);
+}

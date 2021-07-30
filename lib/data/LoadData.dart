@@ -6,26 +6,22 @@ import './Recipes.dart';
 class LoadRecipes{
     List<Recipe> recipes = [];
 
-    Future loadJsonAsset() async{
+    Future<dynamic> loadJsonAsset() async{
         final String _loadData = await rootBundle.loadString('lib/data/recipe.json');
         final jsonResponse = json.decode(_loadData);
 
         for(var element in jsonResponse["recipes"]){
-            print(element['recipe_name']);
-
             //材料の情報を作成
             List<material> ingredients = [];
             for(var ingredient in element["ingredients"]){
                 ingredients.add(material(name: ingredient["ingredient"], amount: ingredient["quantity"]));
             }
-
             //調味料の情報を作成
             List<material> spices = [];
             for(var spice in element["spices"]){
                 // print(spice["spice"] + " " + spice["amount"]);
                 spices.add(material(name: spice["spice"], amount: spice["amount"]));
             }
-
             //調理器具の作成
             List<String> cookwares = [];
             for(var cookware in element["cookwares"]){
@@ -36,13 +32,11 @@ class LoadRecipes{
             for(var cm in element["Cooking_method"]){
                 cookmethod.add(cm);
             }
-
             //レシピの作成
             Recipe recipe = Recipe(id: element['id'], recipe_name: element['recipe_name'], explain: element['explain'],
                 ingredients: ingredients, spices: spices, cookwares: cookwares, cookmethod: cookmethod);
-            recipes.add(recipe);
-
+            this.recipes.add(recipe);
         }
-
+        return recipes;
     }
 }
