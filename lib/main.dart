@@ -75,12 +75,6 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
   }
 
   Widget _buildSuggestions(List<Recipe> recipes) {
-    //このリストはあとでjsonからとってくるようにする
-    // final List<RecipeTest> Menus = <RecipeTest>[
-    //   new RecipeTest('カレーライス', 'カレールーと野菜'),
-    //   new RecipeTest('卵焼き', '卵を焼く'),
-    //   new RecipeTest('ハンバーグ', '筆記肉')
-    // ];
 
     final randomRecipes = _shuffle(recipes);
 
@@ -173,19 +167,41 @@ class DetailOfMenu extends StatelessWidget {
           ),
           //この部分を箇条書き/文章形式に
           Text(args.recipe.explain),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Card(
+                    child: Container(
+                      color: Colors.orange.shade200,
+                      width: screenSize.width/2.2,
+                      child: Text('調理器具', style: TextStyle(fontSize: 24),
+                      ),
+                    ),
+                  ),
+                  Column(children: displayObjects(args.recipe.cookwares, screenSize.width/2.2),),
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  Card(
+                    child: Container(
+                      color: Colors.orange.shade200,
+                      width: screenSize.width/2.2,
+                      child: Text('調理方法', style: TextStyle(fontSize: 24),),
+                    ),
+                  ),
+                  Column(children: displayObjects(args.recipe.cookmethod, screenSize.width/2.2),),
+                ],
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 }
-
-// //ここはjsonから読み込む形式に変更
-// class RecipeTest {
-//   String name = "";
-//   String explain = "";
-//
-//   RecipeTest(this.name, this.explain);
-// }
 
 List<Widget> displayMaterial(List<material> foodstuffs, double width){
   List<Widget> temp = [];
@@ -208,3 +224,27 @@ Widget _tileFoodstuff(material foodstuff, double width){
     ),
   );
 }
+
+List<Widget> displayObjects(List<String> objects, double width){
+  List<Widget> temp = [];
+  for(var object in objects){
+    temp.add(_tileobject(object, width));
+  }
+  return temp;
+}
+
+Widget _tileobject(String object, double width){
+  return Container(
+    child:Text(
+      object,
+      style: const TextStyle(fontSize: 15),
+    ),
+    width: width,
+    margin: EdgeInsets.all(2),
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.white10, width: 1),
+    ),
+  );
+}
+
+
