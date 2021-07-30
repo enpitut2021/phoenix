@@ -130,8 +130,8 @@
                     "amount": "!/3C"
                 },
                 {
-                    "ingredient": "パスタソース",
-                    "quantity": "1C"
+                    "spice": "パスタソース",
+                    "amount": "1C"
                 }
             ],
             "explain":"1hogehogehogehogehoge\n2hogehogehoge\nhogehogehoge",
@@ -144,7 +144,6 @@
             ]
         },
         {
-            
             "id": "00000004",
             "recipe_name": "牛乳茶碗蒸し",
             "ingredients": [
@@ -180,7 +179,7 @@
                 },
                 {
                     "spice": "水",
-                    "amount": "!/2C"
+                    "amount": "1/2C"
                 }
             ],
             "explain":"1hogehogehogehogehoge\n2hogehogehoge\nhogehogehoge",
