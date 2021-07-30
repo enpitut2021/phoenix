@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       },
 
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
       ),
     );
   }
@@ -72,7 +72,6 @@ class _SuggestMenusState extends State<SuggestMenus> {
       itemCount: Menus.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-          height: 50,
           child: _tile(randomMenus[index]),
         );
       },
@@ -82,10 +81,11 @@ class _SuggestMenusState extends State<SuggestMenus> {
   //あとで引数の型を変更する
   Widget _tile(RecipeTest menu) {
     return Card(
+      color: Colors.orange.shade200,
       child: ListTile(
         title: Text(
           menu.name,
-          style: const TextStyle(fontSize: 18),
+          style: const TextStyle(fontSize: 24),
         ),
         onTap: () {
           Navigator.pushNamed(
@@ -108,7 +108,38 @@ class DetailOfMenu extends StatelessWidget {
       appBar: AppBar(
         title: Text(args.recipe.name),
       ),
-      body: Center(child: Text(args.recipe.explain)),
+      body: Column(
+        children: <Widget>[
+          //
+          //写真
+          //
+          Card(
+            child: Container(
+              color: Colors.orange.shade200,
+              width: double.infinity,
+              child: Text(
+                '材料',
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+          ),
+          //この部分を箇条書きに
+          Text(args.recipe.explain),
+
+          Card(
+            child: Container(
+              color: Colors.orange.shade200,
+              width: double.infinity,
+              child: Text(
+                '作り方',
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+          ),
+          //この部分を箇条書き/文章形式に
+          Text(args.recipe.explain),
+        ],
+      ),
     );
   }
 }
