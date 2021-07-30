@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      //タイトル後で変更
       title: 'Flutter Demo',
 
       //ルート設定
@@ -78,15 +79,19 @@ class _SuggestMenusState extends State<SuggestMenus> {
     );
   }
 
-  Widget _tile(String menu) {
+  //あとで引数の型を変更する
+  Widget _tile(RecipeTest menu) {
     return Card(
       child: ListTile(
-        title: Text(menu),
+        title: Text(
+          menu.name,
+          style: const TextStyle(fontSize: 18),
+        ),
         onTap: () {
           Navigator.pushNamed(
             context,
             '/detail',
-            //arguments:
+            arguments: RecipeArgument(menu),
           );
         },
       ),
@@ -95,23 +100,29 @@ class _SuggestMenusState extends State<SuggestMenus> {
 }
 
 class DetailOfMenu extends StatelessWidget {
-  //final recipe r;
-  //const DetailOfMenu(recipe r);
-
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as RecipeArgument;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('詳細'),
+        title: Text(args.recipe.name),
       ),
-      body: Center(child: Text('材料/n作り方')),
+      body: Center(child: Text(args.recipe.explain)),
     );
   }
 }
 
+//ここはjsonから読み込む形式に変更
 class RecipeTest {
   String name = "";
   String explain = "";
 
   RecipeTest(this.name, this.explain);
+}
+
+class RecipeArgument {
+  RecipeTest recipe;
+
+  RecipeArgument(this.recipe);
 }
