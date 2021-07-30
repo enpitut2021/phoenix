@@ -13,10 +13,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+
+      //ルート設定
+      initialRoute: '/',
+      routes: {
+        '/': (context) => SuggestMenus(),
+        '/detail': (context) => DetailOfMenu(),
+      },
+
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SuggestMenus(),
     );
   }
 }
@@ -52,8 +59,13 @@ class _SuggestMenusState extends State<SuggestMenus> {
 
   Widget _buildSuggestions() {
     //このリストはあとでjsonからとってくるようにする
-    final List<String> Menus = <String>['カレーライス', '親子丼', 'ハンバーグ'];
+    final List<RecipeTest> Menus = <RecipeTest>[
+      new RecipeTest('カレーライス', 'カレールーと野菜'),
+      new RecipeTest('卵焼き', '卵を焼く'),
+      new RecipeTest('ハンバーグ', '筆記肉')
+    ];
     final randomMenus = _shuffle(Menus);
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: Menus.length,
@@ -68,7 +80,38 @@ class _SuggestMenusState extends State<SuggestMenus> {
 
   Widget _tile(String menu) {
     return Card(
-      child: ListTile(title: Text(menu)),
+      child: ListTile(
+        title: Text(menu),
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            '/detail',
+            //arguments:
+          );
+        },
+      ),
     );
   }
+}
+
+class DetailOfMenu extends StatelessWidget {
+  //final recipe r;
+  //const DetailOfMenu(recipe r);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('詳細'),
+      ),
+      body: Center(child: Text('材料/n作り方')),
+    );
+  }
+}
+
+class RecipeTest {
+  String name = "";
+  String explain = "";
+
+  RecipeTest(this.name, this.explain);
 }
