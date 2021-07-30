@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './data/LoadData.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,6 +41,9 @@ class _SuggestMenusState extends State<SuggestMenus> {
 
   Widget _buildSuggestions() {
     //このリストはあとでjsonからとってくるようにする
+    LoadRecipes load = LoadRecipes();
+    load.loadJsonAsset();
+
     final List<String> Menus = <String>['カレーライス', '親子丼', 'ハンバーグ'];
     return ListView.builder(
       padding: const EdgeInsets.all(16),
