@@ -40,8 +40,10 @@ class SuggestRecipes extends StatefulWidget {
 }
 
 class _SuggestRecipesState extends State<SuggestRecipes> {
-  List<Recipe> recipes = [];
+  // List<Recipe> recipes = [];
+  Recipes recipes = Recipes(recipes: []);
   LoadRecipes loadSectiontask = LoadRecipes();
+  Recipes search_debug = Recipes(recipes: []);
 
   @override
   void initState() {
@@ -49,7 +51,7 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
     loadSectiontask.loadJsonAsset().then((value) {
       setState(() {
         recipes = value;
-        assert(recipes.isNotEmpty);
+        assert(recipes.recipes.isNotEmpty);
       });
     });
   }
@@ -60,7 +62,7 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
       appBar: AppBar(
         title: Text('ランダムにメニューを提案'),
       ),
-      body: _buildSuggestions(recipes),
+      body: _buildSuggestions(recipes.recipes),
     );
   }
 
