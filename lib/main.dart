@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
-import './data/LoadData.dart';
-import './data/Recipes.dart';
+import './recipe/LoadData.dart';
+import './recipe/Recipes.dart';
+import 'detail/detailVC.dart';
+import './data/toolsForList.dart';
 
 void main() {
   runApp(const MyApp());
@@ -63,20 +64,8 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
     );
   }
 
-  List _shuffle(List items) {
-    var random = new math.Random();
-    for (var i = items.length - 1; i > 0; i--) {
-      var n = random.nextInt(i + 1);
-      var temp = items[i];
-      items[i] = items[n];
-      items[n] = temp;
-    }
-    return items;
-  }
-
   Widget _buildSuggestions(List<Recipe> recipes) {
-
-    final randomRecipes = _shuffle(recipes);
+    final randomRecipes = shuffle(recipes);
 
     return ListView.builder(
       padding: const EdgeInsets.all(16),
@@ -109,142 +98,3 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
     );
   }
 }
-
-class DetailOfMenu extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
-    final args = ModalRoute.of(context)!.settings.arguments as RecipeArgument;//type is Recipe
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(args.recipe.recipe_name),
-      ),
-      body: ListView(
-        children: <Widget>[
-          //
-          //写真
-          //
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-             children: <Widget>[
-               Column(
-                children: <Widget>[
-                  Card(
-                    child: Container(
-                      color: Colors.orange.shade200,
-                      width: screenSize.width/2.2,
-                      child: Text('材料', style: TextStyle(fontSize: 24),
-                      ),
-                    ),
-                  ),
-                  Column(children: displayMaterial(args.recipe.ingredients, screenSize.width/2.2),),
-                ],
-              ),
-               Column(
-                  children: <Widget>[
-                  Card(
-                    child: Container(
-                      color: Colors.orange.shade200,
-                      width: screenSize.width/2.2,
-                      child: Text('調味料', style: TextStyle(fontSize: 24),),
-                    ),
-                  ),
-                  Column(children: displayMaterial(args.recipe.spices, screenSize.width/2.2),),
-                  ],
-               ),
-            ],
-          ),
-          Card(
-            child: Container(
-              color: Colors.orange.shade200,
-              width: screenSize.width,
-              child: Text(
-                '作り方',
-                style: TextStyle(fontSize: 24),
-              ),
-            ),
-          ),
-          //この部分を箇条書き/文章形式に
-          Text(args.recipe.explain),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Card(
-                    child: Container(
-                      color: Colors.orange.shade200,
-                      width: screenSize.width/2.2,
-                      child: Text('調理器具', style: TextStyle(fontSize: 24),
-                      ),
-                    ),
-                  ),
-                  Column(children: displayObjects(args.recipe.cookwares, screenSize.width/2.2),),
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Card(
-                    child: Container(
-                      color: Colors.orange.shade200,
-                      width: screenSize.width/2.2,
-                      child: Text('調理方法', style: TextStyle(fontSize: 24),),
-                    ),
-                  ),
-                  Column(children: displayObjects(args.recipe.cookmethod, screenSize.width/2.2),),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-List<Widget> displayMaterial(List<material> foodstuffs, double width){
-  List<Widget> temp = [];
-  for(var foodstuff in foodstuffs){
-    temp.add(_tileFoodstuff(foodstuff, width));
-  }
-  return temp;
-}
-
-Widget _tileFoodstuff(material foodstuff, double width){
-  return Container(
-    child:Text(
-      foodstuff.name + " " + foodstuff.amount,
-      style: const TextStyle(fontSize: 15),
-    ),
-    width: width,
-    margin: EdgeInsets.all(2),
-    decoration: BoxDecoration(
-      border: Border.all(color: Colors.white10, width: 1),
-    ),
-  );
-}
-
-List<Widget> displayObjects(List<String> objects, double width){
-  List<Widget> temp = [];
-  for(var object in objects){
-    temp.add(_tileobject(object, width));
-  }
-  return temp;
-}
-
-Widget _tileobject(String object, double width){
-  return Container(
-    child:Text(
-      object,
-      style: const TextStyle(fontSize: 15),
-    ),
-    width: width,
-    margin: EdgeInsets.all(2),
-    decoration: BoxDecoration(
-      border: Border.all(color: Colors.white10, width: 1),
-    ),
-  );
-}
-
-

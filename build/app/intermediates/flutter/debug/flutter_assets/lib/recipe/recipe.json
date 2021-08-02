@@ -1,0 +1,197 @@
+{
+    "recipes":[
+        {
+            "id": "00000001",
+            "recipe_name": "餃子",
+            "ingredients": [
+                {
+                    "ingredient": "肉",
+                    "quantity": "400g"
+                },
+                {
+                    "ingredient": "餃子の皮",
+                    "quantity": "50枚"
+                },
+                {
+                    "ingredient": "ニラ",
+                    "quantity": "５本"
+                },
+                {
+                    "ingredient": "ニンニク",
+                    "quantity": "３片"
+                }
+            ],
+            "spices": [
+                {
+                    "spice": "こしょう",
+                    "amount": "少々"
+                },
+                {
+                    "spice": "塩",
+                    "amount": "少々"
+                },
+                {
+                    "spice": "ダシ",
+                    "amount": "少々"
+                }
+            ],
+            "explain":"1hogehogehogehogehoge\n2hogehogehoge\nhogehogehoge",
+            "cookwares": [
+                "フライパン"
+            ],
+            "Cooking_method": [
+                "炒める",
+                "蒸す"
+            ]
+        },
+        {
+            "id": "00000002",
+            "recipe_name": "ミネストローネ",
+            "ingredients": [
+                {
+                    "ingredient": "水",
+                    "quantity": "5C"
+                },
+                {
+                    "ingredient": "シェルマカロニ",
+                    "quantity": "1/2C"
+                },
+                {
+                    "ingredient": "ジャガイモ",
+                    "quantity": "中一個"
+                },
+                {
+                    "ingredient": "玉ねぎ",
+                    "quantity": "小一個"
+                },
+                {
+                    "ingredient": "にんじん",
+                    "quantity": "小一本"
+                },
+                {
+                    "ingredient": "ベーコン",
+                    "quantity": "４〜５枚"
+                }
+            ],
+            "spices": [
+                {
+                    "spice": "塩",
+                    "amount": "小１/2"
+                },
+                {
+                    "spice": "パスタソース",
+                    "amount": "１C"
+                }
+            ],
+            "explain":"1hogehogehogehogehoge\n2hogehogehoge\nhogehogehoge",
+            "cookwares": [
+                "大ソースパン"
+            ],
+            "Cooking_method": [
+                "煮込む"
+            ]
+        },
+        {
+            "id": "00000003",
+            "recipe_name": "パエリア",
+            "ingredients": [
+                {
+                    "ingredient": "米",
+                    "quantity": "３C（３０分前に洗って水を切る）"
+                },
+                {
+                    "ingredient": "玉ねぎ",
+                    "quantity": "一個（微塵切り）"
+                },
+                {
+                    "ingredient": "ニンニク",
+                    "quantity": "1片"
+                },
+                {
+                    "ingredient": "えび、白身魚、アサリ、イカリング、鶏肉",
+                    "quantity": "適当に２−３種類"
+                },
+                {
+                    "ingredient": "ピーマン",
+                    "quantity": "２こ"
+                }
+            ],
+            "spices": [
+                {
+                    "spice": "こしょう",
+                    "amount": "少々"
+                },
+                {
+                    "spice": "塩",
+                    "amount": "小１"
+                },
+                {
+                    "spice": "水",
+                    "amount": "!/3C"
+                },
+                {
+                    "spice": "パスタソース",
+                    "amount": "1C"
+                }
+            ],
+            "explain":"1hogehogehogehogehoge\n2hogehogehoge\nhogehogehoge",
+            "cookwares": [
+                "フライパン"
+            ],
+            "Cooking_method": [
+                "炒める",
+                "煮込む"
+            ]
+        },
+        {
+            "id": "00000004",
+            "recipe_name": "牛乳茶碗蒸し",
+            "ingredients": [
+                {
+                    "ingredient": "卵",
+                    "quantity": "３こ"
+                },
+                {
+                    "ingredient": "塩",
+                    "quantity": "小1/2"
+                },
+                {
+                    "ingredient": "青ネギまたはミツバ",
+                    "quantity": "少々"
+                },
+                {
+                    "ingredient": "鶏ひき肉",
+                    "quantity": "100g"
+                },
+                {
+                    "ingredient": "生姜",
+                    "quantity": "少々（微塵切り）"
+                }
+            ],
+            "spices": [
+                {
+                    "spice": "醤油・みりん・酒",
+                    "amount": "それぞれ万能カップ1/2"
+                },
+                {
+                    "spice": "水溶き片栗粉",
+                    "amount": "少々"
+                },
+                {
+                    "spice": "水",
+                    "amount": "1/2C"
+                }
+            ],
+            "explain":"1hogehogehogehogehoge\n2hogehogehoge\nhogehogehoge",
+            "cookwares": [
+                "シチュー鍋",
+                "ボール",
+                "小ソースパン"
+            ],
+            "Cooking_method": [
+                "炒める",
+                "煮込む"
+            ]
+        }
+    ]
+}
