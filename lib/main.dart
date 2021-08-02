@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import './data/LoadData.dart';
+import './data/Recipes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
       //ルート設定
       initialRoute: '/',
       routes: {
-        '/': (context) => SuggestMenus(),
+        '/': (context) => SuggestRecipes(),
         '/detail': (context) => DetailOfMenu(),
       },
 
@@ -29,21 +31,35 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class SuggestMenus extends StatefulWidget {
-  const SuggestMenus({Key? key}) : super(key: key);
+class SuggestRecipes extends StatefulWidget {
+  const SuggestRecipes({Key? key}) : super(key: key);
 
   @override
-  _SuggestMenusState createState() => _SuggestMenusState();
+  _SuggestRecipesState createState() => _SuggestRecipesState();
 }
 
-class _SuggestMenusState extends State<SuggestMenus> {
+class _SuggestRecipesState extends State<SuggestRecipes> {
+  List<Recipe> recipes = [];
+  LoadRecipes loadSectiontask = LoadRecipes();
+
+  @override
+  void initState() {
+    super.initState();
+    loadSectiontask.loadJsonAsset().then((value) {
+      setState(() {
+        recipes = value;
+        assert(recipes.isNotEmpty);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('ランダムにメニューを提案'),
       ),
-      body: _buildSuggestions(),
+      body: _buildSuggestions(recipes),
     );
   }
 
@@ -58,40 +74,35 @@ class _SuggestMenusState extends State<SuggestMenus> {
     return items;
   }
 
-  Widget _buildSuggestions() {
-    //このリストはあとでjsonからとってくるようにする
-    final List<RecipeTest> Menus = <RecipeTest>[
-      new RecipeTest('カレーライス', 'カレールーと野菜'),
-      new RecipeTest('卵焼き', '卵を焼く'),
-      new RecipeTest('ハンバーグ', '筆記肉')
-    ];
-    final randomMenus = _shuffle(Menus);
+  Widget _buildSuggestions(List<Recipe> recipes) {
+
+    final randomRecipes = _shuffle(recipes);
 
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: Menus.length,
+      itemCount: recipes.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-          child: _tile(randomMenus[index]),
+          child: _tile(randomRecipes[index]),
         );
       },
     );
   }
 
   //あとで引数の型を変更する
-  Widget _tile(RecipeTest menu) {
+  Widget _tile(Recipe recipe) {
     return Card(
       color: Colors.orange.shade200,
       child: ListTile(
         title: Text(
-          menu.name,
+          recipe.recipe_name,
           style: const TextStyle(fontSize: 24),
         ),
         onTap: () {
           Navigator.pushNamed(
             context,
             '/detail',
-            arguments: RecipeArgument(menu),
+            arguments: RecipeArgument(recipe),
           );
         },
       ),
@@ -102,34 +113,52 @@ class _SuggestMenusState extends State<SuggestMenus> {
 class DetailOfMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as RecipeArgument;
+    final Size screenSize = MediaQuery.of(context).size;
+    final args = ModalRoute.of(context)!.settings.arguments as RecipeArgument;//type is Recipe
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(args.recipe.name),
+        title: Text(args.recipe.recipe_name),
       ),
-      body: Column(
+      body: ListView(
         children: <Widget>[
           //
           //写真
           //
-          Card(
-            child: Container(
-              color: Colors.orange.shade200,
-              width: double.infinity,
-              child: Text(
-                '材料',
-                style: TextStyle(fontSize: 24),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+             children: <Widget>[
+               Column(
+                children: <Widget>[
+                  Card(
+                    child: Container(
+                      color: Colors.orange.shade200,
+                      width: screenSize.width/2.2,
+                      child: Text('材料', style: TextStyle(fontSize: 24),
+                      ),
+                    ),
+                  ),
+                  Column(children: displayMaterial(args.recipe.ingredients, screenSize.width/2.2),),
+                ],
               ),
-            ),
+               Column(
+                  children: <Widget>[
+                  Card(
+                    child: Container(
+                      color: Colors.orange.shade200,
+                      width: screenSize.width/2.2,
+                      child: Text('調味料', style: TextStyle(fontSize: 24),),
+                    ),
+                  ),
+                  Column(children: displayMaterial(args.recipe.spices, screenSize.width/2.2),),
+                  ],
+               ),
+            ],
           ),
-          //この部分を箇条書きに
-          Text(args.recipe.explain),
-
           Card(
             child: Container(
               color: Colors.orange.shade200,
-              width: double.infinity,
+              width: screenSize.width,
               child: Text(
                 '作り方',
                 style: TextStyle(fontSize: 24),
@@ -138,22 +167,84 @@ class DetailOfMenu extends StatelessWidget {
           ),
           //この部分を箇条書き/文章形式に
           Text(args.recipe.explain),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Card(
+                    child: Container(
+                      color: Colors.orange.shade200,
+                      width: screenSize.width/2.2,
+                      child: Text('調理器具', style: TextStyle(fontSize: 24),
+                      ),
+                    ),
+                  ),
+                  Column(children: displayObjects(args.recipe.cookwares, screenSize.width/2.2),),
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  Card(
+                    child: Container(
+                      color: Colors.orange.shade200,
+                      width: screenSize.width/2.2,
+                      child: Text('調理方法', style: TextStyle(fontSize: 24),),
+                    ),
+                  ),
+                  Column(children: displayObjects(args.recipe.cookmethod, screenSize.width/2.2),),
+                ],
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 }
 
-//ここはjsonから読み込む形式に変更
-class RecipeTest {
-  String name = "";
-  String explain = "";
-
-  RecipeTest(this.name, this.explain);
+List<Widget> displayMaterial(List<material> foodstuffs, double width){
+  List<Widget> temp = [];
+  for(var foodstuff in foodstuffs){
+    temp.add(_tileFoodstuff(foodstuff, width));
+  }
+  return temp;
 }
 
-class RecipeArgument {
-  RecipeTest recipe;
-
-  RecipeArgument(this.recipe);
+Widget _tileFoodstuff(material foodstuff, double width){
+  return Container(
+    child:Text(
+      foodstuff.name + " " + foodstuff.amount,
+      style: const TextStyle(fontSize: 15),
+    ),
+    width: width,
+    margin: EdgeInsets.all(2),
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.white10, width: 1),
+    ),
+  );
 }
+
+List<Widget> displayObjects(List<String> objects, double width){
+  List<Widget> temp = [];
+  for(var object in objects){
+    temp.add(_tileobject(object, width));
+  }
+  return temp;
+}
+
+Widget _tileobject(String object, double width){
+  return Container(
+    child:Text(
+      object,
+      style: const TextStyle(fontSize: 15),
+    ),
+    width: width,
+    margin: EdgeInsets.all(2),
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.white10, width: 1),
+    ),
+  );
+}
+
+
