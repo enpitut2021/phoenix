@@ -4,7 +4,7 @@ import 'dart:convert';
 import './Recipes.dart';
 
 class LoadRecipes {
-  List<Recipe> recipes = [];
+  Recipes recipes = Recipes(recipes: []);
 
   Future<dynamic> loadJsonAsset() async {
     final String _loadData =
@@ -43,8 +43,9 @@ class LoadRecipes {
           spices: spices,
           cookwares: cookwares,
           cookmethod: cookmethod);
-      this.recipes.add(recipe);
+
+      this.recipes.add(recipe: recipe);
     }
-    return recipes;
+    return this.recipes;
   }
 }
