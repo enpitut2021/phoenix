@@ -21,9 +21,11 @@ class _SearchVCState extends State<SearchVC> {
         children: [
           TextFormField(
             onFieldSubmitted: (String str) {
-              setState(() {
-                searchwords.add(str);
-              });
+              if (str != '') {
+                setState(() {
+                  searchwords.add(str);
+                });
+              }
             },
           ),
           Container(
@@ -64,7 +66,28 @@ class _SearchVCState extends State<SearchVC> {
   List<Widget> _searchList(List<String> searchwords) {
     List<Widget> searchwordsWidgets = [];
     for (var str in searchwords) {
-      searchwordsWidgets.add(Text(str));
+      searchwordsWidgets.add(
+        Card(
+          child: ListTile(
+            tileColor: Colors.orange.shade200,
+            title: Text(str),
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: (() {
+                for (var i = 0; i < searchwords.length; i++) {
+                  if (searchwords[i] == str) {
+                    setState(() {
+                      searchwords.removeAt(i);
+                    });
+                    break;
+                  }
+                }
+                print(searchwords);
+              }),
+            ),
+          ),
+        ),
+      );
     }
     return searchwordsWidgets;
   }
