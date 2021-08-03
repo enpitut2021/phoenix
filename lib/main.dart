@@ -3,6 +3,7 @@ import './recipe/LoadData.dart';
 import './recipe/Recipes.dart';
 import 'detail/detailVC.dart';
 import './data/toolsForList.dart';
+import './searchVC/searchVC.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => SuggestRecipes(),
         '/detail': (context) => DetailOfMenu(),
+        '/search': (context) => SearchVC(),
       },
 
       theme: ThemeData(
@@ -61,6 +63,12 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
     return Scaffold(
       appBar: AppBar(
         title: Text('ランダムにメニューを提案'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () => {Navigator.pushNamed(context, '/search')},
+          ),
+        ],
       ),
       body: _buildSuggestions(recipes.recipes),
     );
