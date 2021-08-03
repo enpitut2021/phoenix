@@ -1,15 +1,24 @@
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import '../data/toolsForList.dart';
+
 class Recipes {
   List<Recipe> recipes = [];
   Recipes({required this.recipes});
 
-  Recipes filterRecipe({required String contain}) {
-    Recipes filterdRecipes = Recipes(recipes: []);
-    for (var recipe in recipes) {
-      if (recipe.hasIngredient(searchWord: contain)) {
-        filterdRecipes.add(recipe: recipe);
+  Recipes filterRecipe({required List<String> contains}) {
+    Recipes filteredRecipes = Recipes(recipes: []);
+    List<String> ids = [];
+
+    for (var contein in contains) {
+      final tmp = recipes.where((recipe) =>
+          (recipe.hasIngredient(searchWord: contein) &&
+              !recipe.aleadyExist(ids)));
+      for (var obj in tmp) {
+        filteredRecipes.add(recipe: obj);
+        ids.add(obj.id);
       }
     }
-    return filterdRecipes;
+    return filteredRecipes;
   }
 
   void add({required Recipe recipe}) {
@@ -18,6 +27,10 @@ class Recipes {
 
   void clear() {
     recipes.clear();
+  }
+
+  void remove({required int at}) {
+    recipes.removeAt(at);
   }
 }
 
@@ -40,8 +53,22 @@ class Recipe {
       required this.cookmethod});
 
   bool hasIngredient({required String searchWord}) {
-    var tmp = this.ingredients.where((element) => element.name == searchWord);
+    var tmp = this
+        .ingredients
+        .where((element) => katakanaToHira(element.name).contains(searchWord));
     return !tmp.isEmpty;
+  }
+
+  bool hasSpice({required String searchWord}) {
+    var tmp = this
+        .spices
+        .where((element) => katakanaToHira(element.name).contains(searchWord));
+    return !tmp.isEmpty;
+  }
+
+  bool aleadyExist(List<String> ids) {
+    final tmp = ids.where((id) => this.id == id);
+    return tmp.length != 0;
   }
 }
 
