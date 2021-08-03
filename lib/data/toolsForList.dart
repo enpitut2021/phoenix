@@ -10,3 +10,8 @@ List shuffle(List items) {
   }
   return items;
 }
+
+String katakanaToHira(String str) {
+  return str.replaceAllMapped(new RegExp("[ァ-ヴ]"),
+      (Match m) => String.fromCharCode(m.group(0)!.codeUnitAt(0) - 0x60));
+}
