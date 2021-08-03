@@ -37,6 +37,7 @@ class LoadRecipes {
       //レシピの作成
       Recipe recipe = Recipe(
           id: element['id'],
+          imageUrl: element['image'],
           recipe_name: element['recipe_name'],
           explain: element['explain'],
           ingredients: ingredients,

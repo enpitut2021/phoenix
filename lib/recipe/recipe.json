@@ -2,7 +2,8 @@
     "recipes":[
         {
             "id": "00000001",
-            "recipe_name": "餃子",
+            "image": "lib/recipe/images/test1.jpeg",
+            "recipe_name": "ヘルシー餃子",
             "ingredients": [
                 {
                     "ingredient": "肉",
@@ -46,6 +47,7 @@
         },
         {
             "id": "00000002",
+            "image": "lib/recipe/images/test2.jpeg",
             "recipe_name": "ミネストローネ",
             "ingredients": [
                 {
@@ -93,6 +95,7 @@
         },
         {
             "id": "00000003",
+            "image": "lib/recipe/images/test3.jpeg",
             "recipe_name": "パエリア",
             "ingredients": [
                 {
@@ -145,7 +148,8 @@
         },
         {
             "id": "00000004",
-            "recipe_name": "牛乳茶碗蒸し",
+            "image": "lib/recipe/images/test4.jpeg",
+            "recipe_name": "茶碗蒸し",
             "ingredients": [
                 {
                     "ingredient": "卵",
