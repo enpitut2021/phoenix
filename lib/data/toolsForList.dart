@@ -15,3 +15,9 @@ String katakanaToHira(String str) {
   return str.replaceAllMapped(new RegExp("[ァ-ヴ]"),
       (Match m) => String.fromCharCode(m.group(0)!.codeUnitAt(0) - 0x60));
 }
+
+class SendData {
+  List<String> words;
+
+  SendData(this.words);
+}
