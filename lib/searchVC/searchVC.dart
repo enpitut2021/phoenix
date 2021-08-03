@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../data/toolsForList.dart';
 //import 'package:flappy_search_bar/flappy_search_bar.dart';
 
 class SearchVC extends StatefulWidget {
@@ -10,7 +11,6 @@ class SearchVC extends StatefulWidget {
 
 class _SearchVCState extends State<SearchVC> {
   List<String> searchwords = [];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,9 +32,19 @@ class _SearchVCState extends State<SearchVC> {
               shrinkWrap: true,
               children: _searchList(searchwords),
             ),
-          )
+          ),
+          Container(
+            width: double.infinity,
+            child: ElevatedButton(
+              child: Text("決定"),
+              onPressed: () {
+                Navigator.of(context).pop(SendData(searchwords));
+              },
+            ),
+          ),
         ],
       ),
+
       // body: SafeArea(
       //   child: SearchBar<String>(
       //     searchBarPadding: EdgeInsets.symmetric(horizontal: 10),

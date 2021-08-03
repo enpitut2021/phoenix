@@ -46,6 +46,7 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
   Recipes recipes = Recipes(recipes: []);
   LoadRecipes loadSectiontask = LoadRecipes();
   Recipes search_debug = Recipes(recipes: []);
+  List<String> searchWords = ["水"];
 
   @override
   void initState() {
@@ -66,11 +67,19 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: () => {Navigator.pushNamed(context, '/search')},
+            onPressed: () => {
+              Navigator.pushNamed(context, '/search').then((value) => {
+                    setState(() {
+                      this.searchWords = (value as SendData).words;
+                      print(this.searchWords.length);
+                    }),
+                  }),
+            },
           ),
         ],
       ),
-      body: _buildSuggestions(recipes.recipes),
+      body: _buildSuggestions(
+          recipes.filterRecipe(contains: searchWords).recipes),
     );
   }
 
