@@ -9,6 +9,11 @@ class Recipes {
     Recipes filteredRecipes = Recipes(recipes: []);
     List<String> ids = [];
 
+    //制約をかける前
+    if (contains.length == 0) {
+      return this;
+    }
+
     for (var contein in contains) {
       final tmp = recipes.where((recipe) =>
           (recipe.hasIngredient(searchWord: contein) &&
@@ -36,6 +41,7 @@ class Recipes {
 
 class Recipe {
   String id = "";
+  String imageUrl = "";
   String recipe_name = "";
   String explain = "";
   List<material> ingredients = [];
@@ -45,6 +51,7 @@ class Recipe {
 
   Recipe(
       {required this.id,
+      required this.imageUrl,
       required this.recipe_name,
       required this.explain,
       required this.ingredients,

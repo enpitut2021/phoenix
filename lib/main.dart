@@ -46,7 +46,7 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
   Recipes recipes = Recipes(recipes: []);
   LoadRecipes loadSectiontask = LoadRecipes();
   Recipes search_debug = Recipes(recipes: []);
-  List<String> searchWords = ["水"];
+  List<String> searchWords = [];
 
   @override
   void initState() {
@@ -102,9 +102,21 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
     return Card(
       color: Colors.orange.shade200,
       child: ListTile(
-        title: Text(
-          recipe.recipe_name,
-          style: const TextStyle(fontSize: 24),
+        title: Stack(
+          alignment: Alignment.bottomRight,
+          children: [
+            Image.asset(recipe.imageUrl),
+            Container(
+              child: Text(
+                recipe.recipe_name,
+                style: const TextStyle(fontSize: 24),
+              ),
+              decoration: BoxDecoration(
+                color: Colors.orange,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ],
         ),
         onTap: () {
           Navigator.pushNamed(

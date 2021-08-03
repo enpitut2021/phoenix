@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 List shuffle(List items) {
-  var random = new math.Random();
+  var random = math.Random();
   for (var i = items.length - 1; i > 0; i--) {
     var n = random.nextInt(i + 1);
     var temp = items[i];
