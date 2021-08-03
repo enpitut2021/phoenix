@@ -64,7 +64,14 @@ class _SearchVCState extends State<SearchVC> {
   List<Widget> _searchList(List<String> searchwords) {
     List<Widget> searchwordsWidgets = [];
     for (var str in searchwords) {
-      searchwordsWidgets.add(Text(str));
+      searchwordsWidgets.add(
+          Card(
+            child: ListTile(
+              title: Text(str),
+
+            ),
+          ),
+      );
     }
     return searchwordsWidgets;
   }
