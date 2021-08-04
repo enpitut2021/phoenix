@@ -36,7 +36,7 @@
                     "amount": "少々"
                 }
             ],
-            "explain":"1hogehogehogehogehoge\n2hogehogehoge\nhogehogehoge",
+            "explain":"1.具材を混ぜる\n2.皮に包む\n3.焼く",
             "cookwares": [
                 "フライパン"
             ],
@@ -85,7 +85,7 @@
                     "amount": "１C"
                 }
             ],
-            "explain":"1hogehogehogehogehoge\n2hogehogehoge\nhogehogehoge",
+            "explain":"1.具材を1cm角に切る\n2.煮る",
             "cookwares": [
                 "大ソースパン"
             ],
@@ -137,7 +137,7 @@
                     "amount": "1C"
                 }
             ],
-            "explain":"1hogehogehogehogehoge\n2hogehogehoge\nhogehogehoge",
+            "explain":"1.具材を食べやすい大きさに切る\n2.炒める",
             "cookwares": [
                 "フライパン"
             ],
@@ -186,7 +186,7 @@
                     "amount": "1/2C"
                 }
             ],
-            "explain":"1hogehogehogehogehoge\n2hogehogehoge\nhogehogehoge",
+            "explain":"1.出汁を混ぜる\n2.具材を切る\n3.耐熱容器に移す\n4.レンジで加熱する",
             "cookwares": [
                 "シチュー鍋",
                 "ボール",
