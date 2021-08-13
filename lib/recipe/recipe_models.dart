@@ -16,7 +16,7 @@ class Recipes {
     for (var contein in contains) {
       final tmp = recipes.where((recipe) =>
           (recipe.hasIngredient(searchword: contein) &&
-              !recipe.aleadyExist(ids)));
+              recipe.aleadyExist(ids)));
       for (var obj in tmp) {
         filteredrecipes.add(recipe: obj);
         ids.add(obj.id);
