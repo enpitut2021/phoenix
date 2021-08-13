@@ -1,9 +1,14 @@
+///dart~
+
+///package~
 import 'package:flutter/material.dart';
-import './recipe/LoadData.dart';
-import './recipe/Recipes.dart';
-import 'detail/detailVC.dart';
-import './data/toolsForList.dart';
-import './searchVC/searchVC.dart';
+
+///mylibrary~
+import 'recipe/load_data.dart';
+import 'recipe/recipes.dart';
+import './pages/detail_vc/detail_vc.dart';
+import 'data/operatelist.dart';
+import './pages/search_vc/search_vc.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,9 +27,9 @@ class MyApp extends StatelessWidget {
       //ルート設定
       initialRoute: '/',
       routes: {
-        '/': (context) => SuggestRecipes(),
-        '/detail': (context) => DetailOfMenu(),
-        '/search': (context) => SearchVC(),
+        '/': (context) => const SuggestRecipes(),
+        '/detail': (context) => const DetailOfMenu(),
+        '/search': (context) => const SearchVC(),
       },
 
       theme: ThemeData(
@@ -45,6 +50,7 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
   // List<Recipe> recipes = [];
   Recipes recipes = Recipes(recipes: []);
   LoadRecipes loadSectiontask = LoadRecipes();
+  // ignore: non_constant_identifier_names
   Recipes search_debug = Recipes(recipes: []);
   List<String> searchWords = [];
 
@@ -63,15 +69,14 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ランダムにメニューを提案'),
+        title: const Text('ランダムにメニューを提案'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () => {
               Navigator.pushNamed(context, '/search').then((value) => {
                     setState(() {
-                      this.searchWords = (value as SendData).words;
-                      print(this.searchWords.length);
+                      searchWords = (value as SendData).words;
                     }),
                   }),
             },
@@ -79,7 +84,7 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
         ],
       ),
       body: _buildSuggestions(
-          recipes.filterRecipe(contains: searchWords).recipes),
+          recipes.filterrecipe(contains: searchWords).recipes),
     );
   }
 
@@ -105,10 +110,10 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
         title: Stack(
           alignment: Alignment.bottomRight,
           children: [
-            Image.asset(recipe.imageUrl),
+            Image.asset(recipe.imageurl),
             Container(
               child: Text(
-                recipe.recipe_name,
+                recipe.recipename,
                 style: const TextStyle(fontSize: 24),
               ),
               decoration: BoxDecoration(

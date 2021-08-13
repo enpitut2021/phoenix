@@ -1,29 +1,28 @@
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-import '../data/toolsForList.dart';
+import '../data/operatelist.dart' show toHira;
 
 class Recipes {
   List<Recipe> recipes = [];
-  Recipes({required this.recipes});
+  Recipes({required recipes});
 
-  Recipes filterRecipe({required List<String> contains}) {
-    Recipes filteredRecipes = Recipes(recipes: []);
+  Recipes filterrecipe({required List<String> contains}) {
+    Recipes filteredrecipes = Recipes(recipes: []);
     List<String> ids = [];
 
-    //制約をかける前
-    if (contains.length == 0) {
+    //検索ワードがない時
+    if (contains.isEmpty) {
       return this;
     }
 
     for (var contein in contains) {
       final tmp = recipes.where((recipe) =>
-          (recipe.hasIngredient(searchWord: contein) &&
+          (recipe.hasIngredient(searchword: contein) &&
               !recipe.aleadyExist(ids)));
       for (var obj in tmp) {
-        filteredRecipes.add(recipe: obj);
+        filteredrecipes.add(recipe: obj);
         ids.add(obj.id);
       }
     }
-    return filteredRecipes;
+    return filteredrecipes;
   }
 
   void add({required Recipe recipe}) {
@@ -41,50 +40,57 @@ class Recipes {
 
 class Recipe {
   String id = "";
-  String imageUrl = "";
-  String recipe_name = "";
+  String imageurl = "";
+  String recipename = "";
   String explain = "";
-  List<material> ingredients = [];
-  List<material> spices = [];
+  List<Foodstuff> ingredients = [];
+  List<Foodstuff> spices = [];
   List<String> cookwares = [];
   List<String> cookmethod = [];
 
   Recipe(
       {required this.id,
-      required this.imageUrl,
-      required this.recipe_name,
+      required this.imageurl,
+      required this.recipename,
       required this.explain,
       required this.ingredients,
       required this.spices,
       required this.cookwares,
       required this.cookmethod});
 
-  bool hasIngredient({required String searchWord}) {
-    var tmp = this
-        .ingredients
-        .where((element) => katakanaToHira(element.name).contains(searchWord));
-    return !tmp.isEmpty;
+  bool hasIngredient({required String searchword}) {
+    var tmp = ingredients
+        .where((element) => toHira(element.name).contains(searchword));
+    return tmp.isNotEmpty;
   }
 
-  bool hasSpice({required String searchWord}) {
-    var tmp = this
-        .spices
-        .where((element) => katakanaToHira(element.name).contains(searchWord));
-    return !tmp.isEmpty;
+  bool hasSpice({required String searchword}) {
+    var tmp =
+        spices.where((element) => toHira(element.name).contains(searchword));
+    return tmp.isNotEmpty;
   }
 
   bool aleadyExist(List<String> ids) {
     final tmp = ids.where((id) => this.id == id);
-    return tmp.length != 0;
+    return tmp.isEmpty;
+  }
+
+  ///具材の名前　量　のリストを表示を表示　引数は具材または調味料のリスト
+  List<String> toFoodstuffs(List<Foodstuff> foodstuffs) {
+    List<String> foodsufslist = [];
+    for (var fd in foodstuffs) {
+      foodsufslist.add(fd.name + " " + fd.amount);
+    }
+    return foodsufslist;
   }
 }
 
-class material {
+class Foodstuff {
   //ingredient or spice
   String name = "";
   String amount = "";
 
-  material({required this.name, required this.amount});
+  Foodstuff({required this.name, required this.amount});
 }
 
 class RecipeArgument {
