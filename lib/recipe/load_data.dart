@@ -5,7 +5,7 @@ import 'dart:convert';
 ///package~
 import 'package:flutter/services.dart' show rootBundle;
 //my library
-import 'recipes.dart';
+import 'recipe_models.dart';
 
 class LoadRecipes {
   Recipes recipes = Recipes(recipes: []);
