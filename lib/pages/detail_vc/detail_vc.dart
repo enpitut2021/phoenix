@@ -23,7 +23,7 @@ class _detailRecipe extends State<DetailOfMenu>
   void initState() {
     super.initState();
     _animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 3000));
+        vsync: this, duration: const Duration(milliseconds: 1500));
 
     _animationController.forward(from: 0);
   }
@@ -40,6 +40,7 @@ class _detailRecipe extends State<DetailOfMenu>
     final recipe =
         (ModalRoute.of(context)!.settings.arguments as RecipeArgument)
             .recipe; //type is Recipe
+    final _dynamicdisplayimage = DynamicDisplayImage(0, _animationController);
 
     return Scaffold(
       appBar: AppBar(
@@ -58,24 +59,7 @@ class _detailRecipe extends State<DetailOfMenu>
         verticalDirection: VerticalDirection.up,
         children: <Widget>[
           setMenue(recipe, screenSize),
-          Center(
-            child: RotationTransition(
-              alignment: Alignment.center + const Alignment(0, 0.3),
-              turns: _animationController
-                  .drive(
-                    CurveTween(
-                      curve: Curves.elasticOut,
-                    ),
-                  )
-                  .drive(
-                    Tween<double>(
-                      begin: 0,
-                      end: 1,
-                    ),
-                  ),
-              child: Image.asset(recipe.imageurl),
-            ),
-          ),
+          _dynamicdisplayimage.zoomImage(recipe, screenSize)
         ],
       ),
     );

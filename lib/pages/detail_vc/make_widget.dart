@@ -74,3 +74,58 @@ Widget setMenue(Recipe recipe, Size screenSize) {
     ),
   );
 }
+
+class DynamicDisplayImage {
+  int animationindex = 0;
+  late AnimationController _animationController;
+
+  DynamicDisplayImage(
+      int animationindex, AnimationController _animationController) {
+    // ignore: prefer_initializing_formals
+    this.animationindex = animationindex;
+    this._animationController = _animationController;
+  }
+
+  // ignore: non_constant_identifier_names
+  Widget rotateImage(Recipe recipe, Size screenSize) {
+    return Center(
+      child: RotationTransition(
+        alignment: Alignment.center + const Alignment(0, 0.3),
+        turns: _animationController
+            .drive(
+              CurveTween(
+                curve: Curves.elasticOut,
+              ),
+            )
+            .drive(
+              Tween<double>(
+                begin: 0,
+                end: 1,
+              ),
+            ),
+        child: Image.asset(recipe.imageurl),
+      ),
+    );
+  }
+
+  Widget zoomImage(Recipe recipe, Size screenSize) {
+    return Center(
+      child: ScaleTransition(
+        alignment: Alignment.center + const Alignment(0, 0.3),
+        scale: _animationController
+            .drive(
+              CurveTween(
+                curve: Curves.elasticOut,
+              ),
+            )
+            .drive(
+              Tween<double>(
+                begin: 0.3,
+                end: 1,
+              ),
+            ),
+        child: Image.asset(recipe.imageurl),
+      ),
+    );
+  }
+}
