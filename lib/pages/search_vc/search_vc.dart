@@ -8,17 +8,22 @@ class SearchVC extends StatefulWidget {
   _SearchVCState createState() => _SearchVCState();
 }
 
+enum radiovalue { ingredient, spices } // キーワードの種類
+
 class _SearchVCState extends State<SearchVC> {
   List<String> searchwords = [];
+  String addkeyword = '';
+  radiovalue? keywordtype = radiovalue.ingredient;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('材料を指定'),
+        title: const Text('キーワードで絞り込み'),
       ),
       body: Column(
         children: [
+          /*
           TextFormField(
             onFieldSubmitted: (String str) {
               if (str != '') {
@@ -28,6 +33,7 @@ class _SearchVCState extends State<SearchVC> {
               }
             },
           ),
+          */
           // ignore: avoid_unnecessary_containers
           Container(
             child: ListView(
@@ -40,13 +46,77 @@ class _SearchVCState extends State<SearchVC> {
           Container(
             width: double.infinity,
             child: ElevatedButton(
-              child: const Text("決定"),
+              child: const Text("上記で絞り込む"),
               onPressed: () {
                 Navigator.of(context).pop(SendData(searchwords));
               },
             ),
           ),
         ],
+      ),
+      // キーワードを入力するアラートを起動
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) {
+            return StatefulBuilder(
+              builder: (context, setState) {
+                return AlertDialog(
+                  title: const Text('キーワードをリストに追加'),
+                  actions: <Widget>[
+                    TextFormField(
+                      onFieldSubmitted: (String str) {
+                        addkeyword = str;
+                      },
+                    ),
+                    //種別ラジオボタン
+                    Column(
+                      children: <Widget>[
+                        RadioListTile(
+                          title: Text('材料'),
+                          value: radiovalue.ingredient,
+                          groupValue: keywordtype,
+                          onChanged: (radiovalue? value) => {
+                            setState(() {
+                              keywordtype = value;
+                            }),
+                          },
+                        ),
+                        RadioListTile(
+                          title: Text('調味料'),
+                          value: radiovalue.spices,
+                          groupValue: keywordtype,
+                          onChanged: (radiovalue? value) => {
+                            setState(() {
+                              keywordtype = value;
+                            }),
+                          },
+                        ),
+                      ],
+                    ),
+                    Container(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        child: const Text("追加"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        ).then((context) {
+          if (addkeyword != '') {
+            setState(() {
+              searchwords.add(addkeyword);
+              addkeyword = '';
+            });
+          }
+        }),
+        child: Icon(Icons.add),
       ),
     );
   }
