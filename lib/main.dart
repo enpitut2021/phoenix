@@ -2,6 +2,8 @@
 
 ///package~
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 ///mylibrary~
 import 'recipe/load_data.dart';
@@ -10,7 +12,9 @@ import './pages/detail_vc/detail_vc.dart';
 import 'data/operatelist.dart';
 import './pages/search_vc/search_vc.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -67,6 +71,15 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseFirestore.instance
+        .collection('recipes')
+        .doc('01000001')
+        .get()
+        .then((ref){
+          print(ref.get('recipe_name'));
+        }).catchError((error) => {
+          print(error)
+        });
     return Scaffold(
       appBar: AppBar(
         title: const Text('ランダムにメニューを提案'),
