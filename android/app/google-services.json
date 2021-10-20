@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "954983948105",
+    "project_id": "enpit2021-phoenix",
+    "storage_bucket": "enpit2021-phoenix.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:954983948105:android:7495f3986e0d5a70b6c498",
+        "android_client_info": {
+          "package_name": "com.example.phoenix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "954983948105-rtrlk3iqg9druei8frt77qg1kk9c2kfo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvBXvOrMFswhAqoWxppLlPN6o-oP-tfEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "954983948105-rtrlk3iqg9druei8frt77qg1kk9c2kfo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
