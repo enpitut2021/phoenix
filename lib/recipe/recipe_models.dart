@@ -43,7 +43,7 @@ class Recipe {
   String id = "";
   String imageurl = "";
   String recipename = "";
-  String explain = "";
+  List<String> explain = [];
   List<Foodstuff> ingredients = [];
   List<Foodstuff> spices = [];
   List<String> cookwares = [];

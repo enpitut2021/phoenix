@@ -2,6 +2,8 @@
 
 ///package~
 import 'package:flutter/material.dart';
+import 'package:phoenix/pages/upload_recipe/make_widget.dart';
+import 'package:phoenix/recipe/recipe_models.dart';
 
 ///mylibrary~
 
@@ -13,53 +15,24 @@ class UpLoadRecipe extends StatefulWidget {
 }
 
 class _UpLoadRecipeState extends State<UpLoadRecipe> {
+  Recipe recipe = Recipe(
+      id: '',
+      recipename: '',
+      imageurl: '',
+      ingredients: [],
+      cookmethod: [],
+      cookwares: [],
+      explain: [],
+      spices: []);
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('投稿画面'),
-      ),
-      body: Column(
-        children: [
-          // 画像,
-          _labelWithButton('タイトル'),
-          Row(
-            children: <Widget>[
-              _labelWithButton('材料'),
-              _labelWithButton('調味料'),
-            ],
-          ),
-          _labelWithButton('説明'),
-          Row(
-            children: <Widget>[
-              _labelWithButton('調理器具'),
-              _labelWithButton('調理方法'),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
+    final Size screenSize = MediaQuery.of(context).size;
 
-Widget _labelWithButton(String text) {
-  return Container(
-    child: Stack(
-      children: <Widget>[
-        Container(
-          child: Text(text),
-          alignment: Alignment.centerLeft,
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('レシピ作成画面'),
         ),
-        Container(
-          child: ElevatedButton(
-            child: const Icon(Icons.add),
-            onPressed: () {},
-          ),
-          alignment: Alignment.centerLeft,
-        ),
-      ],
-    ),
-    alignment: Alignment.center,
-    color: Colors.orange,
-  );
+        body: setRecipe(screenSize: screenSize, recipe: recipe));
+  }
 }

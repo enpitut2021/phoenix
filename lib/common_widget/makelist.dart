@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 List<Widget> makeTextList(
     List<String> texts, double width, TextStyle textstyle) {
   List<Widget> lists = [];
+  if (texts.length == 0) {
+    lists.add(_tile('', width, textstyle));
+  }
+
   for (var text in texts) {
     lists.add(_tile(text, width, textstyle));
   }
@@ -23,6 +27,22 @@ Widget _tile(String text, double width, TextStyle textstyle) {
       border: Border.all(color: Colors.white10, width: 1),
     ),
   );
+}
+
+Widget menueDetailMaterial(
+    {required List<String> materials,
+    required double screenwidth,
+    required Widget titlewidget}) {
+  Widget menudetail = Column(
+    children: [
+      titlewidget,
+      Column(
+        children:
+            makeTextList(materials, screenwidth, const TextStyle(fontSize: 15)),
+      ),
+    ],
+  );
+  return menudetail;
 }
 ///----------------make text list widget----------------------
 ///

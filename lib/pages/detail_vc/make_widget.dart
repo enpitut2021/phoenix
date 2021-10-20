@@ -2,29 +2,17 @@ import 'package:flutter/material.dart';
 import '../../recipe/recipe_models.dart';
 import '../../common_widget/makelist.dart';
 
-Widget _menuDetailMaterial(
-    {required String title,
-    required List<String> materials,
-    required double screenwidth}) {
-  Widget menudetail = Column(
-    children: [
-      Card(
-        child: Container(
-          color: Colors.orange.shade200,
-          width: screenwidth,
-          child: Text(
-            title,
-            style: const TextStyle(fontSize: 24),
-          ),
-        ),
+Widget _recipeField({required double screenwidth, required String title}) {
+  return (Card(
+    child: Container(
+      color: Colors.orange.shade200,
+      width: screenwidth,
+      child: Text(
+        title,
+        style: const TextStyle(fontSize: 24),
       ),
-      Column(
-        children:
-            makeTextList(materials, screenwidth, const TextStyle(fontSize: 15)),
-      ),
-    ],
-  );
-  return menudetail;
+    ),
+  ));
 }
 
 Widget setMenue(Recipe recipe, Size screenSize) {
@@ -35,14 +23,16 @@ Widget setMenue(Recipe recipe, Size screenSize) {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _menuDetailMaterial(
-                title: '材料',
+            menueDetailMaterial(
                 materials: recipe.toFoodstuffs(recipe.ingredients),
-                screenwidth: screenSize.width / 2.2),
-            _menuDetailMaterial(
-                title: '調味料',
+                screenwidth: screenSize.width / 2.2,
+                titlewidget: _recipeField(
+                    screenwidth: screenSize.width / 2.2, title: '材料')),
+            menueDetailMaterial(
                 materials: recipe.toFoodstuffs(recipe.spices),
-                screenwidth: screenSize.width / 2.2),
+                screenwidth: screenSize.width / 2.2,
+                titlewidget: _recipeField(
+                    screenwidth: screenSize.width / 2.2, title: '調味料')),
           ],
         ),
         Card(
@@ -56,18 +46,20 @@ Widget setMenue(Recipe recipe, Size screenSize) {
           ),
         ),
         //この部分を箇条書き/文章形式に
-        Text(recipe.explain),
+        Text(recipe.explain[0]),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _menuDetailMaterial(
-                title: '調理器具',
+            menueDetailMaterial(
                 materials: recipe.cookwares,
-                screenwidth: screenSize.width / 2.2),
-            _menuDetailMaterial(
-                title: '調理方法',
+                screenwidth: screenSize.width / 2.2,
+                titlewidget: _recipeField(
+                    screenwidth: screenSize.width / 2.2, title: '調理器具')),
+            menueDetailMaterial(
                 materials: recipe.cookmethod,
-                screenwidth: screenSize.width / 2.2),
+                screenwidth: screenSize.width / 2.2,
+                titlewidget: _recipeField(
+                    screenwidth: screenSize.width / 2.2, title: '調理方法')),
           ],
         ),
       ],
