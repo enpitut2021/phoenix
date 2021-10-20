@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class buttonAction {
+class ButtonAction {
   Future<String> buttonPressed(context) {
     String addword = "";
     showDialog(

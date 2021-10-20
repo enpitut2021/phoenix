@@ -11,6 +11,7 @@ import 'recipe/recipe_models.dart';
 import './pages/detail_vc/detail_vc.dart';
 import 'data/operatelist.dart';
 import './pages/search_vc/search_vc.dart';
+import './pages/upload_recipe/upload_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SuggestRecipes(),
         '/detail': (context) => const DetailOfMenu(),
         '/search': (context) => const SearchVC(),
+        '/uploadrecipe': (context) => const UpLoadRecipe(),
       },
 
       theme: ThemeData(
@@ -71,15 +73,15 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseFirestore.instance
-        .collection('recipes')
-        .doc('01000001')
-        .get()
-        .then((ref){
-          print(ref.get('recipe_name'));
-        }).catchError((error) => {
-          print(error)
-        });
+    // FirebaseFirestore.instance
+    //     .collection('recipes')
+    //     .doc('01000001')
+    //     .get()
+    //     .then((ref){
+    //       print(ref.get('recipe_name'));
+    //     }).catchError((error) => {
+    //       print(error)
+    //     });
     return Scaffold(
       appBar: AppBar(
         title: const Text('ランダムにメニューを提案'),
@@ -95,6 +97,21 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
             },
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(children: <Widget>[
+          const DrawerHeader(
+            child: Text(
+              'メニュー',
+            ),
+          ),
+          ListTile(
+            title: const Text('レシピ投稿'),
+            onTap: () {
+              Navigator.pushNamed((context), '/uploadrecipe');
+            },
+          ),
+        ]),
       ),
       body: _buildSuggestions(
           recipes.filterrecipe(contains: searchWords).recipes),
