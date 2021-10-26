@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 List<Widget> makeTextList(
     List<String> texts, double width, TextStyle textstyle) {
   List<Widget> lists = [];
-  if (texts.length == 0) {
+  if (texts.isEmpty) {
     lists.add(_tile('', width, textstyle));
   }
 
