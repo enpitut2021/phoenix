@@ -43,7 +43,7 @@ class LoadRecipes {
           id: element['id'],
           imageurl: element['image'],
           recipename: element['recipe_name'],
-          explain: element['explain'],
+          explain: ["aaaaa", "bbbbb", "cccc"],
           ingredients: ingredients,
           spices: spices,
           cookwares: cookwares,
