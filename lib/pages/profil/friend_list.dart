@@ -1,5 +1,5 @@
  import 'package:flutter/material.dart';
- import 'package:phoenix/common_widget/friendlistwidget.dart';
+ import 'package:phoenix/common_widget/friend_list_widget.dart';
 
 class FriendList extends StatefulWidget {
   const FriendList({Key? key}) : super(key: key);

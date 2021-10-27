@@ -6,7 +6,7 @@ List<Widget> friendlisttile(List<int> friends, double width, TextStyle textstyle
   for(int i=0; i<friends.length; i++){
     Widget tmp = GestureDetector(onTap: ontap,
         child: Container(
-          margin: EdgeInsets.only(left:20, right:20, top:20),
+          margin: const EdgeInsets.only(left:20, right:20, top:20),
           child:Text(friends[i].toString(),style:textstyle),
           color:Colors.orangeAccent,
           alignment: Alignment.center,
