@@ -1,4 +1,3 @@
-// packages
  import 'package:flutter/material.dart';
  import 'package:phoenix/common_widget/friendlistwidget.dart';
 
