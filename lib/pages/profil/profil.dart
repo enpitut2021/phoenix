@@ -15,6 +15,12 @@ class _ProfilPageState extends State<ProfilPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('プロフィール'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () => {},
+          ),
+        ],
       ),
       body: Column(
         children: <Widget>[
