@@ -116,18 +116,18 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
               Navigator.pushNamed((context), '/profil');
             },
           ),
-          ListTile(
-            title: const Text('フレンドリスト'),
-            onTap: () {
-              Navigator.pushNamed((context), '/friendList');
-            },
-          ),
-          ListTile(
-            title: const Text('作ったレシピ集'),
-            onTap: () {
-              Navigator.pushNamed((context), '/registerPage');
-            },
-          ),
+          // ListTile(
+          //   title: const Text('フレンドリスト'),
+          //   onTap: () {
+          //     Navigator.pushNamed((context), '/friendList');
+          //   },
+          // ),
+          // ListTile(
+          //   title: const Text('作ったレシピ集'),
+          //   onTap: () {
+          //     Navigator.pushNamed((context), '/registerPage');
+          //   },
+          // ),
         ]),
       ),
       body: _buildSuggestions(
