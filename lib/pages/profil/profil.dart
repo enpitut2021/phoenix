@@ -32,7 +32,7 @@ class _ProfilPageState extends State<ProfilPage> {
             alignment: Alignment.center,
             color: Colors.orange,
           ),
-          _goto_friedlist_or_registerrecipe(),
+          _goto_friedlist_or_registerrecipe(context),
           Container(
             child: const Text(
               "最近作ったメニュー",
@@ -49,7 +49,7 @@ class _ProfilPageState extends State<ProfilPage> {
 }
 
 // ignore: non_constant_identifier_names
-Widget _goto_friedlist_or_registerrecipe() {
+Widget _goto_friedlist_or_registerrecipe(BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
@@ -66,7 +66,9 @@ Widget _goto_friedlist_or_registerrecipe() {
               ),
             ),
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed((context), '/friendList');
+          },
         ),
         alignment: Alignment.center,
       ),
@@ -87,7 +89,9 @@ Widget _goto_friedlist_or_registerrecipe() {
               ),
             ),
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed((context), '/registerPage');
+          },
         ),
         alignment: Alignment.center,
       ),
@@ -101,10 +105,10 @@ Widget _recentlyReciped(List<int> ids) {
     crossAxisCount: 3,
     children: List.generate(9, (index) {
       return Container(
-        child: Text('$index'),
-        color: Colors.grey,
-        alignment: Alignment.center,
-      );
+          child: Text('$index'),
+          color: Colors.grey,
+          alignment: Alignment.center,
+          margin: const EdgeInsets.fromLTRB(5, 5, 5, 5));
     }),
   ));
 }
