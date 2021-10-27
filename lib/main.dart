@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:phoenix/pages/profil/friendlist.dart';
 
 ///mylibrary~
 import 'recipe/load_data.dart';
@@ -13,6 +14,7 @@ import 'data/operatelist.dart';
 import './pages/search_vc/search_vc.dart';
 import './pages/upload_recipe/upload_page.dart';
 import 'package:phoenix/pages/profil/profil.dart';
+import 'package:phoenix/common_widget/friendlistwidget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +40,7 @@ class MyApp extends StatelessWidget {
         '/search': (context) => const SearchVC(),
         '/uploadrecipe': (context) => const UpLoadRecipe(),
         '/profil': (context) => const ProfilPage(),
+        '/friendList': (context) => const FriendList()
       },
 
       theme: ThemeData(
@@ -108,6 +111,12 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
             title: const Text('プロフィール'),
             onTap: () {
               Navigator.pushNamed((context), '/profil');
+            },
+          ),
+          ListTile(
+            title: const Text('お試し'),
+            onTap: () {
+              Navigator.pushNamed((context), '/friendList');
             },
           ),
         ]),
