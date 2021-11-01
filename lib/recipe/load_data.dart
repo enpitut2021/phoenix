@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 //my library
 import 'recipe_models.dart';
@@ -53,8 +54,7 @@ class LoadRecipes {
       Recipe recipe = Recipe(
         id: _data['id'].toString(),
         recipename: _data['recipe_name'],
-        //imageurl: _data['imageurl'],
-        imageurl: "lib/recipe/images/test1.jpeg",
+        imageurl: _data['imageurl'],
         ingredients: ingredients,
         spices: spices,
         explain: explain,
@@ -64,41 +64,6 @@ class LoadRecipes {
       recipes.add(recipe: recipe);
     }
     return recipes;
-    /*
-    StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('recipes').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          print(Text(snapshot.data('recipe_name')));
-          return Text(snapshot.data('recipe_name'));
-        });
-    */
-    /*
-    await FutureBuilder<QuerySnapshot>(
-        future: FirebaseFirestore.instance.collection('recipes').get(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            final List<DocumentSnapshot> _loadData = snapshot.data!.docs;
-            _loadData.map((_data) {
-              Recipe recipe = Recipe(
-                id: _data['id'],
-                recipename: _data['recipe_name'],
-                imageurl: _data['image'],
-                ingredients: _data['ingredients'],
-                spices: _data['spices'],
-                explain: _data['explain'],
-                cookwares: _data['cookwares'],
-                cookmethod: _data['Cooking_method'],
-              );
-              recipes.add(recipe: recipe);
-            });
-            return Text(snapshot.data);
-          }
-          return Center(
-            child: Text('読み込み中'),
-          );
-        });
-    return recipes;
-    */
   }
 
   Future<dynamic> loadJsonAsset() async {

@@ -71,7 +71,7 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
   @override
   void initState() {
     super.initState();
-    loadSectiontask.loadJsonAsset().then((value) {
+    loadSectiontask.loadFirestoreAsset().then((value) {
       setState(() {
         recipes = value;
         assert(recipes.recipes.isNotEmpty);
@@ -157,7 +157,8 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
         title: Stack(
           alignment: Alignment.bottomRight,
           children: [
-            Image.asset(recipe.imageurl),
+            //Image.asset(recipe.imageurl),
+            Image.network(recipe.imageurl),
             Container(
               child: Text(
                 recipe.recipename,

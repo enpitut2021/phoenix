@@ -95,6 +95,7 @@ class DynamicDisplayImage {
                 end: 1,
               ),
             ),
+        // child: Image.asset(recipe.imageurl),
         child: Image.asset(recipe.imageurl),
       ),
     );
@@ -116,7 +117,8 @@ class DynamicDisplayImage {
                 end: 1,
               ),
             ),
-        child: Image.asset(recipe.imageurl),
+        //child: Image.asset(recipe.imageurl),
+        child: Image.network(recipe.imageurl),
       ),
     );
   }
