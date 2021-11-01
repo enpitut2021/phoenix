@@ -38,7 +38,10 @@ Widget _labelWithButton(String text, double width) {
   );
 }
 
-Widget setRecipe({required Size screenSize, required Recipe recipe}) {
+Widget setRecipe(
+    {required Size screenSize,
+    required Recipe recipe,
+    required void Function()? onTap}) {
   return Column(
     children: [
       // 画像,
@@ -79,7 +82,7 @@ Widget setRecipe({required Size screenSize, required Recipe recipe}) {
       ),
       ElevatedButton(
         child: const Text('投稿する'),
-        onPressed: () {},
+        onPressed: onTap,
       ),
     ],
   );
