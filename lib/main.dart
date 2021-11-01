@@ -4,6 +4,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:phoenix/pages/profil/friend_list.dart';
+import 'package:phoenix/pages/profil/register_list.dart';
 
 ///mylibrary~
 import 'recipe/load_data.dart';
@@ -13,6 +15,8 @@ import 'data/operatelist.dart';
 import './pages/search_vc/search_vc.dart';
 import './pages/upload_recipe/upload_page.dart';
 import 'package:phoenix/pages/profil/profil.dart';
+import 'package:phoenix/common_widget/friend_list_widget.dart';
+import 'package:phoenix/common_widget/register_list_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +42,8 @@ class MyApp extends StatelessWidget {
         '/search': (context) => const SearchVC(),
         '/uploadrecipe': (context) => const UpLoadRecipe(),
         '/profil': (context) => const ProfilPage(),
+        '/friendList': (context) => const FriendList(),
+        '/registerPage': (context) => const RegisterList()
       },
 
       theme: ThemeData(
@@ -110,6 +116,18 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
               Navigator.pushNamed((context), '/profil');
             },
           ),
+          // ListTile(
+          //   title: const Text('フレンドリスト'),
+          //   onTap: () {
+          //     Navigator.pushNamed((context), '/friendList');
+          //   },
+          // ),
+          // ListTile(
+          //   title: const Text('作ったレシピ集'),
+          //   onTap: () {
+          //     Navigator.pushNamed((context), '/registerPage');
+          //   },
+          // ),
         ]),
       ),
       body: _buildSuggestions(
