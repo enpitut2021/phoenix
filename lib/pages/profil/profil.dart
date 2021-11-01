@@ -73,7 +73,8 @@ Widget _goto_friedlist_or_registerrecipe(BuildContext context) {
         alignment: Alignment.center,
       ),
       Container(
-        child: const Icon(Icons.restaurant),
+        child: Row(
+            children: const <Widget>[Icon(Icons.restaurant), Text(": 15回")]),
         alignment: Alignment.center,
       ),
       Container(
