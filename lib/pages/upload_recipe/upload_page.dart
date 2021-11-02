@@ -33,6 +33,10 @@ class _UpLoadRecipeState extends State<UpLoadRecipe> {
         appBar: AppBar(
           title: const Text('レシピ作成画面'),
         ),
-        body: setRecipe(screenSize: screenSize, recipe: recipe, onTap: () {}));
+        body: setRecipe(
+            context: context,
+            screenSize: screenSize,
+            recipe: recipe,
+            onTap: () {}));
   }
 }
