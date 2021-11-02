@@ -41,7 +41,8 @@ Widget setRecipe(
     required Size screenSize,
     required Recipe recipe,
     required void Function()? onTap}) {
-  return Column(
+  Recipe _recipe = recipe;
+  Widget setrecipewidget = Column(
     children: [
       // 画像,
       _labelWithButton('レシピの名前', screenSize.width, () {
@@ -92,6 +93,8 @@ Widget setRecipe(
       ),
     ],
   );
+
+  return setrecipewidget;
 }
 
 void makedialog(BuildContext context, String field, bool flag) {
