@@ -50,7 +50,7 @@ class MakeWidget {
         ),
         menueDetailMaterial(
             materials: recipe.explain,
-            screenwidth: screenSize.width / 2,
+            screenwidth: screenSize.width,
             titlewidget: _labelWithButton('説明', screenSize.width, () {
               _makedialog(context, "説明", false);
             })),
@@ -89,7 +89,7 @@ class MakeWidget {
         children: <Widget>[
           Container(
             child: Text(text),
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
             color: Colors.orange,
           ),
           Container(
