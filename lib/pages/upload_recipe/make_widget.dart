@@ -32,6 +32,7 @@ class MakeWidget {
         }),
         Text(recipe.recipename),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             menueDetailMaterial(
                 materials: recipe.toFoodstuffs(recipe.ingredients),
@@ -54,6 +55,7 @@ class MakeWidget {
               _makedialog(context, "説明", false);
             })),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             menueDetailMaterial(
                 materials: recipe.cookwares,
