@@ -6,7 +6,7 @@ import 'package:phoenix/recipe/recipe_models.dart';
 
 class MakeWidget {
   late Recipe recipe;
-  late Function state; //み込みたい（願望）
+  late Function state;
   String name = "";
   String amount = "";
 
@@ -15,7 +15,8 @@ class MakeWidget {
       required Size screenSize,
       required void Function()? onTap,
       required MyImage imagepicker}) {
-    Widget setrecipewidget = Column(
+    Widget setrecipewidget = ListView(
+      shrinkWrap: true,
       children: [
         // 画像,
         imagepicker.imageAsset(),
@@ -70,35 +71,6 @@ class MakeWidget {
       ],
     );
 
-// Widget setRecipe(
-//     {required Size screenSize,
-//     required Recipe recipe,
-//     required void Function()? onTap,
-//     required MyImage imagepicker}) {
-//   return Column(
-//     children: [
-//       // 画像,
-//       imagepicker.imageAsset(),
-//       _labelWithButton('レシピの名前', screenSize.width),
-//       Text(recipe.recipename),
-//       Row(
-//         children: <Widget>[
-//           menueDetailMaterial(
-//               materials: recipe.toFoodstuffs(recipe.ingredients),
-//               screenwidth: screenSize.width / 2.2,
-//               titlewidget: _labelWithButton('材料', screenSize.width / 2)),
-//           menueDetailMaterial(
-//               materials: recipe.toFoodstuffs(recipe.spices),
-//               screenwidth: screenSize.width / 2.2,
-//               titlewidget: _labelWithButton('調味料', screenSize.width / 2)),
-//         ],
-//       ),
-//       menueDetailMaterial(
-//           materials: recipe.explain,
-//           screenwidth: screenSize.width / 2,
-//           titlewidget: _labelWithButton('説明', screenSize.width)),
-//       Row(
-//
     return setrecipewidget;
   }
 

@@ -19,13 +19,12 @@ class UpLoadRecipe extends StatefulWidget {
 
 class _UpLoadRecipeState extends State<UpLoadRecipe> with MakeWidget {
   MyImage imagePicker = MyImage();
-  _UpLoadRecipeState() {
-    imagePicker.setstate = setState;
-  }
+
   @override
   void initState() {
     super.initState();
     state = setState;
+    imagePicker.setstate = setState;
     recipe = Recipe(
         id: '',
         recipename: '',
