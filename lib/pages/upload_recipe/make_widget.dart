@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:phoenix/common_widget/image_operation.dart';
 import 'package:phoenix/common_widget/makelist.dart';
 import 'package:phoenix/recipe/recipe_models.dart';
 
@@ -78,6 +79,36 @@ class MakeWidget {
       ],
     );
 
+
+Widget setRecipe(
+    {required Size screenSize,
+    required Recipe recipe,
+    required void Function()? onTap,
+    required MyImage imagepicker}) {
+  return Column(
+    children: [
+      // 画像,
+      imagepicker.imageAsset(),
+      _labelWithButton('レシピの名前', screenSize.width),
+      Text(recipe.recipename),
+      Row(
+        children: <Widget>[
+          menueDetailMaterial(
+              materials: recipe.toFoodstuffs(recipe.ingredients),
+              screenwidth: screenSize.width / 2.2,
+              titlewidget: _labelWithButton('材料', screenSize.width / 2)),
+          menueDetailMaterial(
+              materials: recipe.toFoodstuffs(recipe.spices),
+              screenwidth: screenSize.width / 2.2,
+              titlewidget: _labelWithButton('調味料', screenSize.width / 2)),
+        ],
+      ),
+      menueDetailMaterial(
+          materials: recipe.explain,
+          screenwidth: screenSize.width / 2,
+          titlewidget: _labelWithButton('説明', screenSize.width)),
+      Row(
+
     return setrecipewidget;
   }
 
@@ -86,6 +117,7 @@ class MakeWidget {
       width: width,
       height: 40,
       child: Stack(
+
         children: <Widget>[
           Container(
             child: Text(text),

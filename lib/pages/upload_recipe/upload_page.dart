@@ -2,6 +2,7 @@
 
 ///package~
 import 'package:flutter/material.dart';
+import 'package:phoenix/common_widget/image_operation.dart';
 import 'package:phoenix/pages/upload_recipe/make_widget.dart';
 import 'package:phoenix/recipe/recipe_models.dart';
 // import 'package:firebase_core/firebase_core.dart';
@@ -16,20 +17,21 @@ class UpLoadRecipe extends StatefulWidget {
   _UpLoadRecipeState createState() => _UpLoadRecipeState();
 }
 
-class _UpLoadRecipeState extends State<UpLoadRecipe> with MakeWidget {
-  @override
-  void initState() {
-    super.initState();
-    state = setState;
-    recipe = Recipe(
-        id: '',
-        recipename: '',
-        imageurl: '',
-        ingredients: [],
-        cookmethod: [],
-        cookwares: [],
-        explain: [],
-        spices: []);
+
+class _UpLoadRecipeState extends State<UpLoadRecipe> {
+  Recipe recipe = Recipe(
+      id: '',
+      recipename: '',
+      imageurl: '',
+      ingredients: [],
+      cookmethod: [],
+      cookwares: [],
+      explain: [],
+      spices: []);
+  MyImage imagePicker = MyImage();
+  _UpLoadRecipeState() {
+    imagePicker.setstate = setState;
+
   }
 
   @override
@@ -78,7 +80,8 @@ class _UpLoadRecipeState extends State<UpLoadRecipe> with MakeWidget {
               'spices': tmp2,
               // 'minutes': recipe.minutes
             });
-          }),
+          },
+          imagepicker: imagePicker),
     );
   }
 }
