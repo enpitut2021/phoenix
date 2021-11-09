@@ -2,6 +2,7 @@
 
 ///package~
 import 'package:flutter/material.dart';
+import 'package:phoenix/common_widget/image_operation.dart';
 import 'package:phoenix/pages/upload_recipe/make_widget.dart';
 import 'package:phoenix/recipe/recipe_models.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,8 +26,11 @@ class _UpLoadRecipeState extends State<UpLoadRecipe> {
       cookmethod: [],
       cookwares: [],
       explain: [],
-      spices: []
-  );
+      spices: []);
+  MyImage imagePicker = MyImage();
+  _UpLoadRecipeState() {
+    imagePicker.setstate = setState;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,38 +38,42 @@ class _UpLoadRecipeState extends State<UpLoadRecipe> {
 
     //ドキュメントID生成関数
     // String makeDocId(){
-    //  return  
+    //  return
     // }
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('レシピ作成画面'),
-        ),
-        body: setRecipe(screenSize: screenSize, recipe: recipe, onTap: () async {
-          List<Map<String, String>> tmp1 = [], tmp2 = [];
-          for(var _ingredients in recipe.ingredients) {
-            tmp1.add({'name' : _ingredients.name});
-            tmp1.add({'amount': _ingredients.amount});
-          }
-          for(var _spices in recipe.spices) {
-            tmp2.add({'name' : _spices.name});
-            tmp2.add({'amount': _spices.amount});
-          }
-          await FirebaseFirestore.instance
-              .collection('recipes')
-              .doc(/*makeDocId*/)
-              .set({
-            'id': recipe.id,
-            'recipe_name': recipe.recipename,
-            'imageurl': recipe.imageurl,
-            'ingredients': tmp1,
-            'cookmethod': recipe.cookmethod,
-            'cookwares': recipe.cookwares,
-            'explain': recipe.explain,
-            'spices': tmp2,
-            // 'minutes': recipe.minutes
-          });
-        }),
+      appBar: AppBar(
+        title: const Text('レシピ作成画面'),
+      ),
+      body: setRecipe(
+          screenSize: screenSize,
+          recipe: recipe,
+          onTap: () async {
+            List<Map<String, String>> tmp1 = [], tmp2 = [];
+            for (var _ingredients in recipe.ingredients) {
+              tmp1.add({'name': _ingredients.name});
+              tmp1.add({'amount': _ingredients.amount});
+            }
+            for (var _spices in recipe.spices) {
+              tmp2.add({'name': _spices.name});
+              tmp2.add({'amount': _spices.amount});
+            }
+            await FirebaseFirestore.instance
+                .collection('recipes')
+                .doc(/*makeDocId*/)
+                .set({
+              'id': recipe.id,
+              'recipe_name': recipe.recipename,
+              'imageurl': recipe.imageurl,
+              'ingredients': tmp1,
+              'cookmethod': recipe.cookmethod,
+              'cookwares': recipe.cookwares,
+              'explain': recipe.explain,
+              'spices': tmp2,
+              // 'minutes': recipe.minutes
+            });
+          },
+          imagepicker: imagePicker),
     );
   }
 }
