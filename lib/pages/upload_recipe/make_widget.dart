@@ -10,24 +10,15 @@ class MakeWidget {
   String name = "";
   String amount = "";
 
-  // MakeWidget({required Recipe recipe, void Function()? state}) {
-  // ignore: prefer_initializing_formals
-  //   this.recipe = recipe;
-  //   this.state = state!;
-  // }
-
-  // void updateChangeRecipe(Recipe recipe) {
-  //   this.recipe = recipe;
-  // }
-
-  Widget setRecipe({
-    required BuildContext context,
-    required Size screenSize,
-    required void Function()? onTap,
-  }) {
+  Widget setRecipe(
+      {required BuildContext context,
+      required Size screenSize,
+      required void Function()? onTap,
+      required MyImage imagepicker}) {
     Widget setrecipewidget = Column(
       children: [
         // 画像,
+        imagepicker.imageAsset(),
         _labelWithButton('レシピの名前', screenSize.width, () {
           _makedialog(context, "レシピ名", false);
         }),
@@ -79,36 +70,35 @@ class MakeWidget {
       ],
     );
 
-
-Widget setRecipe(
-    {required Size screenSize,
-    required Recipe recipe,
-    required void Function()? onTap,
-    required MyImage imagepicker}) {
-  return Column(
-    children: [
-      // 画像,
-      imagepicker.imageAsset(),
-      _labelWithButton('レシピの名前', screenSize.width),
-      Text(recipe.recipename),
-      Row(
-        children: <Widget>[
-          menueDetailMaterial(
-              materials: recipe.toFoodstuffs(recipe.ingredients),
-              screenwidth: screenSize.width / 2.2,
-              titlewidget: _labelWithButton('材料', screenSize.width / 2)),
-          menueDetailMaterial(
-              materials: recipe.toFoodstuffs(recipe.spices),
-              screenwidth: screenSize.width / 2.2,
-              titlewidget: _labelWithButton('調味料', screenSize.width / 2)),
-        ],
-      ),
-      menueDetailMaterial(
-          materials: recipe.explain,
-          screenwidth: screenSize.width / 2,
-          titlewidget: _labelWithButton('説明', screenSize.width)),
-      Row(
-
+// Widget setRecipe(
+//     {required Size screenSize,
+//     required Recipe recipe,
+//     required void Function()? onTap,
+//     required MyImage imagepicker}) {
+//   return Column(
+//     children: [
+//       // 画像,
+//       imagepicker.imageAsset(),
+//       _labelWithButton('レシピの名前', screenSize.width),
+//       Text(recipe.recipename),
+//       Row(
+//         children: <Widget>[
+//           menueDetailMaterial(
+//               materials: recipe.toFoodstuffs(recipe.ingredients),
+//               screenwidth: screenSize.width / 2.2,
+//               titlewidget: _labelWithButton('材料', screenSize.width / 2)),
+//           menueDetailMaterial(
+//               materials: recipe.toFoodstuffs(recipe.spices),
+//               screenwidth: screenSize.width / 2.2,
+//               titlewidget: _labelWithButton('調味料', screenSize.width / 2)),
+//         ],
+//       ),
+//       menueDetailMaterial(
+//           materials: recipe.explain,
+//           screenwidth: screenSize.width / 2,
+//           titlewidget: _labelWithButton('説明', screenSize.width)),
+//       Row(
+//
     return setrecipewidget;
   }
 
@@ -117,7 +107,6 @@ Widget setRecipe(
       width: width,
       height: 40,
       child: Stack(
-
         children: <Widget>[
           Container(
             child: Text(text),
