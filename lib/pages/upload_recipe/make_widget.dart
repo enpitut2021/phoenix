@@ -4,40 +4,81 @@ import 'package:phoenix/common_widget/image_operation.dart';
 import 'package:phoenix/common_widget/makelist.dart';
 import 'package:phoenix/recipe/recipe_models.dart';
 
-Widget _labelWithButton(String text, double width) {
-  return SizedBox(
-    width: width,
-    height: 40,
-    child: Stack(
-      children: <Widget>[
-        Container(
-          child: Text(text),
-          alignment: Alignment.center,
-          color: Colors.orange,
+class MakeWidget {
+  late Recipe recipe;
+  late Function state; //み込みたい（願望）
+  String name = "";
+  String amount = "";
+
+  // MakeWidget({required Recipe recipe, void Function()? state}) {
+  // ignore: prefer_initializing_formals
+  //   this.recipe = recipe;
+  //   this.state = state!;
+  // }
+
+  // void updateChangeRecipe(Recipe recipe) {
+  //   this.recipe = recipe;
+  // }
+
+  Widget setRecipe({
+    required BuildContext context,
+    required Size screenSize,
+    required void Function()? onTap,
+  }) {
+    Widget setrecipewidget = Column(
+      children: [
+        // 画像,
+        _labelWithButton('レシピの名前', screenSize.width, () {
+          _makedialog(context, "レシピ名", false);
+        }),
+        Text(recipe.recipename),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            menueDetailMaterial(
+                materials: recipe.toFoodstuffs(recipe.ingredients),
+                screenwidth: screenSize.width / 2.2,
+                titlewidget: _labelWithButton('材料', screenSize.width / 2, () {
+                  _makedialog(context, "材料", true);
+                })),
+            menueDetailMaterial(
+                materials: recipe.toFoodstuffs(recipe.spices),
+                screenwidth: screenSize.width / 2.2,
+                titlewidget: _labelWithButton('調味料', screenSize.width / 2, () {
+                  _makedialog(context, "調味料", true);
+                })),
+          ],
         ),
-        Container(
-          child: ElevatedButton(
-            child: const Icon(Icons.add),
-            style: ElevatedButton.styleFrom(
-              primary: Colors.white,
-              shape: const CircleBorder(
-                side: BorderSide(
-                  color: Colors.black,
-                  width: 1,
-                  style: BorderStyle.solid,
-                ),
-              ),
-            ),
-            onPressed: () {
-              print("Hello" + text);
-            },
-          ),
-          alignment: Alignment.bottomRight,
+        menueDetailMaterial(
+            materials: recipe.explain,
+            screenwidth: screenSize.width,
+            titlewidget: _labelWithButton('説明', screenSize.width, () {
+              _makedialog(context, "説明", false);
+            })),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            menueDetailMaterial(
+                materials: recipe.cookwares,
+                screenwidth: screenSize.width / 2.2,
+                titlewidget: _labelWithButton('調理器具', screenSize.width / 2, () {
+                  _makedialog(context, "調理器具", false);
+                })),
+            menueDetailMaterial(
+                materials: recipe.cookmethod,
+                screenwidth: screenSize.width / 2.2,
+                titlewidget: _labelWithButton('調理方法', screenSize.width / 2, () {
+                  _makedialog(context, "調理方法", false);
+                })),
+          ],
+        ),
+        ElevatedButton(
+          child: const Text('投稿する'),
+          onPressed: onTap,
         ),
       ],
-    ),
-  );
-}
+    );
+
 
 Widget setRecipe(
     {required Size screenSize,
@@ -67,26 +108,113 @@ Widget setRecipe(
           screenwidth: screenSize.width / 2,
           titlewidget: _labelWithButton('説明', screenSize.width)),
       Row(
+
+    return setrecipewidget;
+  }
+
+  Widget _labelWithButton(String text, double width, Function()? ontap) {
+    return SizedBox(
+      width: width,
+      height: 40,
+      child: Stack(
+
         children: <Widget>[
-          menueDetailMaterial(
-              materials: recipe.cookwares,
-              screenwidth: screenSize.width / 2.2,
-              titlewidget: _labelWithButton('調理器具', screenSize.width / 2)),
-          menueDetailMaterial(
-              materials: recipe.cookmethod,
-              screenwidth: screenSize.width / 2.2,
-              titlewidget: _labelWithButton('調理方法', screenSize.width / 2)),
-          // _labelWithButton('調理方法', screenSize.width / 2),
-          // Column(
-          //   children: makeTextList(recipe.cookmethod, screenSize.width / 2,
-          //       const TextStyle(fontSize: 15)),
-          // ),
+          Container(
+            child: Text(text),
+            alignment: Alignment.centerLeft,
+            color: Colors.orange,
+          ),
+          Container(
+            child: ElevatedButton(
+              child: const Icon(Icons.add),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.white,
+                shape: const CircleBorder(
+                  side: BorderSide(
+                    color: Colors.black,
+                    width: 1,
+                    style: BorderStyle.solid,
+                  ),
+                ),
+              ),
+              onPressed: ontap,
+            ),
+            alignment: Alignment.bottomRight,
+          ),
         ],
       ),
-      ElevatedButton(
-        child: const Text('投稿する'),
-        onPressed: onTap,
+    );
+  }
+
+  void _makedialog(BuildContext context, String field, bool flag) {
+    List<Widget> displayAddDaialog = _add(field, flag);
+    displayAddDaialog.add(Container(
+        width: double.infinity,
+        child: ElevatedButton(
+          child: const Text("追加"),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )));
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+                title: Container(
+                    child: const Text("追加する内容！！！"),
+                    alignment: Alignment.center),
+                actions: displayAddDaialog);
+          },
+        );
+      },
+    ).then((context) {
+      state(() {
+        if (!(name == "" || (flag && amount == ""))) {
+          _updaterecipe(field);
+        }
+        name = "";
+        amount = "";
+      });
+    });
+  }
+
+  List<Widget> _add(String field, bool flag) {
+    List<Widget> output = <Widget>[
+      Container(child: Text(field), alignment: Alignment.centerLeft),
+      TextFormField(
+        onFieldSubmitted: (String str) {
+          name = str;
+        },
       ),
-    ],
-  );
+    ];
+    if (flag) {
+      output.add(
+          Container(child: const Text("分量"), alignment: Alignment.centerLeft));
+      output.add(TextFormField(
+        onFieldSubmitted: (String str) {
+          amount = str;
+        },
+      ));
+    }
+    return output;
+  }
+
+  void _updaterecipe(String title) {
+    if (title == "レシピ名") {
+      recipe.recipename = name;
+    } else if (title == "材料") {
+      recipe.ingredients.add(Foodstuff(name: name, amount: amount));
+    } else if (title == "調味料") {
+      recipe.spices.add(Foodstuff(name: name, amount: amount));
+    } else if (title == "説明") {
+      recipe.explain.add(name);
+    } else if (title == "調理器具") {
+      recipe.cookwares.add(name);
+    } else if (title == "調理方法") {
+      recipe.cookmethod.add(name);
+    }
+  }
 }

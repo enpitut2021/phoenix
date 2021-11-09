@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:phoenix/common_widget/image_operation.dart';
 import 'package:phoenix/pages/upload_recipe/make_widget.dart';
 import 'package:phoenix/recipe/recipe_models.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 ///mylibrary~
@@ -16,6 +16,7 @@ class UpLoadRecipe extends StatefulWidget {
   @override
   _UpLoadRecipeState createState() => _UpLoadRecipeState();
 }
+
 
 class _UpLoadRecipeState extends State<UpLoadRecipe> {
   Recipe recipe = Recipe(
@@ -30,6 +31,7 @@ class _UpLoadRecipeState extends State<UpLoadRecipe> {
   MyImage imagePicker = MyImage();
   _UpLoadRecipeState() {
     imagePicker.setstate = setState;
+
   }
 
   @override
@@ -41,13 +43,19 @@ class _UpLoadRecipeState extends State<UpLoadRecipe> {
     //  return
     // }
 
+    // var makewidget = MakeWidget(
+    //     recipe: recipe,
+    //     state: () {
+    //       setState(() {});
+    //     });
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('レシピ作成画面'),
       ),
       body: setRecipe(
+          context: context,
           screenSize: screenSize,
-          recipe: recipe,
           onTap: () async {
             List<Map<String, String>> tmp1 = [], tmp2 = [];
             for (var _ingredients in recipe.ingredients) {
