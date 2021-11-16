@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:path_provider/path_provider.dart';
 
 class UserModel {
   String name = "";
@@ -13,11 +14,15 @@ class UserModel {
   List<int> recentrecipe = [];
 
   Future<void> loadUserId() async{
-    final String _loadData =
-    await rootBundle.loadString('lib/Model/user/user_info.json');
-    final jsonResponse = json.decode(_loadData);
+    try{
+      File _filepath = await _localFile;
+      String _loadData = await rootBundle.loadString(_filepath.path);
+      final jsonResponse = json.decode(_loadData);
 
-    id = jsonResponse['id'];
+      id = jsonResponse['id'];
+    }catch(e){
+      print(e);
+    }
   }
 
   void userFetch() async {
@@ -34,27 +39,28 @@ class UserModel {
                 );
   }
 
-  //  Map<String, dynamic> toJson() => {        
-  //    'id': this.id,
-  //   };
-
-  void createId() async {
+  void createId(String name) async {
     final _store = FirebaseFirestore.instance;
     String id = "";
     await _store.collection('User').orderBy('id', descending: true).limit(1).get().then((value)=>{
       this.id = value.docs[0].get('id')+1,
       id = this.id.toString(),
-      print(this.id)
     });
     _store.collection('User').doc(id).set({
-      'name': '鬼岡',
+      'name': name,
       'id' : this.id
     });
-    // final _filepath = File('lib/Model/user/user_info.json');
-
-    // List<Map> ids = [];
-
-    // _filepath.writeAsString(json.decode(ids));
+    File _filepath = await _localFile;
+    Map<String, dynamic> ids = {'id': this.id};
+    _filepath.writeAsString(json.encode(ids));
   }
-    
+
+  Future<String> get _localPath async{
+      final directory = await getApplicationDocumentsDirectory();
+      return directory.path;
+  }
+  Future<File> get _localFile async{
+    final path = await _localPath;
+    return File('$path/user_info.json');
+  }
 }
