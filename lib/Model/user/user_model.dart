@@ -13,14 +13,24 @@ class UserModel {
   // List<int> recipeid = [];
   List<int> recentrecipe = [];
 
-  Future<void> loadUserId() async{
-    try{
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/user_info.json');
+  }
+
+  Future<void> loadUserId() async {
+    try {
       File _filepath = await _localFile;
       String _loadData = await rootBundle.loadString(_filepath.path);
       final jsonResponse = json.decode(_loadData);
 
       id = jsonResponse['id'];
-    }catch(e){
+    } catch (e) {
       print(e);
     }
   }
@@ -28,39 +38,37 @@ class UserModel {
   void userFetch() async {
     String id = this.id.toString();
     await FirebaseFirestore.instance
-                .collection('User')
-                .doc(id)
-                .get().then(
-                  (value) => {
-                    name = value.get('name'),
-                    // friends = value.get('friends'),
-                    // recentrecipe = value.get('recent_recipe')
-                  }
-                );
+        .collection('User')
+        .doc(id)
+        .get()
+        .then((value) => {
+              name = value.get('name'),
+              // friends = value.get('friends'),
+              // recentrecipe = value.get('recent_recipe')
+            });
   }
 
   void createId(String name) async {
     final _store = FirebaseFirestore.instance;
     String id = "";
-    await _store.collection('User').orderBy('id', descending: true).limit(1).get().then((value)=>{
-      this.id = value.docs[0].get('id')+1,
-      id = this.id.toString(),
-    });
-    _store.collection('User').doc(id).set({
-      'name': name,
-      'id' : this.id
-    });
+    await _store
+        .collection('User')
+        .orderBy('id', descending: true)
+        .limit(1)
+        .get()
+        .then((value) => {
+              this.id = value.docs[0].get('id') + 1,
+              id = this.id.toString(),
+            });
+
+    _store.collection('User').doc(id).set({'name': name, 'id': this.id});
+
     File _filepath = await _localFile;
     Map<String, dynamic> ids = {'id': this.id};
     _filepath.writeAsString(json.encode(ids));
   }
 
-  Future<String> get _localPath async{
-      final directory = await getApplicationDocumentsDirectory();
-      return directory.path;
-  }
-  Future<File> get _localFile async{
-    final path = await _localPath;
-    return File('$path/user_info.json');
+  int getID() {
+    return id;
   }
 }
