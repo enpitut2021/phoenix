@@ -39,11 +39,12 @@ class _UpLoadRecipeState extends State<UpLoadRecipe> with MakeWidget {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-
     //ドキュメントID生成関数
-    // String makeDocId(){
-    //  return
-    // }
+    String makeDocId() {
+      return "aaa";
+    }
+
+    String docId = makeDocId();
 
     // var makewidget = MakeWidget(
     //     recipe: recipe,
@@ -60,28 +61,44 @@ class _UpLoadRecipeState extends State<UpLoadRecipe> with MakeWidget {
           screenSize: screenSize,
           onTap: () async {
             List<Map<String, String>> tmp1 = [], tmp2 = [];
+            var i = 0;
             for (var _ingredients in recipe.ingredients) {
-              tmp1.add({'name': _ingredients.name});
-              tmp1.add({'amount': _ingredients.amount});
+              tmp1.add({'ingredient': 'quantity'});
+              tmp1[i]['ingredient'] = _ingredients.name;
+              tmp1[i]['quantity'] = _ingredients.amount;
+              i++;
             }
+            var j = 0;
             for (var _spices in recipe.spices) {
-              tmp2.add({'name': _spices.name});
-              tmp2.add({'amount': _spices.amount});
+              tmp2.add({'spice': 'amount'});
+              tmp2[j]['spice'] = _spices.name;
+              tmp2[j]['amount'] = _spices.amount;
+              j++;
             }
+            //画像をfirestorageにぶち込む
+            imagePicker.upload(docId);
+            await imagePicker.image_path.then((value) => {
+                  print('+++++++$value+++++++'),
+                  recipe.imageurl = value,
+                  print('&&&&&&&&${recipe.imageurl}&&&&&&&&'),
+                });
+            print('------------${recipe.imageurl}------------');
             await FirebaseFirestore.instance
                 .collection('recipes')
-                .doc(/*makeDocId*/)
+                .doc(docId)
                 .set({
               'id': recipe.id,
               'recipe_name': recipe.recipename,
               'imageurl': recipe.imageurl,
               'ingredients': tmp1,
-              'cookmethod': recipe.cookmethod,
+              'method': recipe.cookmethod,
               'cookwares': recipe.cookwares,
               'explain': recipe.explain,
               'spices': tmp2,
               // 'minutes': recipe.minutes
             });
+
+            Navigator.pop(context);
           },
           imagepicker: imagePicker),
     );

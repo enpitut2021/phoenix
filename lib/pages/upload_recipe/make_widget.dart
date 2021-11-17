@@ -64,10 +64,7 @@ class MakeWidget {
                 })),
           ],
         ),
-        ElevatedButton(
-          child: const Text('投稿する'),
-          onPressed: onTap,
-        ),
+        ElevatedButton(child: const Text('投稿する'), onPressed: onTap),
       ],
     );
 

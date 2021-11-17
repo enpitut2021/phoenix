@@ -35,18 +35,11 @@ Widget setMenue(Recipe recipe, Size screenSize) {
                     screenwidth: screenSize.width / 2.2, title: '調味料')),
           ],
         ),
-        Card(
-          child: Container(
-            color: Colors.orange.shade200,
-            width: screenSize.width,
-            child: const Text(
-              '作り方',
-              style: TextStyle(fontSize: 24),
-            ),
-          ),
-        ),
-        //この部分を箇条書き/文章形式に
-        Text(recipe.explain[0]),
+        menueDetailMaterial(
+            materials: recipe.explain,
+            screenwidth: screenSize.width,
+            titlewidget:
+                _recipeField(screenwidth: screenSize.width, title: '作り方')),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
