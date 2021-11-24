@@ -1,4 +1,5 @@
 import '../data/operatelist.dart' show toHira;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Recipes {
   List<Recipe> recipes = [];
@@ -83,6 +84,24 @@ class Recipe {
       foodsufslist.add(fd.name + " " + fd.amount);
     }
     return foodsufslist;
+  }
+
+  Future<int> createDocumentID(int userid) async {
+    int tmp = userid + 10000; //userid:4 + recipeid:4
+    try {
+      await FirebaseFirestore.instance
+          .collection('recipe')
+          .orderBy('id', descending: true)
+          .limit(1)
+          .get()
+          .then((value) => {
+                tmp += (value.docs[0].get('id') + 1) as int,
+                id = tmp.toString(),
+              });
+      return Future<int>.value(tmp);
+    } catch (e) {
+      return Future<int>.value(0);
+    }
   }
 }
 
