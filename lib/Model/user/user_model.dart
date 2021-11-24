@@ -48,25 +48,25 @@ class UserModel {
             });
   }
 
-  void createId(String name) async {
-    final _store = FirebaseFirestore.instance;
-    String id = "";
-    await _store
-        .collection('User')
-        .orderBy('id', descending: true)
-        .limit(1)
-        .get()
-        .then((value) => {
-              this.id = value.docs[0].get('id') + 1,
-              id = this.id.toString(),
-            });
+  // void createId(String name) async {
+  //   final _store = FirebaseFirestore.instance;
+  //   String id = "";
+  //   await _store
+  //       .collection('User')
+  //       .orderBy('id', descending: true)
+  //       .limit(1)
+  //       .get()
+  //       .then((value) => {
+  //             this.id = value.docs[0].get('id') + 1,
+  //             id = this.id.toString(),
+  //           });
 
-    _store.collection('User').doc(id).set({'name': name, 'id': this.id});
+  //   _store.collection('User').doc(id).set({'name': name, 'id': this.id});
 
-    File _filepath = await _localFile;
-    Map<String, dynamic> ids = {'id': this.id};
-    _filepath.writeAsString(json.encode(ids));
-  }
+  //   File _filepath = await _localFile;
+  //   Map<String, dynamic> ids = {'id': this.id};
+  //   _filepath.writeAsString(json.encode(ids));
+  // }
 
   int getID() {
     return id;

@@ -72,19 +72,6 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
 
   @override
   void initState() {
-    // var usermodel = UserModel();
-    // usermodel.loadUserId().then((value)=>{
-    //   usermodel.userFetch()
-    // });
-    // usermodel.loadUserId().then((value)=>{
-    //   print("here"),
-    //   print(usermodel.id)
-    // });
-    // usermodel.createId('administrator');
-    // usermodel.loadUserId().then((value)=>{
-    //   print("here"),
-    //   print(usermodel.id)
-    // });
 
     super.initState();
     loadSectiontask.loadFirestoreAsset().then((value) {
