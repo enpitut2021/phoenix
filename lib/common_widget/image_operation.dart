@@ -71,10 +71,12 @@ class MyImage {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           FloatingActionButton(
+            heroTag: "add",
             onPressed: getImageFromCamera,
             child: const Icon(Icons.add_a_photo),
           ),
           FloatingActionButton(
+            heroTag: "icon",
             onPressed: _getImage,
             child: const Icon(Icons.image),
           ),

@@ -78,11 +78,8 @@ class _UpLoadRecipeState extends State<UpLoadRecipe> with MakeWidget {
             //画像をfirestorageにぶち込む
             imagePicker.upload(docId);
             await imagePicker.image_path.then((value) => {
-                  print('+++++++$value+++++++'),
                   recipe.imageurl = value,
-                  print('&&&&&&&&${recipe.imageurl}&&&&&&&&'),
                 });
-            print('------------${recipe.imageurl}------------');
             await FirebaseFirestore.instance
                 .collection('recipes')
                 .doc(docId)
