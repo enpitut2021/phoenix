@@ -39,18 +39,6 @@ class _UpLoadRecipeState extends State<UpLoadRecipe> with MakeWidget {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    //ドキュメントID生成関数
-    String makeDocId() {
-      return "aaa";
-    }
-
-    String docId = makeDocId();
-
-    // var makewidget = MakeWidget(
-    //     recipe: recipe,
-    //     state: () {
-    //       setState(() {});
-    //     });
 
     return Scaffold(
       appBar: AppBar(
@@ -75,18 +63,11 @@ class _UpLoadRecipeState extends State<UpLoadRecipe> with MakeWidget {
               tmp2[j]['amount'] = _spices.amount;
               j++;
             }
-            //画像をfirestorageにぶち込む
-            imagePicker.upload(docId);
-            await imagePicker.image_path.then((value) => {
-                  recipe.imageurl = value,
-                });
-            await FirebaseFirestore.instance
-                .collection('recipes')
-                .doc(docId)
-                .set({
-              'id': recipe.id,
+
+            final refiid =
+                await FirebaseFirestore.instance.collection('recipes').add({
+              'id': '0',
               'recipe_name': recipe.recipename,
-              'imageurl': recipe.imageurl,
               'ingredients': tmp1,
               'method': recipe.cookmethod,
               'cookwares': recipe.cookwares,
@@ -94,7 +75,14 @@ class _UpLoadRecipeState extends State<UpLoadRecipe> with MakeWidget {
               'spices': tmp2,
               // 'minutes': recipe.minutes
             });
-
+            // 画像をfirestorageにぶち込む
+            await imagePicker.upload(refiid.id).then((value) => {
+                  recipe.imageurl = value,
+                });
+            await FirebaseFirestore.instance
+                .collection('recipes')
+                .doc(refiid.id)
+                .update({'imageurl': recipe.imageurl});
             Navigator.pop(context);
           },
           imagepicker: imagePicker),
