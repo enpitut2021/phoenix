@@ -90,7 +90,7 @@ class MyImage {
   late Future<String> image_path;
   int _flag = 0;
 
-  void upload(String filename) async {
+  Future<String> upload(String filename) async {
     if (_flag == 0) {
       _image_url = filename + _image_url;
       _flag += 1;
@@ -104,5 +104,6 @@ class MyImage {
     } catch (e) {
       print(e);
     }
+    return Future<String>.value(image_path);
   }
 }
