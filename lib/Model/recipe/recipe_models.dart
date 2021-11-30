@@ -1,4 +1,4 @@
-import '../data/operatelist.dart' show toHira;
+import '/data/operatelist.dart' show toHira;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Recipes {

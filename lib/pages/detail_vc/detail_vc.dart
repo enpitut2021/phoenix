@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
 
 ///my library
-import '../../recipe/recipe_models.dart';
+import 'Model/recipe/recipe_models.dart';
 import 'make_widget.dart';
 
 class DetailOfMenu extends StatefulWidget {
