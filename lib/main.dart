@@ -1,10 +1,11 @@
 ///dart~
 
 ///package~
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:phoenix/Model/user/user_model.dart';
+// import 'package:phoenix/Model/user/user_model.dart';
 import 'package:phoenix/pages/profil/friend_list.dart';
 import 'package:phoenix/pages/profil/register_list.dart';
 
@@ -16,9 +17,9 @@ import 'data/operatelist.dart';
 import './pages/search_vc/search_vc.dart';
 import './pages/upload_recipe/upload_page.dart';
 import 'package:phoenix/pages/profil/profil.dart';
-import 'package:phoenix/common_widget/friend_list_widget.dart';
-import 'package:phoenix/common_widget/register_list_widget.dart';
-import 'package:phoenix/Model/user/user_model.dart';
+// import 'package:phoenix/common_widget/friend_list_widget.dart';
+// import 'package:phoenix/common_widget/register_list_widget.dart';
+// import 'package:phoenix/Model/user/user_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -72,7 +73,6 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
 
   @override
   void initState() {
-
     super.initState();
     loadSectiontask.loadFirestoreAsset().then((value) {
       setState(() {

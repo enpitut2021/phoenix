@@ -86,20 +86,38 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "firebase_auth",
+      "rootUri": "file:///Users/takahashiharuya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-3.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "firebase_auth_platform_interface",
+      "rootUri": "file:///Users/takahashiharuya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_platform_interface-6.1.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "firebase_auth_web",
+      "rootUri": "file:///Users/takahashiharuya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_web-3.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "firebase_core",
-      "rootUri": "file:///Users/takahashiharuya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.7.0",
+      "rootUri": "file:///Users/takahashiharuya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.10.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "firebase_core_platform_interface",
-      "rootUri": "file:///Users/takahashiharuya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-4.0.1",
+      "rootUri": "file:///Users/takahashiharuya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-4.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "firebase_core_web",
-      "rootUri": "file:///Users/takahashiharuya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.1.0",
+      "rootUri": "file:///Users/takahashiharuya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -214,6 +232,12 @@
     {
       "name": "image_picker_platform_interface",
       "rootUri": "file:///Users/takahashiharuya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_platform_interface-2.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "intl",
+      "rootUri": "file:///Users/takahashiharuya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -386,7 +410,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-11-24T00:16:02.854709Z",
+  "generated": "2021-11-30T06:57:47.018897Z",
   "generator": "pub",
   "generatorVersion": "2.14.0-188.5.beta"
 }
