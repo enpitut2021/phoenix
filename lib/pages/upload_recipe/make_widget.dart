@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:phoenix/common_widget/image_operation.dart';
 import 'package:phoenix/common_widget/makelist.dart';
-import 'package:phoenix/recipe/recipe_models.dart';
+import 'package:phoenix/Model/recipe/recipe_models.dart';
 
 class MakeWidget {
   late Recipe recipe;

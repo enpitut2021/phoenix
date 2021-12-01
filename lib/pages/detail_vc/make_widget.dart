@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../recipe/recipe_models.dart';
+import 'package:phoenix/Model/recipe/recipe_models.dart';
 import '../../common_widget/makelist.dart';
 
 Widget _recipeField({required double screenwidth, required String title}) {

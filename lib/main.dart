@@ -1,57 +1,63 @@
-///dart~
-
-///package~
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:phoenix/Model/user/user_model.dart';
-import 'package:phoenix/pages/profil/friend_list.dart';
-import 'package:phoenix/pages/profil/register_list.dart';
+import 'package:provider/provider.dart';
 
 ///mylibrary~
-import 'recipe/load_data.dart';
-import 'recipe/recipe_models.dart';
-import './pages/detail_vc/detail_vc.dart';
+import 'pages/detail_vc/detail_vc.dart';
+import 'pages/search_vc/search_vc.dart';
+import 'pages/upload_recipe/upload_page.dart';
+import 'pages/profil/friend_list.dart';
+import 'pages/profil/register_list.dart';
+import 'pages/profil/profil.dart';
+import 'Model/recipe/recipe_models.dart';
+import 'Model/recipe/load_data.dart';
+import 'Model/user/user_model.dart';
 import 'data/operatelist.dart';
-import './pages/search_vc/search_vc.dart';
-import './pages/upload_recipe/upload_page.dart';
-import 'package:phoenix/pages/profil/profil.dart';
-import 'package:phoenix/common_widget/friend_list_widget.dart';
-import 'package:phoenix/common_widget/register_list_widget.dart';
-import 'package:phoenix/Model/user/user_model.dart';
+
+class UserState extends ChangeNotifier {
+  UserModel? user;
+
+  void setUser(UserModel newUser) {
+    user = newUser;
+    notifyListeners();
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
+  final UserState userstate = UserState();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      //タイトル後で変更
-      title: 'Flutter Demo',
+    return ChangeNotifierProvider<UserState>(
+        create: (context) => userstate,
+        child: MaterialApp(
+          //タイトル後で変更
+          title: 'Flutter Demo',
 
-      //ルート設定
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const SuggestRecipes(),
-        '/detail': (context) => const DetailOfMenu(),
-        '/search': (context) => const SearchVC(),
-        '/uploadrecipe': (context) => const UpLoadRecipe(),
-        '/profil': (context) => const ProfilPage(),
-        '/friendList': (context) => const FriendList(),
-        '/registerPage': (context) => const RegisterList()
-      },
+          //ルート設定
+          initialRoute: '/',
+          routes: {
+            '/': (context) => const SuggestRecipes(),
+            '/detail': (context) => const DetailOfMenu(),
+            '/search': (context) => const SearchVC(),
+            '/uploadrecipe': (context) => const UpLoadRecipe(),
+            '/profil': (context) => const ProfilPage(),
+            '/friendList': (context) => const FriendList(),
+            '/registerPage': (context) => const RegisterList()
+          },
 
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-      ),
-    );
+          theme: ThemeData(
+            primarySwatch: Colors.orange,
+          ),
+        ));
   }
 }
 
@@ -72,7 +78,6 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
 
   @override
   void initState() {
-
     super.initState();
     loadSectiontask.loadFirestoreAsset().then((value) {
       setState(() {
@@ -84,6 +89,9 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
 
   @override
   Widget build(BuildContext context) {
+    //To Access user Model
+    //final test = Provider.of<UserState>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('ランダムにメニューを提案'),
