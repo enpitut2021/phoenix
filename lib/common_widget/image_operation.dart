@@ -39,6 +39,14 @@ class MyImage {
     }
   }
 
+  bool isImageEmpty() {
+    if (_image == null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 //写真ライブラリの読み込み用
   Future _getImage() async {
     final pickedFile = await picker.getImage(
@@ -67,9 +75,6 @@ class MyImage {
 
   Widget imageAsset(Size screenSize) {
     return Stack(children: [
-      // _image == null
-      //     ? const Text('No image selected.')
-      //     : Image.file(_image!, alignment: Alignment.center),
       _displayImage(screenSize),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -91,7 +96,7 @@ class MyImage {
 
   Widget _displayImage(Size screenSize) {
     Widget imageWidget;
-    if (_image == null) {
+    if (isImageEmpty()) {
       // ignore: sized_box_for_whitespace
       imageWidget = Container(
         child: const Center(child: Text('No image selected.')),
