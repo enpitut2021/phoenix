@@ -25,14 +25,14 @@ Widget setMenue(Recipe recipe, Size screenSize) {
           children: <Widget>[
             menueDetailMaterial(
                 materials: recipe.toFoodstuffs(recipe.ingredients),
-                screenwidth: screenSize.width / 2.2,
+                screenwidth: screenSize.width / 2.1,
                 titlewidget: _recipeField(
-                    screenwidth: screenSize.width / 2.2, title: '材料')),
+                    screenwidth: screenSize.width / 2.1, title: '材料')),
             menueDetailMaterial(
                 materials: recipe.toFoodstuffs(recipe.spices),
-                screenwidth: screenSize.width / 2.2,
+                screenwidth: screenSize.width / 2.1,
                 titlewidget: _recipeField(
-                    screenwidth: screenSize.width / 2.2, title: '調味料')),
+                    screenwidth: screenSize.width / 2.1, title: '調味料')),
           ],
         ),
         menueDetailMaterial(
@@ -45,14 +45,14 @@ Widget setMenue(Recipe recipe, Size screenSize) {
           children: <Widget>[
             menueDetailMaterial(
                 materials: recipe.cookwares,
-                screenwidth: screenSize.width / 2.2,
+                screenwidth: screenSize.width / 2.1,
                 titlewidget: _recipeField(
-                    screenwidth: screenSize.width / 2.2, title: '調理器具')),
+                    screenwidth: screenSize.width / 2.1, title: '調理器具')),
             menueDetailMaterial(
                 materials: recipe.cookmethod,
-                screenwidth: screenSize.width / 2.2,
+                screenwidth: screenSize.width / 2.1,
                 titlewidget: _recipeField(
-                    screenwidth: screenSize.width / 2.2, title: '調理方法')),
+                    screenwidth: screenSize.width / 2.1, title: '調理方法')),
           ],
         ),
       ],
@@ -95,6 +95,7 @@ class DynamicDisplayImage {
   }
 
   Widget zoomImage(Recipe recipe, Size screenSize) {
+    var _width = screenSize.width;
     return Center(
       child: ScaleTransition(
         alignment: Alignment.center + const Alignment(0, 0.3),
@@ -111,7 +112,12 @@ class DynamicDisplayImage {
               ),
             ),
         //child: Image.asset(recipe.imageurl),
-        child: Image.network(recipe.imageurl),
+        child: Image.network(
+          recipe.imageurl,
+          width: _width,
+          height: _width / 2,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

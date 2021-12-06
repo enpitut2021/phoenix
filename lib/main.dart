@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 ///mylibrary~
 import 'pages/detail_vc/detail_vc.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    const locale = Locale("ja", "JP");
     return ChangeNotifierProvider<UserState>(
         create: (context) => userstate,
         child: MaterialApp(
@@ -57,6 +59,16 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.orange,
           ),
+
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+
+          supportedLocales: const [
+            locale,
+          ],
         ));
   }
 }
@@ -91,6 +103,7 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
   Widget build(BuildContext context) {
     //To Access user Model
     //final test = Provider.of<UserState>(context);
+    var screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
@@ -142,11 +155,11 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
         ]),
       ),
       body: _buildSuggestions(
-          recipes.filterrecipe(contains: searchWords).recipes),
+          recipes.filterrecipe(contains: searchWords).recipes, screenSize),
     );
   }
 
-  Widget _buildSuggestions(List<Recipe> recipes) {
+  Widget _buildSuggestions(List<Recipe> recipes, Size screenSize) {
     final randomRecipes = shuffle(recipes);
 
     return ListView.builder(
@@ -154,14 +167,14 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
       itemCount: recipes.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-          child: _tile(randomRecipes[index]),
+          child: _tile(randomRecipes[index], screenSize.width),
         );
       },
     );
   }
 
   //あとで引数の型を変更する
-  Widget _tile(Recipe recipe) {
+  Widget _tile(Recipe recipe, double width) {
     return Card(
       color: Colors.orange.shade200,
       child: ListTile(
@@ -169,7 +182,17 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
           alignment: Alignment.bottomRight,
           children: [
             //Image.asset(recipe.imageurl),
-            Image.network(recipe.imageurl),
+            // ignore: avoid_unnecessary_containers
+            Container(
+              child: Image.network(
+                recipe.imageurl,
+                width: width,
+                height: width / 2,
+                fit: BoxFit.cover,
+              ),
+              // width: width,
+              // height: width / 2,
+            ),
             Container(
               child: Text(
                 recipe.recipename,
