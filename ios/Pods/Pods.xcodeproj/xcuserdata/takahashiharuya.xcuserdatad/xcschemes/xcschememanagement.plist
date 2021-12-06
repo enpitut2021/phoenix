@@ -64,6 +64,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>TOCropViewController-TOCropViewControllerBundle.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>TOCropViewController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>cloud_firestore.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -85,6 +95,11 @@
 			<false/>
 		</dict>
 		<key>flutter_keyboard_visibility.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>image_cropper.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

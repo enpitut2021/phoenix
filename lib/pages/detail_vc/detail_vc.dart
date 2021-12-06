@@ -59,7 +59,7 @@ class _detailRecipe extends State<DetailOfMenu>
         verticalDirection: VerticalDirection.up,
         children: <Widget>[
           setMenue(recipe, screenSize),
-          _dynamicdisplayimage.zoomImage(recipe, screenSize)
+          _dynamicdisplayimage.zoomImage(recipe, screenSize),
         ],
       ),
     );
