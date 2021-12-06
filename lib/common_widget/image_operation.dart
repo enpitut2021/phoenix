@@ -143,7 +143,13 @@ class MyImage {
   Future _cropImage(String imagePath) async {
     var cropImage = await ImageCropper.cropImage(
       sourcePath: imagePath,
-      aspectRatioPresets: [CropAspectRatioPreset.ratio3x2],
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9
+      ],
       androidUiSettings: const AndroidUiSettings(
           toolbarTitle: 'Cropper',
           toolbarColor: Colors.orange,
