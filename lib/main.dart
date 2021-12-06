@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 ///mylibrary~
 import 'pages/detail_vc/detail_vc.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    const locale = Locale("ja", "JP");
     return ChangeNotifierProvider<UserState>(
         create: (context) => userstate,
         child: MaterialApp(
@@ -57,6 +59,16 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.orange,
           ),
+
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+
+          supportedLocales: const [
+            locale,
+          ],
         ));
   }
 }

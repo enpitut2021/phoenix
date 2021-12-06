@@ -200,6 +200,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_localizations",
+      "rootUri": "file:///Users/takahashiharuya/Flutter/flutter/packages/flutter_localizations",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_plugin_android_lifecycle",
       "rootUri": "file:///Users/takahashiharuya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.3",
       "packageUri": "lib/",
@@ -476,7 +482,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-12-06T06:37:16.182259Z",
+  "generated": "2021-12-06T07:14:43.171250Z",
   "generator": "pub",
   "generatorVersion": "2.14.0-188.5.beta"
 }
