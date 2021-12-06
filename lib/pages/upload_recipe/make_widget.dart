@@ -19,7 +19,7 @@ class MakeWidget {
       shrinkWrap: true,
       children: [
         // 画像,
-        imagepicker.imageAsset(),
+        imagepicker.imageAsset(screenSize),
         _labelWithButton('レシピの名前', screenSize.width, () {
           _makedialog(context, "レシピ名", false);
         }),

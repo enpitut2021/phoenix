@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class MyImage {
   final double imageWidth = 300;
@@ -22,7 +23,8 @@ class MyImage {
       maxWidth: imageWidth,
     );
     if (pickedFile != null) {
-      _image = File(pickedFile.path);
+      await _cropImage(pickedFile.path);
+      //  _image = File(pickedFile.path);
       // // flutter_image_compressで指定サイズ／品質に圧縮
       // List<int> result = await FlutterImageCompress.compressWithFile(
       //   _image?.absolute.path,
@@ -47,7 +49,8 @@ class MyImage {
     );
 
     if (pickedFile != null) {
-      _image = File(pickedFile.path);
+      await _cropImage(pickedFile.path);
+      // _image = File(pickedFile.path);
       // flutter_image_compressで指定サイズ／品質に圧縮
       // List<int> result = await FlutterImageCompress.compressWithFile(
       //   _image?.absolute.path,
@@ -62,11 +65,12 @@ class MyImage {
     }
   }
 
-  Widget imageAsset() {
+  Widget imageAsset(Size screenSize) {
     return Stack(children: [
-      _image == null
-          ? const Text('No image selected.')
-          : Image.file(_image!, alignment: Alignment.center),
+      // _image == null
+      //     ? const Text('No image selected.')
+      //     : Image.file(_image!, alignment: Alignment.center),
+      _displayImage(screenSize),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
@@ -85,26 +89,71 @@ class MyImage {
     ]);
   }
 
+  Widget _displayImage(Size screenSize) {
+    Widget imageWidget;
+    if (_image == null) {
+      // ignore: sized_box_for_whitespace
+      imageWidget = Container(
+        child: const Center(child: Text('No image selected.')),
+        width: screenSize.width,
+        height: screenSize.width / 2,
+        alignment: Alignment.center,
+      );
+    } else {
+      imageWidget = SizedBox(
+        child: Image.file(_image!,
+            alignment: Alignment.center, fit: BoxFit.contain),
+        width: screenSize.width,
+        height: screenSize.width / 2,
+      );
+    }
+    return imageWidget;
+  }
+
 // 画像をアップロード
-  String _image_url = ".jpeg";
-  late Future<String> image_path;
+  String _imageUrl = ".jpeg";
+  late Future<String> imagePath;
   int _flag = 0;
 
   Future<String> upload(String filename) async {
     if (_flag == 0) {
-      _image_url = filename + _image_url;
+      _imageUrl = filename + _imageUrl;
       _flag += 1;
     }
     // imagePickerで画像を選択する
     // upload
     FirebaseStorage storage = FirebaseStorage.instance;
     try {
-      await storage.ref(_image_url).putFile(_image!);
-      image_path = storage.ref(_image_url).getDownloadURL();
+      await storage.ref(_imageUrl).putFile(_image!);
+      imagePath = storage.ref(_imageUrl).getDownloadURL();
     } catch (e) {
       // ignore: avoid_print
       print(e);
     }
-    return Future<String>.value(image_path);
+    return Future<String>.value(imagePath);
+  }
+
+  //画像の切り抜き
+  Future _cropImage(String imagePath) async {
+    var cropImage = await ImageCropper.cropImage(
+      sourcePath: imagePath,
+      aspectRatioPresets: [CropAspectRatioPreset.ratio3x2],
+      androidUiSettings: const AndroidUiSettings(
+          toolbarTitle: 'Cropper',
+          toolbarColor: Colors.orange,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false),
+      iosUiSettings: const IOSUiSettings(
+        minimumAspectRatio: 0.6,
+      ),
+    );
+
+    if (cropImage != null) {
+      _image = File(cropImage.path);
+    } else {
+      // ignore: avoid_print
+      print('cannot select image');
+    }
   }
 }

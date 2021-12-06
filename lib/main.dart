@@ -91,6 +91,7 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
   Widget build(BuildContext context) {
     //To Access user Model
     //final test = Provider.of<UserState>(context);
+    var screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
@@ -142,11 +143,11 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
         ]),
       ),
       body: _buildSuggestions(
-          recipes.filterrecipe(contains: searchWords).recipes),
+          recipes.filterrecipe(contains: searchWords).recipes, screenSize),
     );
   }
 
-  Widget _buildSuggestions(List<Recipe> recipes) {
+  Widget _buildSuggestions(List<Recipe> recipes, Size screenSize) {
     final randomRecipes = shuffle(recipes);
 
     return ListView.builder(
@@ -154,14 +155,14 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
       itemCount: recipes.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-          child: _tile(randomRecipes[index]),
+          child: _tile(randomRecipes[index], screenSize.width),
         );
       },
     );
   }
 
   //あとで引数の型を変更する
-  Widget _tile(Recipe recipe) {
+  Widget _tile(Recipe recipe, double width) {
     return Card(
       color: Colors.orange.shade200,
       child: ListTile(
@@ -169,7 +170,16 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
           alignment: Alignment.bottomRight,
           children: [
             //Image.asset(recipe.imageurl),
-            Image.network(recipe.imageurl),
+            Container(
+              child: Image.network(
+                recipe.imageurl,
+                width: width,
+                height: width / 2,
+                fit: BoxFit.cover,
+              ),
+              // width: width,
+              // height: width / 2,
+            ),
             Container(
               child: Text(
                 recipe.recipename,
