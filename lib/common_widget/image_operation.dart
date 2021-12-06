@@ -105,9 +105,10 @@ class MyImage {
         alignment: Alignment.center,
       );
     } else {
-      imageWidget = SizedBox(
-        child: Image.file(_image!,
-            alignment: Alignment.center, fit: BoxFit.contain),
+      imageWidget = Image.file(
+        _image!,
+        alignment: Alignment.center,
+        fit: BoxFit.cover,
         width: screenSize.width,
         height: screenSize.width / 2,
       );

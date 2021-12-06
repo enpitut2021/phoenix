@@ -182,6 +182,7 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
           alignment: Alignment.bottomRight,
           children: [
             //Image.asset(recipe.imageurl),
+            // ignore: avoid_unnecessary_containers
             Container(
               child: Image.network(
                 recipe.imageurl,
