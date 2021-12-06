@@ -27,41 +27,54 @@ class MakeWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            menueDetailMaterial(
+            makeChangeableMaterialList(
                 materials: recipe.toFoodstuffs(recipe.ingredients),
                 screenwidth: screenSize.width / 2.2,
                 titlewidget: _labelWithButton('材料', screenSize.width / 2, () {
                   _makedialog(context, "材料", true);
-                })),
-            menueDetailMaterial(
+                  },
+                ),
+              onTap:state,
+            ),
+            makeChangeableMaterialList(
                 materials: recipe.toFoodstuffs(recipe.spices),
                 screenwidth: screenSize.width / 2.2,
                 titlewidget: _labelWithButton('調味料', screenSize.width / 2, () {
                   _makedialog(context, "調味料", true);
-                })),
+                }
+              ),
+              onTap: state,
+            ),
+            
           ],
         ),
-        menueDetailMaterial(
+        makeChangeableMaterialList(
             materials: recipe.explain,
             screenwidth: screenSize.width,
             titlewidget: _labelWithButton('説明', screenSize.width, () {
               _makedialog(context, "説明", false);
-            })),
+            }),
+            onTap: state,
+            ),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            menueDetailMaterial(
+            makeChangeableMaterialList(
                 materials: recipe.cookwares,
                 screenwidth: screenSize.width / 2.2,
                 titlewidget: _labelWithButton('調理器具', screenSize.width / 2, () {
                   _makedialog(context, "調理器具", false);
-                })),
-            menueDetailMaterial(
+                }),
+                onTap: state,
+            ),
+            makeChangeableMaterialList(
                 materials: recipe.cookmethod,
                 screenwidth: screenSize.width / 2.2,
                 titlewidget: _labelWithButton('調理方法', screenSize.width / 2, () {
                   _makedialog(context, "調理方法", false);
-                })),
+                }),
+                onTap: state,
+                ),
           ],
         ),
         ElevatedButton(child: const Text('投稿する'), onPressed: onTap),
@@ -106,14 +119,17 @@ class MakeWidget {
 
   void _makedialog(BuildContext context, String field, bool flag) {
     List<Widget> displayAddDaialog = _add(field, flag);
-    displayAddDaialog.add(Container(
+    displayAddDaialog.add(
+      Container(
         width: double.infinity,
         child: ElevatedButton(
           child: const Text("追加"),
           onPressed: () {
             Navigator.pop(context);
           },
-        )));
+        )
+      )
+    );
 
     showDialog(
       context: context,
@@ -140,22 +156,28 @@ class MakeWidget {
   }
 
   List<Widget> _add(String field, bool flag) {
+    name = '';
+    amount = '';
     List<Widget> output = <Widget>[
       Container(child: Text(field), alignment: Alignment.centerLeft),
       TextFormField(
-        onFieldSubmitted: (String str) {
+        textInputAction: TextInputAction.done,
+        onChanged: (String str) {
           name = str;
         },
       ),
     ];
     if (flag) {
       output.add(
-          Container(child: const Text("分量"), alignment: Alignment.centerLeft));
-      output.add(TextFormField(
-        onFieldSubmitted: (String str) {
-          amount = str;
-        },
-      ));
+        Container(child: const Text("分量"), alignment: Alignment.centerLeft)
+      );
+      output.add(
+        TextFormField(
+          onChanged: (String str) {
+            amount = str;
+          },
+        )
+      );
     }
     return output;
   }
