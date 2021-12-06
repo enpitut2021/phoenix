@@ -5,9 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class MyImage {
-  final double image_width = 600;
-  final double image_height = 450;
-  final image_quality = 80;
+  final double imageWidth = 300;
+  final double imageHeight = 200;
+  final imageQuality = 30;
   // 画像をデバイスから取得
   final picker = ImagePicker();
   File? _image;
@@ -17,9 +17,9 @@ class MyImage {
   Future getImageFromCamera() async {
     final pickedFile = await picker.getImage(
       source: ImageSource.camera,
-      imageQuality: image_quality,
-      maxHeight: image_height,
-      maxWidth: image_width,
+      imageQuality: imageQuality,
+      maxHeight: imageHeight,
+      maxWidth: imageWidth,
     );
     if (pickedFile != null) {
       _image = File(pickedFile.path);
@@ -41,9 +41,9 @@ class MyImage {
   Future _getImage() async {
     final pickedFile = await picker.getImage(
       source: ImageSource.gallery,
-      imageQuality: image_quality,
-      maxHeight: image_height,
-      maxWidth: image_width,
+      imageQuality: imageQuality,
+      maxHeight: imageHeight,
+      maxWidth: imageWidth,
     );
 
     if (pickedFile != null) {
@@ -102,6 +102,7 @@ class MyImage {
       await storage.ref(_image_url).putFile(_image!);
       image_path = storage.ref(_image_url).getDownloadURL();
     } catch (e) {
+      // ignore: avoid_print
       print(e);
     }
     return Future<String>.value(image_path);

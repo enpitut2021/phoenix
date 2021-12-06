@@ -218,6 +218,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "image_cropper",
+      "rootUri": "file:///Users/takahashiharuya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/image_cropper-1.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "image_picker",
       "rootUri": "file:///Users/takahashiharuya/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.7.5+4",
       "packageUri": "lib/",
@@ -422,7 +428,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-11-30T08:16:41.262490Z",
+  "generated": "2021-12-06T04:09:04.580012Z",
   "generator": "pub",
   "generatorVersion": "2.14.0-188.5.beta"
 }

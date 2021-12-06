@@ -43,6 +43,7 @@ dependencies:
   provider: 6.0.1
   image_picker: ^0.7.4
   tuple: 2.0.0
+  image_cropper: 1.4.1
 
 dev_dependencies:
   flutter_test:
@@ -62,8 +63,6 @@ dev_dependencies:
 flutter:
   assets:
     - lib/data/
-    - lib/recipe/
-    - lib/recipe/images/
     - lib/pages/
     - lib/Model/user/
   # The following line ensures that the Material Icons font is
