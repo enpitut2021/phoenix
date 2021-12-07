@@ -100,7 +100,7 @@ class _UpLoadListState extends State<UpLoadList> {
     List<Widget> output = <Widget>[
       Container(child: Text(widget.title), alignment: Alignment.centerLeft),
       TextFormField(
-        onFieldSubmitted: (String str) {
+        onChanged: (String str) {
           name = str;
         },
       ),
@@ -109,7 +109,7 @@ class _UpLoadListState extends State<UpLoadList> {
       output.add(
           Container(child: const Text("分量"), alignment: Alignment.centerLeft));
       output.add(TextFormField(
-        onFieldSubmitted: (String str) {
+        onChanged: (String str) {
           amount = str;
         },
       ));

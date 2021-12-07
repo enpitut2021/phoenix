@@ -54,7 +54,7 @@ class _SearchVCState extends State<SearchVC> {
                   title: const Text('キーワードをリストに追加'),
                   actions: <Widget>[
                     TextFormField(
-                      onFieldSubmitted: (String str) {
+                      onChanged: (String str) {
                         addkeyword = str;
                       },
                     ),

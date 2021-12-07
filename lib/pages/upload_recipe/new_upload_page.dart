@@ -53,9 +53,9 @@ class _UpLoadBodyState extends State<UpLoadBody> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             UpLoadList("材料", _updaterecipe, _deleteCategory,
-                recipe.toFoodstuffs(recipe.ingredients), width / 2.04),
+                recipe.toFoodstuffs(recipe.ingredients), width / 2.05),
             UpLoadList("調味料", _updaterecipe, _deleteCategory,
-                recipe.toFoodstuffs(recipe.spices), width / 2.04),
+                recipe.toFoodstuffs(recipe.spices), width / 2.05),
           ],
         ),
         UpLoadList("説明", _updaterecipe, _deleteCategory, recipe.explain, width),
@@ -63,9 +63,9 @@ class _UpLoadBodyState extends State<UpLoadBody> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             UpLoadList("調理器具", _updaterecipe, _deleteCategory, recipe.cookwares,
-                width / 2.04),
+                width / 2.05),
             UpLoadList("調理方法", _updaterecipe, _deleteCategory,
-                recipe.cookmethod, width / 2.04),
+                recipe.cookmethod, width / 2.05),
           ],
         ),
         ElevatedButton(
