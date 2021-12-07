@@ -124,8 +124,6 @@ class _SearchVCState extends State<SearchVC> {
                 setState(() {
                   searchwords.remove(str);
                 });
-                // ignore: avoid_print
-                print(searchwords);
               }),
             ),
           ),
