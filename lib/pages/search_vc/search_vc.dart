@@ -23,17 +23,6 @@ class _SearchVCState extends State<SearchVC> {
       ),
       body: Column(
         children: [
-          /*
-          TextFormField(
-            onFieldSubmitted: (String str) {
-              if (str != '') {
-                setState(() {
-                  searchwords.add(str);
-                });
-              }
-            },
-          ),
-          */
           // ignore: avoid_unnecessary_containers
           Container(
             child: ListView(
@@ -73,7 +62,7 @@ class _SearchVCState extends State<SearchVC> {
                     Column(
                       children: <Widget>[
                         RadioListTile(
-                          title: Text('材料'),
+                          title: const Text('材料'),
                           value: radiovalue.ingredient,
                           groupValue: keywordtype,
                           onChanged: (radiovalue? value) => {
@@ -83,7 +72,7 @@ class _SearchVCState extends State<SearchVC> {
                           },
                         ),
                         RadioListTile(
-                          title: Text('調味料'),
+                          title: const Text('調味料'),
                           value: radiovalue.spices,
                           groupValue: keywordtype,
                           onChanged: (radiovalue? value) => {
@@ -116,7 +105,7 @@ class _SearchVCState extends State<SearchVC> {
             });
           }
         }),
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

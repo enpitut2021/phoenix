@@ -24,14 +24,6 @@ class MyImage {
     );
     if (pickedFile != null) {
       await _cropImage(pickedFile.path);
-      //  _image = File(pickedFile.path);
-      // // flutter_image_compressで指定サイズ／品質に圧縮
-      // List<int> result = await FlutterImageCompress.compressWithFile(
-      //   _image?.absolute.path,
-      //   minWidth: 1536,
-      //   minHeight: 1536,
-      //   quality: 80,
-      // );
       setstate(() {});
     } else {
       // ignore: avoid_print
@@ -58,14 +50,6 @@ class MyImage {
 
     if (pickedFile != null) {
       await _cropImage(pickedFile.path);
-      // _image = File(pickedFile.path);
-      // flutter_image_compressで指定サイズ／品質に圧縮
-      // List<int> result = await FlutterImageCompress.compressWithFile(
-      //   _image?.absolute.path,
-      //   minWidth: 1536,
-      //   minHeight: 1536,
-      //   quality: 80,
-      // );
       setstate(() {});
     } else {
       // ignore: avoid_print
