@@ -61,7 +61,7 @@ class _UpLoadListState extends State<UpLoadList> {
   }
 
   void _makedialog(BuildContext context) {
-    List<Widget> displayAddDaialog = _add();
+    List<Widget> displayAddDaialog = _setRecipeDataWidget();
     displayAddDaialog.add(Container(
         width: double.infinity,
         child: ElevatedButton(
@@ -85,18 +85,16 @@ class _UpLoadListState extends State<UpLoadList> {
         );
       },
     ).then((context) {
-      setState(() {
-        if (!(name == "" || (_isFoodstuf() && amount == ""))) {
-          print("update");
-          widget.addtion(title: widget.title, name: name, amount: amount);
-        }
-        name = "";
-        amount = "";
-      });
+      if (!(name == "" || (_isFoodstuf() && amount == ""))) {
+        print("update");
+        widget.addtion(title: widget.title, name: name, amount: amount);
+      }
+      name = "";
+      amount = "";
     });
   }
 
-  List<Widget> _add() {
+  List<Widget> _setRecipeDataWidget() {
     List<Widget> output = <Widget>[
       Container(child: Text(widget.title), alignment: Alignment.centerLeft),
       TextFormField(

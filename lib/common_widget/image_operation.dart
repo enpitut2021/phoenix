@@ -31,7 +31,7 @@ class _NewMyImageState extends State<NewMyImage> {
       imageWidget = Container(
         child: const Center(child: Text('No image selected.')),
         width: screenSize,
-        height: screenSize / 2,
+        height: screenSize * 2 / 3,
         alignment: Alignment.center,
       );
     } else {
@@ -40,7 +40,7 @@ class _NewMyImageState extends State<NewMyImage> {
         alignment: Alignment.center,
         fit: BoxFit.cover,
         width: screenSize,
-        height: screenSize / 2,
+        height: screenSize * 2 / 3,
       );
     }
     return imageWidget;
@@ -72,7 +72,7 @@ class _NewMyImageState extends State<NewMyImage> {
       ),
       maxWidth: imageWidth,
       maxHeight: imageHeight,
-      compressQuality: imageQuality,
+      //compressQuality: imageQuality,
     );
     if (cropImage != null) {
       widget.image = File(cropImage.path);

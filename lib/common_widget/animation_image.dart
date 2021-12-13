@@ -54,11 +54,15 @@ class DynamicDisplayImage {
               ),
             ),
         //child: Image.asset(recipe.imageurl),
-        child: Image.network(
-          recipe.imageurl,
-          width: _width,
-          height: _width / 2,
-          fit: BoxFit.cover,
+        // child: Image.network(
+        //   recipe.imageurl,
+        //   width: _width,
+        //   height: _width / 2,
+        //   fit: BoxFit.cover,
+        // ),
+        child: Container(
+          child: Image.network(recipe.imageurl,
+              width: _width, height: _width / 3 * 2, fit: BoxFit.cover),
         ),
       ),
     );
