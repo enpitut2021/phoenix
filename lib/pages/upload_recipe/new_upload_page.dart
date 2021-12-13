@@ -129,10 +129,10 @@ class _UpLoadBodyState extends State<UpLoadBody> {
   }
 
   void _imageUpdateUrl({required String url, required File image}) {
-    setState(() {
-      recipe.imageurl = url;
-      this.image = image;
-      print(recipe.imageurl);
-    });
+    // setState(() {
+    recipe.imageurl = url;
+    this.image = image;
+    print(recipe.imageurl);
+    // });
   }
 }

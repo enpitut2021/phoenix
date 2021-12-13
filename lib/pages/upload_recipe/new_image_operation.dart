@@ -16,9 +16,9 @@ class NewMyImage extends StatefulWidget {
 }
 
 class _NewMyImageState extends State<NewMyImage> {
-  final double imageWidth = 300;
-  final double imageHeight = 200;
-  final imageQuality = 30;
+  final double imageWidth = 275;
+  final double imageHeight = 183;
+  final imageQuality = 72;
 
   final picker = ImagePicker();
 
