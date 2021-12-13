@@ -1,99 +1,138 @@
-///dart~
+import 'dart:io';
 
-///package~
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:phoenix/Model/recipe/recipe_models.dart';
 import 'package:phoenix/common_widget/alert_action.dart';
 import 'package:phoenix/common_widget/image_operation.dart';
-import 'package:phoenix/pages/upload_recipe/make_widget.dart';
-import 'package:phoenix/Model/recipe/recipe_models.dart';
-// import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:phoenix/pages/upload_recipe/upload_body.dart';
 
-///mylibrary~
-
-class UpLoadRecipe extends StatefulWidget {
-  const UpLoadRecipe({Key? key}) : super(key: key);
-
+class NewUploadVC extends StatelessWidget {
   @override
-  _UpLoadRecipeState createState() => _UpLoadRecipeState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("投稿画面"),
+      ),
+      body: UpLoadBody(),
+    );
+  }
 }
 
-class _UpLoadRecipeState extends State<UpLoadRecipe> with MakeWidget {
-  MyImage imagePicker = MyImage();
-
+class UpLoadBody extends StatefulWidget {
   @override
-  void initState() {
-    super.initState();
-    state = setState;
-    imagePicker.setstate = setState;
-    recipe = Recipe(
-        id: '',
-        recipename: '',
-        imageurl: '',
-        ingredients: [],
-        cookmethod: [],
-        cookwares: [],
-        explain: [],
-        spices: []);
-  }
+  _UpLoadBodyState createState() => _UpLoadBodyState();
+}
+
+class _UpLoadBodyState extends State<UpLoadBody> {
+  File? image;
+  Recipe recipe = Recipe(
+      id: '',
+      recipename: '',
+      imageurl: '',
+      ingredients: [],
+      cookmethod: [],
+      cookwares: [],
+      explain: [],
+      spices: []);
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
+    final width = MediaQuery.of(context).size.width;
+    return _setBody(recipe, width);
+  }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('レシピ作成画面'),
-      ),
-      body: setRecipe(
-          context: context,
-          screenSize: screenSize,
-          onTap: () {
-            if (imagePicker.isImageEmpty()) {
-              ErrorAction.errorMessage(context, "画像の入力がまだです");
-            } else {
-              _tap();
-            }
-          },
-          imagepicker: imagePicker),
+  Widget _setBody(Recipe recipe, double width) {
+    return ListView(
+      children: <Widget>[
+        //画像
+        NewMyImage(_imageUpdateUrl, width, image),
+        UpLoadList(
+            "レシピ名", _updaterecipe, _deleteCategory, [recipe.recipename], width),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            UpLoadList("材料", _updaterecipe, _deleteCategory,
+                recipe.toFoodstuffs(recipe.ingredients), width / 2.05),
+            UpLoadList("調味料", _updaterecipe, _deleteCategory,
+                recipe.toFoodstuffs(recipe.spices), width / 2.05),
+          ],
+        ),
+        UpLoadList("説明", _updaterecipe, _deleteCategory, recipe.explain, width),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            UpLoadList("調理器具", _updaterecipe, _deleteCategory, recipe.cookwares,
+                width / 2.05),
+            UpLoadList("調理方法", _updaterecipe, _deleteCategory,
+                recipe.cookmethod, width / 2.05),
+          ],
+        ),
+        ElevatedButton(
+            child: const Text('投稿する'),
+            onPressed: () {
+              if (recipe.imageurl != "") {
+                recipe.uploadRecipe().then((value) async {
+                  await recipe.upload(value.id, image).then((value) => {
+                        recipe.imageurl = value,
+                      });
+                  await FirebaseFirestore.instance
+                      .collection('recipes')
+                      .doc(value.id)
+                      .update({'imageurl': recipe.imageurl});
+                  Navigator.pop(context);
+                });
+              } else {
+                ErrorAction.errorMessage(context, "画像の入力がまだです");
+              }
+            }),
+      ],
     );
   }
 
-  Future _tap() async {
-    List<Map<String, String>> tmp1 = [], tmp2 = [];
-    var i = 0;
-    for (var _ingredients in recipe.ingredients) {
-      tmp1.add({'ingredient': 'quantity'});
-      tmp1[i]['ingredient'] = _ingredients.name;
-      tmp1[i]['quantity'] = _ingredients.amount;
-      i++;
-    }
-    var j = 0;
-    for (var _spices in recipe.spices) {
-      tmp2.add({'spice': 'amount'});
-      tmp2[j]['spice'] = _spices.name;
-      tmp2[j]['amount'] = _spices.amount;
-      j++;
-    }
-
-    final refiid = await FirebaseFirestore.instance.collection('recipes').add({
-      'id': '0',
-      'recipe_name': recipe.recipename,
-      'ingredients': tmp1,
-      'method': recipe.cookmethod,
-      'cookwares': recipe.cookwares,
-      'explain': recipe.explain,
-      'spices': tmp2,
-      // 'minutes': recipe.minutes
+  //update recipe data
+  void _updaterecipe(
+      {required String title, required String name, required String amount}) {
+    setState(() {
+      if (title == "レシピ名") {
+        recipe.recipename = name;
+      } else if (title == "材料") {
+        recipe.ingredients.add(Foodstuff(name: name, amount: amount));
+      } else if (title == "調味料") {
+        recipe.spices.add(Foodstuff(name: name, amount: amount));
+      } else if (title == "説明") {
+        recipe.explain.add(name);
+      } else if (title == "調理器具") {
+        recipe.cookwares.add(name);
+      } else if (title == "調理方法") {
+        recipe.cookmethod.add(name);
+      }
     });
-    // 画像をfirestorageにぶち込む
-    await imagePicker.upload(refiid.id).then((value) => {
-          recipe.imageurl = value,
-        });
-    await FirebaseFirestore.instance
-        .collection('recipes')
-        .doc(refiid.id)
-        .update({'imageurl': recipe.imageurl});
-    Navigator.pop(context);
+  }
+
+  void _deleteCategory({required String title, required String name}) {
+    setState(() {
+      if (title == "材料") {
+        recipe.ingredients.removeWhere(
+            (element) => recipe.toFoodstuffs([element])[0] == name);
+      } else if (title == "調味料") {
+        recipe.spices.removeWhere(
+            (element) => recipe.toFoodstuffs([element])[0] == name);
+      } else if (title == "説明") {
+        recipe.explain.remove(name);
+      } else if (title == "調理器具") {
+        recipe.cookwares.remove(name);
+      } else if (title == "調理方法") {
+        recipe.cookmethod.remove(name);
+      }
+    });
+  }
+
+  void _imageUpdateUrl({required String url, required File image}) {
+    // setState(() {
+    recipe.imageurl = url;
+    this.image = image;
+    print(recipe.imageurl);
+    // });
   }
 }

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:phoenix/pages/upload_recipe/new_upload_page.dart';
+import 'package:phoenix/pages/upload_recipe/upload_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 ///mylibrary~
 import 'pages/detail_vc/detail_vc.dart';
 import 'pages/search_vc/search_vc.dart';
-import 'pages/upload_recipe/upload_page.dart';
 import 'pages/profil/friend_list.dart';
 import 'pages/profil/register_list.dart';
 import 'pages/profil/profil.dart';

@@ -1,126 +1,57 @@
-import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
-class MyImage {
-  final double imageWidth = 300;
-  final double imageHeight = 200;
-  final imageQuality = 30;
-  // 画像をデバイスから取得
+class NewMyImage extends StatefulWidget {
+  Function updateurl;
+  double screensize;
+  File? image;
+  NewMyImage(this.updateurl, this.screensize, this.image);
+
+  @override
+  _NewMyImageState createState() => _NewMyImageState();
+}
+
+class _NewMyImageState extends State<NewMyImage> {
+  final double imageWidth = 275;
+  final double imageHeight = 183;
+  final imageQuality = 72;
+
   final picker = ImagePicker();
-  File? _image;
-  late Function setstate;
-  MyImage();
-  //カメラ用
-  Future getImageFromCamera() async {
-    final pickedFile = await picker.getImage(
-      source: ImageSource.camera,
-      imageQuality: imageQuality,
-      maxHeight: imageHeight,
-      maxWidth: imageWidth,
-    );
-    if (pickedFile != null) {
-      await _cropImage(pickedFile.path);
-      setstate(() {});
-    } else {
-      // ignore: avoid_print
-      print('No image selected.');
-    }
-  }
 
-  bool isImageEmpty() {
-    if (_image == null) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  late Future<String> imagePath;
 
-//写真ライブラリの読み込み用
-  Future _getImage() async {
-    final pickedFile = await picker.getImage(
-      source: ImageSource.gallery,
-      imageQuality: imageQuality,
-      maxHeight: imageHeight,
-      maxWidth: imageWidth,
-    );
-
-    if (pickedFile != null) {
-      await _cropImage(pickedFile.path);
-      setstate(() {});
-    } else {
-      // ignore: avoid_print
-      print('No image selected.');
-    }
-  }
-
-  Widget imageAsset(Size screenSize) {
-    return Stack(children: [
-      _displayImage(screenSize),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          FloatingActionButton(
-            heroTag: "add",
-            onPressed: getImageFromCamera,
-            child: const Icon(Icons.add_a_photo),
-          ),
-          FloatingActionButton(
-            heroTag: "icon",
-            onPressed: _getImage,
-            child: const Icon(Icons.image),
-          ),
-        ],
-      )
-    ]);
-  }
-
-  Widget _displayImage(Size screenSize) {
+  Widget _displayImage(double screenSize) {
     Widget imageWidget;
     if (isImageEmpty()) {
       // ignore: sized_box_for_whitespace
       imageWidget = Container(
         child: const Center(child: Text('No image selected.')),
-        width: screenSize.width,
-        height: screenSize.width / 2,
+        width: screenSize,
+        height: screenSize / 2,
         alignment: Alignment.center,
       );
     } else {
       imageWidget = Image.file(
-        _image!,
+        widget.image!,
         alignment: Alignment.center,
         fit: BoxFit.cover,
-        width: screenSize.width,
-        height: screenSize.width / 2,
+        width: screenSize,
+        height: screenSize / 2,
       );
     }
     return imageWidget;
   }
 
-// 画像をアップロード
-  String _imageUrl = ".jpeg";
-  late Future<String> imagePath;
-  int _flag = 0;
-
-  Future<String> upload(String filename) async {
-    if (_flag == 0) {
-      _imageUrl = filename + _imageUrl;
-      _flag += 1;
+  bool isImageEmpty() {
+    if (widget.image == null) {
+      return true;
+    } else {
+      return false;
     }
-    // imagePickerで画像を選択する
-    // upload
-    FirebaseStorage storage = FirebaseStorage.instance;
-    try {
-      await storage.ref(_imageUrl).putFile(_image!);
-      imagePath = storage.ref(_imageUrl).getDownloadURL();
-    } catch (e) {
-      // ignore: avoid_print
-      print(e);
-    }
-    return Future<String>.value(imagePath);
   }
 
   //画像の切り抜き
@@ -144,12 +75,73 @@ class MyImage {
         minimumAspectRatio: 0.6,
       ),
     );
-
     if (cropImage != null) {
-      _image = File(cropImage.path);
+      widget.image = File(cropImage.path);
     } else {
       // ignore: avoid_print
       print('cannot select image');
     }
+  }
+
+  //写真ライブラリの読み込み用
+  Future _getImage() async {
+    final pickedFile = await picker.getImage(
+      source: ImageSource.gallery,
+      imageQuality: imageQuality,
+      maxHeight: imageHeight,
+      maxWidth: imageWidth,
+    );
+    if (pickedFile != null) {
+      await _cropImage(pickedFile.path);
+      setState(() {
+        if (widget.image != null) {
+          widget.updateurl(url: pickedFile.path, image: widget.image);
+        }
+      });
+    } else {
+      // ignore: avoid_print
+      print('No image selected.');
+    }
+  }
+
+  //カメラ用
+  Future _getImageFromCamera() async {
+    final pickedFile = await picker.getImage(
+      source: ImageSource.camera,
+      imageQuality: imageQuality,
+      maxHeight: imageHeight,
+      maxWidth: imageWidth,
+    );
+    if (pickedFile != null) {
+      await _cropImage(pickedFile.path);
+      setState(() {
+        widget.updateurl(url: pickedFile.path, image: widget.image);
+      });
+    } else {
+      // ignore: avoid_print
+      print('No image selected.');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      _displayImage(widget.screensize),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          FloatingActionButton(
+            heroTag: "add",
+            onPressed: _getImageFromCamera,
+            child: const Icon(Icons.add_a_photo),
+          ),
+          FloatingActionButton(
+            heroTag: "icon",
+            onPressed: _getImage,
+            child: const Icon(Icons.image),
+          ),
+        ],
+      )
+    ]);
   }
 }
