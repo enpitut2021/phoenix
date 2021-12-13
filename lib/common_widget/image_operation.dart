@@ -16,8 +16,8 @@ class NewMyImage extends StatefulWidget {
 }
 
 class _NewMyImageState extends State<NewMyImage> {
-  final double imageWidth = 275;
-  final double imageHeight = 183;
+  final int imageWidth = 275;
+  final int imageHeight = 183;
   final imageQuality = 72;
 
   final picker = ImagePicker();
@@ -59,11 +59,7 @@ class _NewMyImageState extends State<NewMyImage> {
     var cropImage = await ImageCropper.cropImage(
       sourcePath: imagePath,
       aspectRatioPresets: [
-        CropAspectRatioPreset.square,
         CropAspectRatioPreset.ratio3x2,
-        CropAspectRatioPreset.original,
-        CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9
       ],
       androidUiSettings: const AndroidUiSettings(
           toolbarTitle: 'Cropper',
@@ -74,6 +70,9 @@ class _NewMyImageState extends State<NewMyImage> {
       iosUiSettings: const IOSUiSettings(
         minimumAspectRatio: 0.6,
       ),
+      maxWidth: imageWidth,
+      maxHeight: imageHeight,
+      compressQuality: imageQuality,
     );
     if (cropImage != null) {
       widget.image = File(cropImage.path);
@@ -87,9 +86,6 @@ class _NewMyImageState extends State<NewMyImage> {
   Future _getImage() async {
     final pickedFile = await picker.getImage(
       source: ImageSource.gallery,
-      imageQuality: imageQuality,
-      maxHeight: imageHeight,
-      maxWidth: imageWidth,
     );
     if (pickedFile != null) {
       await _cropImage(pickedFile.path);
@@ -108,9 +104,6 @@ class _NewMyImageState extends State<NewMyImage> {
   Future _getImageFromCamera() async {
     final pickedFile = await picker.getImage(
       source: ImageSource.camera,
-      imageQuality: imageQuality,
-      maxHeight: imageHeight,
-      maxWidth: imageWidth,
     );
     if (pickedFile != null) {
       await _cropImage(pickedFile.path);
