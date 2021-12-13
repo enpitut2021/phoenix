@@ -72,7 +72,7 @@ class _NewMyImageState extends State<NewMyImage> {
       ),
       maxWidth: imageWidth,
       maxHeight: imageHeight,
-      //compressQuality: imageQuality,
+      compressQuality: imageQuality,
     );
     if (cropImage != null) {
       widget.image = File(cropImage.path);
