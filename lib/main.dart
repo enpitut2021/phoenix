@@ -99,7 +99,8 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
       final minScrollExtent = _scrollController.position.minScrollExtent;
       final currentPosition = _scrollController.position.pixels;
       if (maxScrollExtent > 0 && (maxScrollExtent - 20.0) <= currentPosition) {
-        print("maxxxxxx");
+        // これから作る予定
+        // さらに表示
       } else if (minScrollExtent >= 0 && (minScrollExtent) >= currentPosition) {
         await loadSectiontask.loadFirestoreAsset().then((value) {
           setState(() {
@@ -107,7 +108,6 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
             assert(recipes.recipes.isNotEmpty);
           });
         });
-        print("minnnnnn");
       }
     });
 
@@ -215,16 +215,33 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
               // width: width,
               // height: width / 2,
             ),
-            Container(
-              child: Text(
-                recipe.recipename,
-                style: const TextStyle(fontSize: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children:<Widget> [
+                  Container(
+                    child: Text(
+                      recipe.time.toString() + "分", 
+                      style: const TextStyle(fontSize: 24),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  Container(
+                    child:  Text(
+                      recipe.recipename,
+                      style: const TextStyle(fontSize: 24),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ],
               ),
-              decoration: BoxDecoration(
-                color: Colors.orange,
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
+              
+              
           ],
         ),
         onTap: () {

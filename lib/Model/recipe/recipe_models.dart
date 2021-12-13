@@ -48,6 +48,7 @@ class Recipe {
   String id = "";
   String imageurl = "";
   String recipename = "";
+  int time = 0;
   List<String> explain = [];
   List<Foodstuff> ingredients = [];
   List<Foodstuff> spices = [];
@@ -62,7 +63,8 @@ class Recipe {
       required this.ingredients,
       required this.spices,
       required this.cookwares,
-      required this.cookmethod});
+      required this.cookmethod,
+      required this.time});
 
   bool hasIngredient({required String searchword}) {
     var tmp = ingredients
@@ -133,7 +135,7 @@ class Recipe {
       'cookwares': cookwares,
       'explain': explain,
       'spices': tmp2,
-      // 'minutes': recipe.minutes
+      'time': time,
     });
 
     // // 画像をfirestorageにぶち込む

@@ -15,6 +15,18 @@ class _SearchVCState extends State<SearchVC> {
   String addkeyword = '';
   radiovalue? keywordtype = radiovalue.ingredient;
 
+  //ドロップダウン用リスト
+  List<DropdownMenuItem<int>> _items = [];
+  int _selectedItem = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setItem();
+    _selectedItem = _items[0].value!;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,6 +93,17 @@ class _SearchVCState extends State<SearchVC> {
                             }),
                           },
                         ),
+                        Container(
+                          child: DropdownButton(
+                            items: _items,
+                            value: _selectedItem,
+                            onChanged: (int? value) {
+                              setState((){
+                                _selectedItem = value!;
+                              });
+                            },
+                          ),
+                        ),
                       ],
                     ),
                     Container(
@@ -108,6 +131,24 @@ class _SearchVCState extends State<SearchVC> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  void setItem(){
+    for(int i = 0; i <= 60; i++){
+      if(i == 0){
+        _items.add(DropdownMenuItem(
+          child: const Text("調理時間"),
+          value: i
+          ),
+        );
+      } else {
+        _items.add(DropdownMenuItem(
+          child: Text(i.toString()),
+          value: i
+          ),
+        );
+      }
+    }
   }
 
   List<Widget> _searchList(List<String> searchwords) {
