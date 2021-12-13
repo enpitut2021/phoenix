@@ -46,7 +46,17 @@ class _UpLoadBodyState extends State<UpLoadBody> {
     return ListView(
       children: <Widget>[
         //画像
-        NewMyImage(_imageUpdateUrl, width, image),
+        Stack(
+          alignment: Alignment.bottomRight,
+          children: <Widget>[
+            NewMyImage(_imageUpdateUrl, width, image),
+            Container(
+              child: UpLoadTime(_updateTime, "調理時間"),
+              color: Colors.orange.shade400,
+            ),
+          ],
+        ),
+
         UpLoadList(
             "レシピ名", _updaterecipe, _deleteCategory, [recipe.recipename], width),
         Row(
@@ -108,6 +118,10 @@ class _UpLoadBodyState extends State<UpLoadBody> {
         recipe.cookmethod.add(name);
       }
     });
+  }
+
+  void _updateTime({required time}) {
+    recipe.time = time;
   }
 
   void _deleteCategory({required String title, required String name}) {
