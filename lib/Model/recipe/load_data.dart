@@ -52,6 +52,8 @@ class LoadRecipes {
         cookmethod.add(element.toString());
       }
 
+      int time = _data['time'];
+
       Recipe recipe = Recipe(
         id: _data['id'].toString(),
         recipename: _data['recipe_name'],
@@ -61,6 +63,7 @@ class LoadRecipes {
         explain: explain,
         cookwares: cookwares,
         cookmethod: cookmethod,
+        time: time,
       );
       recipes.add(recipe: recipe);
     }
@@ -95,6 +98,11 @@ class LoadRecipes {
       for (var cm in element["Cooking_method"]) {
         cookmethod.add(cm);
       }
+      //調理時間
+      int time = 0;
+      // for (var cm in element["time"]) {
+      //   cookmethod.add(cm);
+      // }
       //レシピの作成
       Recipe recipe = Recipe(
           id: element['id'],
@@ -104,7 +112,8 @@ class LoadRecipes {
           ingredients: ingredients,
           spices: spices,
           cookwares: cookwares,
-          cookmethod: cookmethod);
+          cookmethod: cookmethod,
+          time: time);
 
       recipes.add(recipe: recipe);
     }
