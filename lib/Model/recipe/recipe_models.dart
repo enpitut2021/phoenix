@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
+
 import '/data/operatelist.dart' show toHira;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -102,6 +106,66 @@ class Recipe {
     } catch (e) {
       return Future<int>.value(0);
     }
+  }
+
+  Future<DocumentReference<Map<String, dynamic>>> uploadRecipe() async {
+    List<Map<String, String>> tmp1 = [], tmp2 = [];
+    var i = 0;
+    for (var _ingredients in ingredients) {
+      tmp1.add({'ingredient': 'quantity'});
+      tmp1[i]['ingredient'] = _ingredients.name;
+      tmp1[i]['quantity'] = _ingredients.amount;
+      i++;
+    }
+    var j = 0;
+    for (var _spices in spices) {
+      tmp2.add({'spice': 'amount'});
+      tmp2[j]['spice'] = _spices.name;
+      tmp2[j]['amount'] = _spices.amount;
+      j++;
+    }
+
+    final refiid = await FirebaseFirestore.instance.collection('recipes').add({
+      'id': '0',
+      'recipe_name': recipename,
+      'ingredients': tmp1,
+      'method': cookmethod,
+      'cookwares': cookwares,
+      'explain': explain,
+      'spices': tmp2,
+      // 'minutes': recipe.minutes
+    });
+
+    // // 画像をfirestorageにぶち込む
+    // await imagePicker.upload(refiid.id).then((value) => {
+    //       recipe.imageurl = value,
+    //     });
+    // await FirebaseFirestore.instance
+    //     .collection('recipes')
+    //     .doc(refiid.id)
+    //     .update({'imageurl': imageurl});
+    return Future<DocumentReference<Map<String, dynamic>>>.value(refiid);
+  }
+
+  int _flag = 0;
+
+  Future<String> upload(String filename, File? image) async {
+    late Future<String> imagePath;
+    if (_flag == 0) {
+      imageurl = filename + ".jpeg";
+      _flag += 1;
+    }
+    // imagePickerで画像を選択する
+    // upload
+    FirebaseStorage storage = FirebaseStorage.instance;
+    try {
+      await storage.ref(imageurl).putFile(image!);
+      imagePath = storage.ref(imageurl).getDownloadURL();
+    } catch (e) {
+      // ignore: avoid_print
+      print(e);
+    }
+    return Future<String>.value(imagePath);
   }
 }
 

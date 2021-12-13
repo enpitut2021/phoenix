@@ -1,21 +1,38 @@
-///dart~
-///package~
 import 'package:flutter/material.dart';
-import 'package:flutter/animation.dart';
-
-///my library
 import 'package:phoenix/Model/recipe/recipe_models.dart';
-import 'make_widget.dart';
+import 'package:phoenix/common_widget/animation_image.dart';
+import 'package:phoenix/pages/detail_vc/make_widget.dart';
 
-class DetailOfMenu extends StatefulWidget {
-  const DetailOfMenu({Key? key}) : super(key: key);
-
+class DetailVC extends StatelessWidget {
   @override
-  State<DetailOfMenu> createState() => _detailRecipe();
+  Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+    final recipe =
+        (ModalRoute.of(context)!.settings.arguments as RecipeArgument)
+            .recipe; //type is Recipe
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(recipe.recipename),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        verticalDirection: VerticalDirection.up,
+        children: <Widget>[
+          setMenue(recipe, screenSize),
+          DisplayDynmaicImage(),
+        ],
+      ),
+    );
+  }
 }
 
-// ignore: camel_case_types
-class _detailRecipe extends State<DetailOfMenu>
+class DisplayDynmaicImage extends StatefulWidget {
+  @override
+  _DisplayDynamicImageState createState() => _DisplayDynamicImageState();
+}
+
+class _DisplayDynamicImageState extends State<DisplayDynmaicImage>
     with SingleTickerProviderStateMixin {
   late final AnimationController _animationController;
 
@@ -38,30 +55,8 @@ class _detailRecipe extends State<DetailOfMenu>
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     final recipe =
-        (ModalRoute.of(context)!.settings.arguments as RecipeArgument)
-            .recipe; //type is Recipe
-    final _dynamicdisplayimage = DynamicDisplayImage(0, _animationController);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(recipe.recipename),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () {
-              _animationController.forward(from: 0);
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        verticalDirection: VerticalDirection.up,
-        children: <Widget>[
-          setMenue(recipe, screenSize),
-          _dynamicdisplayimage.zoomImage(recipe, screenSize),
-        ],
-      ),
-    );
+        (ModalRoute.of(context)!.settings.arguments as RecipeArgument).recipe;
+    final _dynamicDisplayImage = DynamicDisplayImage(0, _animationController);
+    return _dynamicDisplayImage.zoomImage(recipe, screenSize);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:phoenix/pages/upload_recipe/new_upload_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -48,9 +49,9 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             '/': (context) => const SuggestRecipes(),
-            '/detail': (context) => const DetailOfMenu(),
+            '/detail': (context) => DetailVC(),
             '/search': (context) => const SearchVC(),
-            '/uploadrecipe': (context) => const UpLoadRecipe(),
+            '/uploadrecipe': (context) => NewUploadVC(),
             '/profil': (context) => const ProfilPage(),
             '/friendList': (context) => const FriendList(),
             '/registerPage': (context) => const RegisterList()
