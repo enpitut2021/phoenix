@@ -194,3 +194,68 @@ class _UpLoadListState extends State<UpLoadList> {
     }
   }
 }
+
+class UpLoadTime extends StatefulWidget {
+  final String title;
+  Function addtion;
+  UpLoadTime(this.addtion, this.title);
+
+  @override
+  _UpLoadTimeState createState() => _UpLoadTimeState();
+}
+
+class _UpLoadTimeState extends State<UpLoadTime> {
+  List<DropdownMenuItem<int>> _items = [];
+  int _selection = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    setItem();
+    _selection = _items[0].value!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton(
+      items: _items,
+      value: _selection,
+      dropdownColor: Colors.orange.shade100,
+      onChanged: (int? value) => {
+        setState(() {
+          _selection = value!;
+          widget.addtion(time: _selection);
+        }),
+      },
+    );
+  }
+
+  void setItem() {
+    for (int i = 0; i <= 60; i++) {
+      if (i == 0) {
+        _items.add(DropdownMenuItem(
+          child: Center(child: Text(widget.title)),
+          value: i,
+        ));
+      } else if (i == 60) {
+        _items.add(DropdownMenuItem(
+          child: Center(
+              child: Text(
+            i.toString() + "+分",
+          )),
+          value: i,
+        ));
+      } else if ((i > 0 && i <= 15) ||
+          ((i <= 30) && i % 5 == 0) ||
+          i % 10 == 0) {
+        _items.add(DropdownMenuItem(
+          child: Center(
+              child: Text(
+            i.toString() + "分",
+          )),
+          value: i,
+        ));
+      }
+    }
+  }
+}
