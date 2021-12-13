@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:phoenix/pages/upload_recipe/upload_page.dart';
@@ -87,9 +89,28 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
   // ignore: non_constant_identifier_names
   Recipes search_debug = Recipes(recipes: []);
   List<String> searchWords = [];
+  late ScrollController _scrollController;
 
   @override
   void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(() async {
+      final maxScrollExtent = _scrollController.position.maxScrollExtent;
+      final minScrollExtent = _scrollController.position.minScrollExtent;
+      final currentPosition = _scrollController.position.pixels;
+      if (maxScrollExtent > 0 && (maxScrollExtent - 20.0) <= currentPosition) {
+        print("maxxxxxx");
+      } else if (minScrollExtent >= 0 && (minScrollExtent) >= currentPosition) {
+        await loadSectiontask.loadFirestoreAsset().then((value) {
+          setState(() {
+            recipes = value;
+            assert(recipes.recipes.isNotEmpty);
+          });
+        });
+        print("minnnnnn");
+      }
+    });
+
     super.initState();
     loadSectiontask.loadFirestoreAsset().then((value) {
       setState(() {
@@ -163,6 +184,7 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
     final randomRecipes = shuffle(recipes);
 
     return ListView.builder(
+      controller: _scrollController,
       padding: const EdgeInsets.all(16),
       itemCount: recipes.length,
       itemBuilder: (BuildContext context, int index) {

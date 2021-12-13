@@ -14,9 +14,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'recipe_models.dart';
 
 class LoadRecipes {
-  Recipes recipes = Recipes(recipes: []);
+  late Recipes recipes;
 
   Future<dynamic> loadFirestoreAsset() async {
+    recipes = Recipes(recipes: []);
     final QuerySnapshot _loadData =
         await FirebaseFirestore.instance.collection('recipes').get();
 
