@@ -27,7 +27,7 @@ class Recipes {
         var tmp = recipes.where((recipe) =>
             ((recipe.hasIngredient(searchword: contein) ||
                     (recipe.hasSpice(searchword: contein))) &&
-                recipe.aleadyExist(ids) &&
+                //recipe.aleadyExist(ids) &&
                 (recipe.time <= time_bound)));
         for (var obj in tmp) {
           filteredrecipes.add(recipe: obj);

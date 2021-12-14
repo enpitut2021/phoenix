@@ -37,7 +37,7 @@ class _UpLoadBodyState extends State<UpLoadBody> {
       cookwares: [],
       explain: [],
       spices: [],
-      time: 0);
+      time: 100);
 
   @override
   Widget build(BuildContext context) {

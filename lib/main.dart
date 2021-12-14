@@ -90,7 +90,7 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
   // ignore: non_constant_identifier_names
   Recipes search_debug = Recipes(recipes: []);
   List<String> searchWords = [];
-  int time_bound = 60;
+  int time_bound = 100;
   late ScrollController _scrollController;
 
   @override
