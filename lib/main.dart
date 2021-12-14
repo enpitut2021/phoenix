@@ -16,6 +16,7 @@ import 'Model/recipe/recipe_models.dart';
 import 'Model/recipe/load_data.dart';
 import 'Model/user/user_model.dart';
 import 'data/operatelist.dart';
+import 'common_widget/time_represent.dart';
 
 class UserState extends ChangeNotifier {
   UserModel? user;
@@ -89,6 +90,7 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
   // ignore: non_constant_identifier_names
   Recipes search_debug = Recipes(recipes: []);
   List<String> searchWords = [];
+  int time_bound = 60;
   late ScrollController _scrollController;
 
   @override
@@ -135,7 +137,8 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
             onPressed: () => {
               Navigator.pushNamed(context, '/search').then((value) => {
                     setState(() {
-                      searchWords = (value as SendData).words;
+                      searchWords = (value as SendDataWithTime).words;
+                      time_bound = value.time;
                     }),
                   }),
             },
@@ -176,7 +179,10 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
         ]),
       ),
       body: _buildSuggestions(
-          recipes.filterrecipe(contains: searchWords).recipes, screenSize),
+          recipes
+              .filterrecipe(contains: searchWords, time_bound: time_bound)
+              .recipes,
+          screenSize),
     );
   }
 
@@ -205,43 +211,35 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
           children: [
             //Image.asset(recipe.imageurl),
             // ignore: avoid_unnecessary_containers
-            Container(
-              child: Image.network(
-                recipe.imageurl,
-                width: width,
-                height: width / 2,
-                fit: BoxFit.cover,
-              ),
-              // width: width,
-              // height: width / 2,
+            Stack(
+              alignment: Alignment.topLeft,
+              children: [
+                Container(
+                  child: Image.network(
+                    recipe.imageurl,
+                    width: width,
+                    height: width / 2,
+                    fit: BoxFit.cover,
+                  ),
+                  // width: width,
+                  // height: width / 2,
+                ),
+                time_widget(recipe.time),
+              ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children:<Widget> [
-                  Container(
-                    child: Text(
-                      recipe.time.toString() + "分", 
-                      style: const TextStyle(fontSize: 24),
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  Container(
-                    child:  Text(
-                      recipe.recipename,
-                      style: const TextStyle(fontSize: 24),
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ],
+
+            SingleChildScrollView(
+              child: Container(
+                child: Text(
+                  recipe.recipename,
+                  style: const TextStyle(fontSize: 24),
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.orange,
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
-              
-              
+            ),
           ],
         ),
         onTap: () {

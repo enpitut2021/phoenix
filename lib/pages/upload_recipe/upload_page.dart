@@ -7,6 +7,8 @@ import 'package:phoenix/common_widget/alert_action.dart';
 import 'package:phoenix/common_widget/image_operation.dart';
 import 'package:phoenix/pages/upload_recipe/upload_body.dart';
 
+import '../../common_widget/time_represent.dart';
+
 class NewUploadVC extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -52,7 +54,7 @@ class _UpLoadBodyState extends State<UpLoadBody> {
           children: <Widget>[
             NewMyImage(_imageUpdateUrl, width, image),
             Container(
-              child: UpLoadTime(_updateTime, "調理時間"),
+              child: timeDropdownButtun(_updateTime, "調理時間"),
               color: Colors.orange.shade400,
             ),
           ],

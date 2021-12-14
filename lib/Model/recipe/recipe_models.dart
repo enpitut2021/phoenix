@@ -9,26 +9,33 @@ class Recipes {
   List<Recipe> recipes = [];
   Recipes({required recipes});
 
-  Recipes filterrecipe({required List<String> contains}) {
+  Recipes filterrecipe(
+      {required List<String> contains, required int time_bound}) {
     Recipes filteredrecipes = Recipes(recipes: []);
     List<String> ids = [];
 
     //検索ワードがない時
     if (contains.isEmpty) {
-      return this;
-    }
-
-    for (var contein in contains) {
-      var tmp = recipes.where((recipe) =>
-          ((recipe.hasIngredient(searchword: contein) ||
-                  (recipe.hasSpice(searchword: contein))) &&
-              recipe.aleadyExist(ids)));
+      var tmp = recipes.where((recipe) => (recipe.time <= time_bound));
       for (var obj in tmp) {
         filteredrecipes.add(recipe: obj);
         ids.add(obj.id);
       }
+      return filteredrecipes;
+    } else {
+      for (var contein in contains) {
+        var tmp = recipes.where((recipe) =>
+            ((recipe.hasIngredient(searchword: contein) ||
+                    (recipe.hasSpice(searchword: contein))) &&
+                recipe.aleadyExist(ids) &&
+                (recipe.time <= time_bound)));
+        for (var obj in tmp) {
+          filteredrecipes.add(recipe: obj);
+          ids.add(obj.id);
+        }
+      }
+      return filteredrecipes;
     }
-    return filteredrecipes;
   }
 
   void add({required Recipe recipe}) {

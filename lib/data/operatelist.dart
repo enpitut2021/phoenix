@@ -23,3 +23,10 @@ class SendData {
 
   SendData(this.words);
 }
+
+class SendDataWithTime {
+  List<String> words;
+  int time;
+
+  SendDataWithTime(this.words, this.time);
+}

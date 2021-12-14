@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../../data/operatelist.dart';
+import '../../common_widget/time_represent.dart';
 
 class SearchVC extends StatefulWidget {
   const SearchVC({Key? key}) : super(key: key);
@@ -11,21 +13,10 @@ class SearchVC extends StatefulWidget {
 enum radiovalue { ingredient, spices } // キーワードの種類
 
 class _SearchVCState extends State<SearchVC> {
+  int _time_bound = 60;
   List<String> searchwords = [];
   String addkeyword = '';
   radiovalue? keywordtype = radiovalue.ingredient;
-
-  //ドロップダウン用リスト
-  List<DropdownMenuItem<int>> _items = [];
-  int _selectedItem = 0;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    setItem();
-    _selectedItem = _items[0].value!;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +34,15 @@ class _SearchVCState extends State<SearchVC> {
               children: _searchList(searchwords),
             ),
           ),
+          timeDropdownButtun(set_time_bound, '調理時間'),
           // ignore: sized_box_for_whitespace
           Container(
             width: double.infinity,
             child: ElevatedButton(
               child: const Text("上記で絞り込む"),
               onPressed: () {
-                Navigator.of(context).pop(SendData(searchwords));
+                Navigator.of(context)
+                    .pop(SendDataWithTime(searchwords, _time_bound));
               },
             ),
           ),
@@ -93,17 +86,6 @@ class _SearchVCState extends State<SearchVC> {
                             }),
                           },
                         ),
-                        Container(
-                          child: DropdownButton(
-                            items: _items,
-                            value: _selectedItem,
-                            onChanged: (int? value) {
-                              setState((){
-                                _selectedItem = value!;
-                              });
-                            },
-                          ),
-                        ),
                       ],
                     ),
                     Container(
@@ -133,22 +115,8 @@ class _SearchVCState extends State<SearchVC> {
     );
   }
 
-  void setItem(){
-    for(int i = 0; i <= 60; i++){
-      if(i == 0){
-        _items.add(DropdownMenuItem(
-          child: const Text("調理時間"),
-          value: i
-          ),
-        );
-      } else {
-        _items.add(DropdownMenuItem(
-          child: Text(i.toString()),
-          value: i
-          ),
-        );
-      }
-    }
+  void set_time_bound({required int time}) {
+    _time_bound = time;
   }
 
   List<Widget> _searchList(List<String> searchwords) {
