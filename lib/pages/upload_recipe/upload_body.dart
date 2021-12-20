@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:phoenix/common_widget/common_list.dart';
+import 'package:phoenix/common_widget/common_tile.dart';
 
 class UpLoadList extends StatefulWidget {
   final String title;
+  final String initialLabel;
   final Function addtion;
   final Function delete;
   final double screenWidth;
   List<String> elements;
-  UpLoadList(
-      this.title, this.addtion, this.delete, this.elements, this.screenWidth);
+  UpLoadList(this.title, this.addtion, this.delete, this.elements,
+      this.screenWidth, this.initialLabel);
 
   @override
   _UpLoadListState createState() => _UpLoadListState();
@@ -17,12 +20,38 @@ class _UpLoadListState extends State<UpLoadList> {
   String name = "";
   String amount = "";
 
+  CommonList list = CommonList();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return _menueDetailMaterial(
-        materials: widget.elements,
-        screenwidth: widget.screenWidth,
-        titlewidget: _title(widget.title, context));
+    _setTiles();
+    return list.menueDetailMaterial(titlewidget: _title(widget.title, context));
+  }
+
+  void _setTiles() {
+    for (String name in widget.elements) {
+      CommonTile tile = CommonTile(
+          title: widget.title,
+          text: name,
+          width: widget.screenWidth,
+          textstyle: const TextStyle(fontSize: 15));
+      print(list.tiles.length);
+      print("before");
+      list.addTiles(
+          name, widget.screenWidth, const TextStyle(fontSize: 15), tile,
+          onPress: () {
+        widget.delete(title: widget.title, name: name);
+      });
+      print("after" + widget.title);
+      print(list.tiles.length);
+    }
+    print(list.tiles.length);
   }
 
   Widget _title(String text, BuildContext context) {
@@ -78,7 +107,7 @@ class _UpLoadListState extends State<UpLoadList> {
           builder: (context, setState) {
             return AlertDialog(
                 title: Container(
-                    child: const Text("追加する内容！！！"),
+                    child: const Text("追加する内容!!!"),
                     alignment: Alignment.center),
                 actions: displayAddDaialog);
           },
@@ -115,75 +144,75 @@ class _UpLoadListState extends State<UpLoadList> {
     return output;
   }
 
-  List<Widget> _makeTextList(
-      List<String> texts, double width, TextStyle textstyle) {
-    List<Widget> lists = [];
-    if (texts.isEmpty) {
-      lists.add(_tile('', width, textstyle, -1));
-    }
+  // List<Widget> _makeTextList(
+  //     List<String> texts, double width, TextStyle textstyle) {
+  //   List<Widget> lists = [];
+  //   if (texts.isEmpty) {
+  //     lists.add(_tile(widget.initialLabel, width, textstyle, -1));
+  //   }
 
-    for (int i = 0; i < texts.length; i++) {
-      lists.add(_tile(texts[i], width, textstyle, i));
-    }
+  //   for (int i = 0; i < texts.length; i++) {
+  //     lists.add(_tile(texts[i], width, textstyle, i));
+  //   }
 
-    return lists;
-  }
+  //   return lists;
+  // }
 
-  Widget _tile(String text, double width, TextStyle textstyle, int num) {
-    if (num >= 0 && widget.title != "レシピ名") {
-      return Container(
-        child: ListTile(
-          title: Text(
-            text,
-            style: textstyle,
-          ),
-          tileColor: Colors.orange.shade100,
-          trailing: IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () {
-              widget.delete(title: widget.title, name: text);
-            },
-          ),
-        ),
-        width: width,
-        margin: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.white10, width: 1),
-        ),
-      );
-    } else {
-      return Container(
-        child: ListTile(
-          title: Text(
-            text,
-            style: textstyle,
-          ),
-          tileColor: Colors.orange.shade100,
-        ),
-        width: width,
-        margin: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.white10, width: 1),
-        ),
-      );
-    }
-  }
+  // Widget _tile(String text, double width, TextStyle textstyle, int tileindex) {
+  //   if (tileindex >= 0 && widget.title != "レシピ名") {
+  //     return Container(
+  //       child: ListTile(
+  //         title: Text(
+  //           text,
+  //           style: textstyle,
+  //         ),
+  //         tileColor: Colors.orange.shade100,
+  //         trailing: IconButton(
+  //           icon: const Icon(Icons.delete),
+  //           onPressed: () {
+  //             widget.delete(title: widget.title, name: text);
+  //           },
+  //         ),
+  //       ),
+  //       width: width,
+  //       margin: const EdgeInsets.all(2),
+  //       decoration: BoxDecoration(
+  //         border: Border.all(color: Colors.white10, width: 1),
+  //       ),
+  //     );
+  //   } else {
+  //     return Container(
+  //       child: ListTile(
+  //         title: Text(
+  //           text,
+  //           style: textstyle,
+  //         ),
+  //         tileColor: Colors.orange.shade100,
+  //       ),
+  //       width: width,
+  //       margin: const EdgeInsets.all(2),
+  //       decoration: BoxDecoration(
+  //         border: Border.all(color: Colors.white10, width: 1),
+  //       ),
+  //     );
+  //   }
+  // }
 
-  Widget _menueDetailMaterial(
-      {required List<String> materials,
-      required double screenwidth,
-      required Widget titlewidget}) {
-    Widget menudetail = Column(
-      children: [
-        titlewidget,
-        Column(
-          children: _makeTextList(
-              materials, screenwidth, const TextStyle(fontSize: 15)),
-        ),
-      ],
-    );
-    return menudetail;
-  }
+  // Widget _menueDetailMaterial(
+  //     {required List<String> materials,
+  //     required double screenwidth,
+  //     required Widget titlewidget}) {
+  //   Widget menudetail = Column(
+  //     children: [
+  //       titlewidget,
+  //       Column(
+  //         children: _makeTextList(
+  //             materials, screenwidth, const TextStyle(fontSize: 15)),
+  //       ),
+  //     ],
+  //   );
+  //   return menudetail;
+  // }
 
   bool _isFoodstuf() {
     final title = widget.title;
