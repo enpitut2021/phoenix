@@ -91,28 +91,9 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
   Recipes search_debug = Recipes(recipes: []);
   List<String> searchWords = [];
   int time_bound = 100;
-  late ScrollController _scrollController;
 
   @override
   void initState() {
-    _scrollController = ScrollController();
-    _scrollController.addListener(() async {
-      final maxScrollExtent = _scrollController.position.maxScrollExtent;
-      final minScrollExtent = _scrollController.position.minScrollExtent;
-      final currentPosition = _scrollController.position.pixels;
-      if (maxScrollExtent > 0 && (maxScrollExtent - 20.0) <= currentPosition) {
-        // これから作る予定
-        // さらに表示
-      } else if (minScrollExtent >= 0 && (minScrollExtent) >= currentPosition) {
-        await loadSectiontask.loadFirestoreAsset().then((value) {
-          setState(() {
-            recipes = value;
-            assert(recipes.recipes.isNotEmpty);
-          });
-        });
-      }
-    });
-
     super.initState();
     loadSectiontask.loadFirestoreAsset().then((value) {
       setState(() {
@@ -189,16 +170,29 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
   Widget _buildSuggestions(List<Recipe> recipes, Size screenSize) {
     final randomRecipes = shuffle(recipes);
 
-    return ListView.builder(
-      controller: _scrollController,
-      padding: const EdgeInsets.all(16),
-      itemCount: recipes.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          child: _tile(randomRecipes[index], screenSize.width),
-        );
-      },
+    return RefreshIndicator(
+      onRefresh: _onRefresh,
+      color: Colors.orange.shade200,
+      child: ListView.builder(
+        physics: AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(16),
+        itemCount: recipes.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            child: _tile(randomRecipes[index], screenSize.width),
+          );
+        },
+      ),
     );
+  }
+
+  Future<void> _onRefresh() async {
+    await loadSectiontask.loadFirestoreAsset().then((value) {
+      setState(() {
+        recipes = value;
+        assert(recipes.recipes.isNotEmpty);
+      });
+    });
   }
 
   //あとで引数の型を変更する
