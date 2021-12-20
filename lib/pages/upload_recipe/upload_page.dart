@@ -42,10 +42,10 @@ class _UpLoadBodyState extends State<UpLoadBody> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return Column(children: [(_setBody(recipe, width)), uploadButton(width)]);
+    return Column(children: <Widget>[_setBody(width), uploadButton(width)]);
   }
 
-  Widget _setBody(Recipe recipe, double width) {
+  Widget _setBody(double width) {
     return Flexible(
       child: ListView(
         children: <Widget>[
@@ -64,6 +64,7 @@ class _UpLoadBodyState extends State<UpLoadBody> {
           UpLoadList("レシピ名", _updaterecipe, _deleteCategory,
               [recipe.recipename], width, "(例)卵焼き"),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               UpLoadList(
@@ -85,6 +86,7 @@ class _UpLoadBodyState extends State<UpLoadBody> {
           UpLoadList("説明", _updaterecipe, _deleteCategory, recipe.explain,
               width, "(例)卵を溶く"),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               UpLoadList("調理器具", _updaterecipe, _deleteCategory,

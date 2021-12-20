@@ -1,41 +1,44 @@
 import 'package:flutter/material.dart';
 
-// abstract class CommonTileInterface {
-//   String text;
-//   double width;
-//   TextStyle textstyle;
-//   CommonTileInterface(
-//       {required this.text, required this.width, required this.textstyle});
-//
-//   Widget build(BuildContext context, void Function()? onPressed);
-// }
+class CommonTitle extends StatefulWidget {
+  final bool needButton;
+  final String title;
+  final String text;
+  final double width;
+  final TextStyle textstyle;
+  final Function delete;
 
-class CommonTile {
-  String title;
-  String text;
-  double width;
-  TextStyle textstyle;
-  CommonTile(
-      {required this.title,
+  CommonTitle(
+      {this.needButton = false,
+      required this.title,
       required this.text,
       required this.width,
-      required this.textstyle});
+      required this.textstyle,
+      required this.delete});
+  @override
+  _CommonTileState createState() => _CommonTileState();
+}
 
-  Widget build({void Function()? onPress}) {
-    if (onPress == null) {
+class _CommonTileState extends State<CommonTitle> {
+  @override
+  Widget build(BuildContext context) {
+    if (!widget.needButton || widget.title == "レシピ名") {
       return tileNoButton();
     } else {
-      return tileWithButton(onPress);
+      return tileWithButton();
     }
   }
 
   Widget tileNoButton() {
     return Container(
-      child: Text(
-        text,
-        style: textstyle,
+      child: ListTile(
+        title: Text(
+          widget.text,
+          style: widget.textstyle,
+        ),
+        tileColor: Colors.orange.shade100,
       ),
-      width: width,
+      width: widget.width,
       margin: const EdgeInsets.all(2),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.white10, width: 1),
@@ -43,82 +46,26 @@ class CommonTile {
     );
   }
 
-  Widget tileWithButton(void Function()? onPress) {
-    if (title != "レシピ名") {
-      return Container(
-        child: ListTile(
-          title: Text(
-            text,
-            style: textstyle,
-          ),
-          tileColor: Colors.orange.shade100,
-          trailing: IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: onPress,
-          ),
+  Widget tileWithButton() {
+    return Container(
+      child: ListTile(
+        title: Text(
+          widget.text,
+          style: widget.textstyle,
         ),
-        width: width,
-        margin: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.white10, width: 1),
+        tileColor: Colors.orange.shade100,
+        trailing: IconButton(
+          icon: const Icon(Icons.delete),
+          onPressed: () {
+            widget.delete(title: widget.title, name: widget.text);
+          },
         ),
-      );
-    } else {
-      return Container(
-        child: ListTile(
-          title: Text(
-            text,
-            style: textstyle,
-          ),
-          tileColor: Colors.orange.shade100,
-        ),
-        width: width,
-        margin: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.white10, width: 1),
-        ),
-      );
-    }
+      ),
+      width: widget.width,
+      margin: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.white10, width: 1),
+      ),
+    );
   }
-
-  // Widget build(String text, double width, TextStyle textstyle,
-  //     {int? tileindex}) {
-  // if (tileindex >= 0 && widget.title != "レシピ名") {
-  //   return Container(
-  //     child: ListTile(
-  //       title: Text(
-  //         text,
-  //         style: textstyle,
-  //       ),
-  //       tileColor: Colors.orange.shade100,
-  //       trailing: IconButton(
-  //         icon: const Icon(Icons.delete),
-  //         onPressed: () {
-  //           widget.delete(title: widget.title, name: text);
-  //         },
-  //       ),
-  //     ),
-  //     width: width,
-  //     margin: const EdgeInsets.all(2),
-  //     decoration: BoxDecoration(
-  //       border: Border.all(color: Colors.white10, width: 1),
-  //     ),
-  //   );
-  // } else {
-  //   return Container(
-  //     child: ListTile(
-  //       title: Text(
-  //         text,
-  //         style: textstyle,
-  //       ),
-  //       tileColor: Colors.orange.shade100,
-  //     ),
-  //     width: width,
-  //     margin: const EdgeInsets.all(2),
-  //     decoration: BoxDecoration(
-  //       border: Border.all(color: Colors.white10, width: 1),
-  //     ),
-  //   );
-  // }
-  // }
 }
