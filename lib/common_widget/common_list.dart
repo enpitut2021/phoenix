@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:phoenix/common_widget/common_tile.dart';
 
-class CommonList extends StatefulWidget {
+class CommonList extends StatelessWidget {
   final Function delete;
   final Widget titleWidget;
   final String title;
@@ -23,26 +23,20 @@ class CommonList extends StatefulWidget {
       required this.textstyle});
 
   @override
-  _CommonListState createState() => _CommonListState();
-}
-
-class _CommonListState extends State<CommonList> {
-  @override
   Widget build(BuildContext context) {
     return menueDetailMaterial();
   }
 
   List<Widget> _makelist() {
     List<Widget> tiles = [];
-    if (widget.materials.isEmpty ||
-        (widget.title == "レシピ名" && widget.materials[0] == "")) {
-      if (widget.initialValue != "") {
+    if (materials.isEmpty || (title == "レシピ名" && materials[0] == "")) {
+      if (initialValue != "") {
         return [
           CommonTitle(
-              title: widget.title,
-              text: widget.initialValue,
-              width: widget.width,
-              textstyle: widget.textstyle,
+              title: title,
+              text: initialValue,
+              width: width,
+              textstyle: textstyle,
               delete: () {})
         ];
       } else {
@@ -50,14 +44,14 @@ class _CommonListState extends State<CommonList> {
       }
     }
 
-    for (String name in widget.materials) {
+    for (String name in materials) {
       tiles.add(CommonTitle(
-          needButton: widget.dispalyButton,
-          title: widget.title,
+          needButton: dispalyButton,
+          title: title,
           text: name,
-          width: widget.width,
-          textstyle: widget.textstyle,
-          delete: widget.delete));
+          width: width,
+          textstyle: textstyle,
+          delete: delete));
     }
 
     return tiles;
@@ -66,7 +60,7 @@ class _CommonListState extends State<CommonList> {
   Widget menueDetailMaterial() {
     Widget menudetail = Column(
       children: [
-        widget.titleWidget,
+        titleWidget,
         Column(children: _makelist()),
       ],
     );
