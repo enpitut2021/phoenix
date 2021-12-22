@@ -42,64 +42,85 @@ class _UpLoadBodyState extends State<UpLoadBody> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return _setBody(recipe, width);
+    return Column(children: <Widget>[_setBody(width), uploadButton(width)]);
   }
 
-  Widget _setBody(Recipe recipe, double width) {
-    return ListView(
-      children: <Widget>[
-        //画像
-        Stack(
-          alignment: Alignment.bottomRight,
-          children: <Widget>[
-            NewMyImage(_imageUpdateUrl, width, image),
-            Container(
-              child: timeDropdownButtun(_updateTime, "調理時間"),
-              color: Colors.orange.shade400,
-            ),
-          ],
-        ),
+  Widget _setBody(double width) {
+    return Flexible(
+      child: ListView(
+        children: <Widget>[
+          //画像
+          Stack(
+            alignment: Alignment.bottomRight,
+            children: <Widget>[
+              NewMyImage(_imageUpdateUrl, width, image),
+              Container(
+                child: timeDropdownButtun(_updateTime, "調理時間"),
+                color: Colors.orange.shade400,
+              ),
+            ],
+          ),
 
-        UpLoadList(
-            "レシピ名", _updaterecipe, _deleteCategory, [recipe.recipename], width),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            UpLoadList("材料", _updaterecipe, _deleteCategory,
-                recipe.toFoodstuffs(recipe.ingredients), width / 2.05),
-            UpLoadList("調味料", _updaterecipe, _deleteCategory,
-                recipe.toFoodstuffs(recipe.spices), width / 2.05),
-          ],
-        ),
-        UpLoadList("説明", _updaterecipe, _deleteCategory, recipe.explain, width),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            UpLoadList("調理器具", _updaterecipe, _deleteCategory, recipe.cookwares,
-                width / 2.05),
-            UpLoadList("調理方法", _updaterecipe, _deleteCategory,
-                recipe.cookmethod, width / 2.05),
-          ],
-        ),
-        ElevatedButton(
-            child: const Text('投稿する'),
-            onPressed: () {
-              if (recipe.imageurl != "") {
-                recipe.uploadRecipe().then((value) async {
-                  await recipe.upload(value.id, image).then((value) => {
-                        recipe.imageurl = value,
-                      });
-                  await FirebaseFirestore.instance
-                      .collection('recipes')
-                      .doc(value.id)
-                      .update({'imageurl': recipe.imageurl});
-                  Navigator.pop(context);
-                });
-              } else {
-                ErrorAction.errorMessage(context, "画像の入力がまだです");
-              }
-            }),
-      ],
+          UpLoadList("レシピ名", _updaterecipe, _deleteCategory,
+              [recipe.recipename], width, "(例)卵焼き"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              UpLoadList(
+                  "材料",
+                  _updaterecipe,
+                  _deleteCategory,
+                  recipe.toFoodstuffs(recipe.ingredients),
+                  width / 2.05,
+                  "(例)卵 1個"),
+              UpLoadList(
+                  "調味料",
+                  _updaterecipe,
+                  _deleteCategory,
+                  recipe.toFoodstuffs(recipe.spices),
+                  width / 2.05,
+                  "(例)醤油 小さじ1"),
+            ],
+          ),
+          UpLoadList("説明", _updaterecipe, _deleteCategory, recipe.explain,
+              width, "(例)卵を溶く"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              UpLoadList("調理器具", _updaterecipe, _deleteCategory,
+                  recipe.cookwares, width / 2.05, "(例)フライパン"),
+              UpLoadList("調理方法", _updaterecipe, _deleteCategory,
+                  recipe.cookmethod, width / 2.05, "(例)焼く"),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget uploadButton(double width) {
+    return Container(
+      child: ElevatedButton(
+          child: const Text('投稿する'),
+          onPressed: () {
+            if (recipe.imageurl != "") {
+              recipe.uploadRecipe().then((value) async {
+                await recipe.upload(value.id, image).then((value) => {
+                      recipe.imageurl = value,
+                    });
+                await FirebaseFirestore.instance
+                    .collection('recipes')
+                    .doc(value.id)
+                    .update({'imageurl': recipe.imageurl});
+                Navigator.pop(context);
+              });
+            } else {
+              ErrorAction.errorMessage(context, "画像の入力がまだです");
+            }
+          }),
+      width: width,
     );
   }
 
@@ -107,6 +128,7 @@ class _UpLoadBodyState extends State<UpLoadBody> {
   void _updaterecipe(
       {required String title, required String name, required String amount}) {
     setState(() {
+      print(title);
       if (title == "レシピ名") {
         recipe.recipename = name;
       } else if (title == "材料") {
