@@ -64,6 +64,7 @@ class _SearchVCState extends State<SearchVC> {
                       },
                     ),
                     //種別ラジオボタン
+                    /*
                     Column(
                       children: <Widget>[
                         RadioListTile(
@@ -88,6 +89,7 @@ class _SearchVCState extends State<SearchVC> {
                         ),
                       ],
                     ),
+                    */
                     Container(
                       width: double.infinity,
                       child: ElevatedButton(

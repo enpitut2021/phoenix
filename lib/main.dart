@@ -12,6 +12,7 @@ import 'pages/search_vc/search_vc.dart';
 import 'pages/profil/friend_list.dart';
 import 'pages/profil/register_list.dart';
 import 'pages/profil/profil.dart';
+import 'pages/edit_vc/recepi_edit_page.dart';
 import 'Model/recipe/recipe_models.dart';
 import 'Model/recipe/load_data.dart';
 import 'Model/user/user_model.dart';
@@ -56,7 +57,8 @@ class MyApp extends StatelessWidget {
             '/uploadrecipe': (context) => NewUploadVC(),
             '/profil': (context) => const ProfilPage(),
             '/friendList': (context) => const FriendList(),
-            '/registerPage': (context) => const RegisterList()
+            '/registerPage': (context) => const RegisterList(),
+            '/edit': (context) => RecepiEditPage(),
           },
 
           theme: ThemeData(

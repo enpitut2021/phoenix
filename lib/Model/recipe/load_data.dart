@@ -55,7 +55,7 @@ class LoadRecipes {
       int time = _data['time'];
 
       Recipe recipe = Recipe(
-        id: _data['id'].toString(),
+        id: _data.id,
         recipename: _data['recipe_name'],
         imageurl: _data['imageurl'],
         ingredients: ingredients,
