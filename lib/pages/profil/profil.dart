@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProfilPage extends StatefulWidget {
@@ -8,6 +9,8 @@ class ProfilPage extends StatefulWidget {
 }
 
 class _ProfilPageState extends State<ProfilPage> {
+  final user = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -18,7 +21,7 @@ class _ProfilPageState extends State<ProfilPage> {
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () => {},
+            onPressed: () => {Navigator.pushNamed((context), '/login')},
           ),
         ],
       ),
@@ -26,7 +29,7 @@ class _ProfilPageState extends State<ProfilPage> {
         children: <Widget>[
           Container(
             child: const Text(
-              "名前",
+              "Phoenix 一同",
               style: TextStyle(fontSize: 20),
             ),
             alignment: Alignment.center,

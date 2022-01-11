@@ -1,7 +1,9 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:phoenix/pages/login_vc/login_vc.dart';
 import 'package:phoenix/pages/upload_recipe/upload_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -38,6 +40,7 @@ class MyApp extends StatelessWidget {
 
   final UserState userstate = UserState();
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     const locale = Locale("ja", "JP");
@@ -56,7 +59,8 @@ class MyApp extends StatelessWidget {
             '/uploadrecipe': (context) => NewUploadVC(),
             '/profil': (context) => const ProfilPage(),
             '/friendList': (context) => const FriendList(),
-            '/registerPage': (context) => const RegisterList()
+            '/registerPage': (context) => const RegisterList(),
+            '/login': (context) => const LoginVC()
           },
 
           theme: ThemeData(

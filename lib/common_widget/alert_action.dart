@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ButtonAction {
-  Future<String> buttonPressed(context) {
+  static Future<String> buttonPressed(context, message) {
     String addword = "";
     showDialog(
       context: context,
@@ -9,7 +9,7 @@ class ButtonAction {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text('リストに追加'),
+              title: Text(message),
               actions: <Widget>[
                 TextFormField(
                   onFieldSubmitted: (String str) {
