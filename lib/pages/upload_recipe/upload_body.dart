@@ -26,7 +26,7 @@ class _UpLoadListState extends State<UpLoadList> {
   Widget build(BuildContext context) {
     return CommonList(
         delete: widget.delete,
-        titleWidget: _title(widget.title, context),
+        titleWidget: _title(widget.title),
         title: widget.title,
         width: widget.screenWidth,
         materials: widget.elements,
@@ -35,7 +35,7 @@ class _UpLoadListState extends State<UpLoadList> {
         dispalyButton: widget.displayAddButton);
   }
 
-  Widget _title(String text, BuildContext context) {
+  Widget _title(String text) {
     return SizedBox(
       width: widget.screenWidth,
       height: 40,
@@ -67,14 +67,14 @@ class _UpLoadListState extends State<UpLoadList> {
           ),
         ),
         onPressed: () {
-          _makedialog(context);
+          _makedialog();
         },
       ),
       alignment: Alignment.bottomRight,
     );
   }
 
-  void _makedialog(BuildContext context) {
+  void _makedialog() {
     List<Widget> displayAddDaialog = _setRecipeDataWidget();
     displayAddDaialog.add(Container(
         width: double.infinity,
