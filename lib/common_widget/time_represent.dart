@@ -66,7 +66,18 @@ class _timeDropdownButtunState extends State<timeDropdownButtun> {
 }
 
 Widget time_widget(int time) {
-  if (time != 100) {
+  if (time == 60) {
+    return Container(
+      child: Text(
+        time.toString() + "分",
+        style: const TextStyle(fontSize: 24),
+      ),
+      decoration: BoxDecoration(
+        color: Colors.orange,
+        borderRadius: BorderRadius.circular(10),
+      ),
+    );
+  } else if (time != 100) {
     return Container(
       child: Text(
         time.toString() + "分",

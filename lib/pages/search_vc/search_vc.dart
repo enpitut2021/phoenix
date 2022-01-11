@@ -13,7 +13,7 @@ class SearchVC extends StatefulWidget {
 enum radiovalue { ingredient, spices } // キーワードの種類
 
 class _SearchVCState extends State<SearchVC> {
-  int _time_bound = 60;
+  int _time_bound = 100;
   List<String> searchwords = [];
   String addkeyword = '';
   radiovalue? keywordtype = radiovalue.ingredient;
