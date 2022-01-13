@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ButtonAction {
-  static Future<String> buttonPressed(context, message) {
+  static Future<String> buttonPressed(context, message) async {
     String addword = "";
-    showDialog(
+    await showDialog(
       context: context,
       builder: (context) {
         return StatefulBuilder(

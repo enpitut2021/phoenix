@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -63,15 +65,20 @@ class _LoginBodyState extends State<LoginBodyVC> {
               if (password.length < 8) {
                 ErrorAction.errorMessage(context, "パスワードを8文字以上で入力してくだい");
               } else {
-                try {
-                  final auth = FirebaseAuth.instance;
-                  final result = await auth.createUserWithEmailAndPassword(
-                      email: email, password: password);
-                  ButtonAction.buttonPressed(context, "表示する名前を決めてください")
-                      .then((value) => {result.user!.updateDisplayName(value)});
-                } catch (e) {
-                  ErrorAction.errorMessage(context, "登録できませんでした");
-                }
+                await _register(email: email, password: password)
+                    .then((user) async {
+                  if (user != null) {
+                    await ButtonAction.buttonPressed(context, "表示する名前を決めてください")
+                        .then((displayname) async {
+                      await user.updateDisplayName(displayname);
+                    });
+
+                    Navigator.of(context)
+                        .pop(FirebaseAuth.instance.currentUser!.displayName);
+                  } else {
+                    ErrorAction.errorMessage(context, "登録に失敗しました。");
+                  }
+                });
               }
             },
           ),
@@ -82,17 +89,40 @@ class _LoginBodyState extends State<LoginBodyVC> {
           child: ElevatedButton(
             child: const Text("ログイン"),
             onPressed: () async {
-              final auth = FirebaseAuth.instance;
-              try {
-                await auth.signInWithEmailAndPassword(
-                    email: email, password: password);
-              } catch (e) {
-                ErrorAction.errorMessage(context, "ログインに失敗しました。");
-              }
+              await _login(email: email, password: password).then((user) {
+                if (user != null) {
+                  Navigator.of(context).pop(user.displayName!);
+                } else {
+                  ErrorAction.errorMessage(context, "ログインに失敗しました。");
+                }
+              });
             },
           ),
         ),
       ],
     );
   }
+}
+
+Future<User?> _login({required String email, required String password}) async {
+  final auth = FirebaseAuth.instance;
+  try {
+    await auth.signInWithEmailAndPassword(email: email, password: password);
+  } catch (e) {}
+  return Future<User?>.value(auth.currentUser);
+}
+
+Future<User?> _register(
+    {required String email, required String password}) async {
+  final auth = FirebaseAuth.instance;
+  try {
+    final auth = FirebaseAuth.instance;
+    final result = await auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    return Future<User?>.value(result.user);
+  } catch (e) {
+    auth.signOut();
+  }
+
+  return Future<User?>.value(auth.currentUser);
 }

@@ -10,6 +10,16 @@ class ProfilPage extends StatefulWidget {
 
 class _ProfilPageState extends State<ProfilPage> {
   final user = FirebaseAuth.instance.currentUser;
+  String userName = "未設定";
+
+  @override
+  void initState() {
+    FirebaseAuth.instance.signOut();
+    super.initState();
+    if (user != null) {
+      userName = user!.displayName!.toString();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +31,22 @@ class _ProfilPageState extends State<ProfilPage> {
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () => {Navigator.pushNamed((context), '/login')},
+            onPressed: () => {
+              Navigator.pushNamed((context), '/login').then((value) {
+                setState(() {
+                  userName = value.toString();
+                });
+              })
+            },
           ),
         ],
       ),
       body: Column(
         children: <Widget>[
           Container(
-            child: const Text(
-              "Phoenix 一同",
-              style: TextStyle(fontSize: 20),
+            child: Text(
+              userName,
+              style: const TextStyle(fontSize: 20),
             ),
             alignment: Alignment.center,
             color: Colors.orange,
