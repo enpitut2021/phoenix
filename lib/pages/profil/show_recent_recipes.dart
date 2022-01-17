@@ -1,38 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:phoenix/Model/recipe/recipe_models.dart';
 
-class RegisterList extends StatefulWidget {
-  // Recipes uploadRecipes;
-
-  RegisterList({Key? key}) : super(key: key);
+class RecentRecipes extends StatefulWidget {
+  Recipes recipes;
+  RecentRecipes({Key? key, required this.recipes}) : super(key: key);
 
   @override
-  _SuggestRegisterListState createState() => _SuggestRegisterListState();
+  _RecentRecipesState createState() => _RecentRecipesState();
 }
 
-class _SuggestRegisterListState extends State<RegisterList> {
+class _RecentRecipesState extends State<RecentRecipes> {
   @override
   Widget build(BuildContext context) {
-    Recipes recipes = (ModalRoute.of(context)!.settings.arguments as Recipes);
-    final width = MediaQuery.of(context).size.width;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('投稿したレシピリスト'),
-      ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: recipes.recipes.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            child: _tile(recipes.get(at: index), width),
-          );
-        },
-      ),
-    );
+    return Expanded(
+        child: GridView.count(
+      crossAxisCount: 3,
+      children: _createRecentRecipesList(),
+    ));
   }
 
-  Widget _tile(Recipe recipe, double width) {
+  List<Widget> _createRecentRecipesList() {
+    List<Widget> _recentRecipes = [];
+    for (Recipe recipe in widget.recipes.recipes) {
+      _recentRecipes.add(_tile(recipe));
+    }
+    return _recentRecipes;
+  }
+
+  Widget _tile(Recipe recipe) {
+    final width = MediaQuery.of(context).size.width;
     return Card(
       color: Colors.orange.shade200,
       child: ListTile(
@@ -45,12 +41,10 @@ class _SuggestRegisterListState extends State<RegisterList> {
                 Container(
                   child: Image.network(
                     recipe.imageurl,
-                    width: width,
-                    height: width / 2,
                     fit: BoxFit.cover,
                   ),
-                  // width: width,
-                  // height: width / 2,
+                  width: width / 3,
+                  height: width / 3,
                 ),
               ],
             ),

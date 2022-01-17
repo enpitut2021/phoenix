@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Recipes {
   List<Recipe> recipes = [];
-  Recipes({required recipes});
+  Recipes({recipes});
 
   Recipes filterrecipe(
       {required List<String> contains, required int time_bound}) {
@@ -48,6 +48,24 @@ class Recipes {
 
   void remove({required int at}) {
     recipes.removeAt(at);
+  }
+
+  Recipe get({required int at}) {
+    try {
+      return recipes[at];
+    } catch (e) {
+      print("要素数エラーダァ");
+    }
+    return Recipe(
+        id: '',
+        recipename: '',
+        imageurl: '',
+        ingredients: [],
+        cookmethod: [],
+        cookwares: [],
+        explain: [],
+        spices: [],
+        time: 100);
   }
 }
 

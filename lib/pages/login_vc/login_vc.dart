@@ -130,10 +130,11 @@ void _makeAccountInfo(String uid) async {
     await users.doc(uid).set({
       'cook_count': 0,
       'friends_id': [],
-      'recent_recipes_id': [],
-      'you_make_recipes': []
+      'favorit_recipes_id': [],
+      'you_upload_recipes_id': []
     });
   } catch (e) {
+    // ignore: avoid_print
     print("データベースの作成に失敗しました。");
   }
 }

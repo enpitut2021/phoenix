@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:phoenix/common_widget/check_login.dart';
 import 'package:phoenix/pages/login_vc/login_vc.dart';
 import 'package:phoenix/pages/upload_recipe/upload_page.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 ///mylibrary~
 import 'pages/detail_vc/detail_vc.dart';
 import 'pages/search_vc/search_vc.dart';
-import 'pages/profil/friend_list.dart';
 import 'pages/profil/register_list.dart';
 import 'pages/profil/profil.dart';
 import 'Model/recipe/recipe_models.dart';
@@ -32,6 +32,8 @@ class UserState extends ChangeNotifier {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  //for dbug
+  FirebaseAuth.instance.signOut();
   runApp(MyApp());
 }
 
@@ -58,8 +60,7 @@ class MyApp extends StatelessWidget {
             '/search': (context) => const SearchVC(),
             '/uploadrecipe': (context) => NewUploadVC(),
             '/profil': (context) => const ProfilPage(),
-            '/friendList': (context) => const FriendList(),
-            '/registerPage': (context) => const RegisterList(),
+            '/registerPage': (context) => RegisterList(),
             '/login': (context) => const LoginVC()
           },
 
@@ -99,7 +100,7 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
   @override
   void initState() {
     super.initState();
-    loadSectiontask.loadFirestoreAsset().then((value) {
+    LoadRecipes.loadFirestoreAsset().then((value) {
       setState(() {
         recipes = value;
         assert(recipes.recipes.isNotEmpty);
@@ -140,13 +141,25 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
           ListTile(
             title: const Text('レシピ投稿'),
             onTap: () {
-              Navigator.pushNamed((context), '/uploadrecipe');
+              checkLoginStatus().then((status) {
+                if (status) {
+                  Navigator.pushNamed((context), '/uploadrecipe');
+                } else {
+                  Navigator.pushNamed((context), '/login');
+                }
+              });
             },
           ),
           ListTile(
             title: const Text('プロフィール'),
             onTap: () {
-              Navigator.pushNamed((context), '/profil');
+              checkLoginStatus().then((status) {
+                if (status) {
+                  Navigator.pushNamed((context), '/profil');
+                } else {
+                  Navigator.pushNamed((context), '/login');
+                }
+              });
             },
           ),
           // ListTile(
@@ -191,7 +204,7 @@ class _SuggestRecipesState extends State<SuggestRecipes> {
   }
 
   Future<void> _onRefresh() async {
-    await loadSectiontask.loadFirestoreAsset().then((value) {
+    await LoadRecipes.loadFirestoreAsset().then((value) {
       setState(() {
         recipes = value;
         assert(recipes.recipes.isNotEmpty);

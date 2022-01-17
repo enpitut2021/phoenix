@@ -1,5 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:phoenix/Model/recipe/recipe_models.dart';
+import 'package:phoenix/Model/recipe/load_data.dart';
+import 'package:phoenix/pages/profil/profill_option_bar.dart';
+import 'package:phoenix/pages/profil/show_recent_recipes.dart';
 
 class ProfilPage extends StatefulWidget {
   const ProfilPage({Key? key}) : super(key: key);
@@ -11,19 +16,46 @@ class ProfilPage extends StatefulWidget {
 class _ProfilPageState extends State<ProfilPage> {
   final user = FirebaseAuth.instance.currentUser;
   String userName = "未設定";
+  Recipes uploadRecipes = Recipes();
+  Recipes recentRecipes = Recipes();
+  int cookCount = 0;
 
   @override
   void initState() {
     super.initState();
     if (user != null) {
       userName = user!.displayName!;
+      final _usersInfo =
+          FirebaseFirestore.instance.collection('Users').doc(user!.uid);
+      List<String> _recipesId = [];
+      List<String> _recentRecipesId = [];
+
+      _usersInfo.snapshots().map((snapshot) {
+        final _data = snapshot.data()!;
+        cookCount = _data['cook_count'] as int;
+        _recipesId = _data['you_upload_recipes_id'] as List<String>;
+        _recentRecipesId = _data['recent_recipes_id'] as List<String>;
+      });
+
+      for (String recipeId in _recipesId) {
+        final _recipe =
+            LoadRecipes.loadFirestoreAssetAt(recipeId).then((recipe) {
+          uploadRecipes.add(recipe: recipe);
+        });
+      }
+
+      for (String recipeId in _recentRecipesId) {
+        final _recipe =
+            LoadRecipes.loadFirestoreAssetAt(recipeId).then((recipe) {
+          recentRecipes.add(recipe: recipe);
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('プロフィール'),
@@ -50,84 +82,18 @@ class _ProfilPageState extends State<ProfilPage> {
             alignment: Alignment.center,
             color: Colors.orange,
           ),
-          _goto_friedlist_or_registerrecipe(context),
+          ProfillOption(cookCount: cookCount, uploadRecipes: uploadRecipes),
           Container(
             child: const Text(
-              "最近作ったメニュー",
+              "お気に入りにしたレシピ達！！！",
               style: TextStyle(fontSize: 20),
             ),
             alignment: Alignment.center,
             color: Colors.orange,
           ),
-          _recentlyReciped(<int>[1, 2, 3, 4, 5, 6, 7, 8, 9])
+          RecentRecipes(recipes: recentRecipes),
         ],
       ),
     );
   }
-}
-
-// ignore: non_constant_identifier_names
-Widget _goto_friedlist_or_registerrecipe(BuildContext context) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
-      Container(
-        child: ElevatedButton(
-          child: const Icon(Icons.person),
-          style: ElevatedButton.styleFrom(
-            primary: Colors.white,
-            shape: const CircleBorder(
-              side: BorderSide(
-                color: Colors.black,
-                width: 1,
-                style: BorderStyle.solid,
-              ),
-            ),
-          ),
-          onPressed: () {
-            Navigator.pushNamed((context), '/friendList');
-          },
-        ),
-        alignment: Alignment.center,
-      ),
-      Container(
-        child: Row(
-            children: const <Widget>[Icon(Icons.restaurant), Text(": 15回")]),
-        alignment: Alignment.center,
-      ),
-      Container(
-        child: ElevatedButton(
-          child: const Icon(Icons.document_scanner_sharp),
-          style: ElevatedButton.styleFrom(
-            primary: Colors.white,
-            shape: const CircleBorder(
-              side: BorderSide(
-                color: Colors.black,
-                width: 1,
-                style: BorderStyle.solid,
-              ),
-            ),
-          ),
-          onPressed: () {
-            Navigator.pushNamed((context), '/registerPage');
-          },
-        ),
-        alignment: Alignment.center,
-      ),
-    ],
-  );
-}
-
-Widget _recentlyReciped(List<int> ids) {
-  return Expanded(
-      child: GridView.count(
-    crossAxisCount: 3,
-    children: List.generate(9, (index) {
-      return Container(
-          child: Text('$index'),
-          color: Colors.grey,
-          alignment: Alignment.center,
-          margin: const EdgeInsets.fromLTRB(5, 5, 5, 5));
-    }),
-  ));
 }
