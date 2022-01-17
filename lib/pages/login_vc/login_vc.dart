@@ -1,7 +1,5 @@
-import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:phoenix/common_widget/alert_action.dart';
 
@@ -17,9 +15,6 @@ class LoginVC extends StatelessWidget {
       body: const LoginBodyVC(),
     );
   }
-
-  @override
-  _LoginBodyState createState() => _LoginBodyState();
 }
 
 class LoginBodyVC extends StatefulWidget {
@@ -73,6 +68,8 @@ class _LoginBodyState extends State<LoginBodyVC> {
                       await user.updateDisplayName(displayname);
                     });
 
+                    _makeAccountInfo(user.uid);
+
                     Navigator.of(context)
                         .pop(FirebaseAuth.instance.currentUser!.displayName);
                   } else {
@@ -125,4 +122,18 @@ Future<User?> _register(
   }
 
   return Future<User?>.value(auth.currentUser);
+}
+
+void _makeAccountInfo(String uid) async {
+  final users = FirebaseFirestore.instance.collection('Users');
+  try {
+    await users.doc(uid).set({
+      'cook_count': 0,
+      'friends_id': [],
+      'recent_recipes_id': [],
+      'you_make_recipes': []
+    });
+  } catch (e) {
+    print("データベースの作成に失敗しました。");
+  }
 }

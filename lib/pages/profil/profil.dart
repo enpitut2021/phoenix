@@ -14,10 +14,9 @@ class _ProfilPageState extends State<ProfilPage> {
 
   @override
   void initState() {
-    FirebaseAuth.instance.signOut();
     super.initState();
     if (user != null) {
-      userName = user!.displayName!.toString();
+      userName = user!.displayName!;
     }
   }
 
