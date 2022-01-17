@@ -14,6 +14,18 @@ class DetailVC extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(recipe.recipename),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () => {
+              Navigator.pushNamed(
+                context,
+                '/edit',
+                arguments: RecipeArgument(recipe),
+              )
+            },
+          ),
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,

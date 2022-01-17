@@ -23,15 +23,20 @@ class Recipes {
       }
       return filteredrecipes;
     } else {
+      for (var obj in recipes) {
+        filteredrecipes.add(recipe: obj);
+        ids.add(obj.id);
+      }
+
       for (var contein in contains) {
         var tmp = recipes.where((recipe) =>
-            ((recipe.hasIngredient(searchword: contein) ||
-                    (recipe.hasSpice(searchword: contein))) &&
+            ((!recipe.hasIngredient(searchword: contein) &&
+                    (!recipe.hasSpice(searchword: contein))) ||
                 //recipe.aleadyExist(ids) &&
-                (recipe.time <= time_bound)));
+                (recipe.time > time_bound)));
         for (var obj in tmp) {
-          filteredrecipes.add(recipe: obj);
-          ids.add(obj.id);
+          filteredrecipes.remove(recipe: obj);
+          ids.remove(obj.id);
         }
       }
       return filteredrecipes;
@@ -46,8 +51,12 @@ class Recipes {
     recipes.clear();
   }
 
-  void remove({required int at}) {
+  void removeAt({required int at}) {
     recipes.removeAt(at);
+  }
+
+  void remove({required Recipe recipe}) {
+    recipes.remove(recipe);
   }
 }
 
@@ -154,6 +163,44 @@ class Recipe {
     //     .doc(refiid.id)
     //     .update({'imageurl': imageurl});
     return Future<DocumentReference<Map<String, dynamic>>>.value(refiid);
+  }
+
+  void updateRecipe() async {
+    List<Map<String, String>> tmp1 = [], tmp2 = [];
+    var i = 0;
+    for (var _ingredients in ingredients) {
+      tmp1.add({'ingredient': 'quantity'});
+      tmp1[i]['ingredient'] = _ingredients.name;
+      tmp1[i]['quantity'] = _ingredients.amount;
+      i++;
+    }
+    var j = 0;
+    for (var _spices in spices) {
+      tmp2.add({'spice': 'amount'});
+      tmp2[j]['spice'] = _spices.name;
+      tmp2[j]['amount'] = _spices.amount;
+      j++;
+    }
+
+    await FirebaseFirestore.instance.collection('recipes').doc(this.id).update({
+      'recipe_name': recipename,
+      'ingredients': tmp1,
+      'method': cookmethod,
+      'cookwares': cookwares,
+      'explain': explain,
+      'spices': tmp2,
+      'time': time,
+    });
+
+    // // 画像をfirestorageにぶち込む
+    // await imagePicker.upload(refiid.id).then((value) => {
+    //       recipe.imageurl = value,
+    //     });
+    // await FirebaseFirestore.instance
+    //     .collection('recipes')
+    //     .doc(refiid.id)
+    //     .update({'imageurl': imageurl});
+    //return Future<DocumentReference<Map<String, dynamic>>>.value(refiid);
   }
 
   int _flag = 0;
