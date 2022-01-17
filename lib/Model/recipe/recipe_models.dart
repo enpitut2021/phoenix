@@ -23,15 +23,20 @@ class Recipes {
       }
       return filteredrecipes;
     } else {
+      for (var obj in recipes) {
+        filteredrecipes.add(recipe: obj);
+        ids.add(obj.id);
+      }
+
       for (var contein in contains) {
         var tmp = recipes.where((recipe) =>
-            ((recipe.hasIngredient(searchword: contein) ||
-                    (recipe.hasSpice(searchword: contein))) &&
+            ((!recipe.hasIngredient(searchword: contein) &&
+                    (!recipe.hasSpice(searchword: contein))) ||
                 //recipe.aleadyExist(ids) &&
-                (recipe.time <= time_bound)));
+                (recipe.time > time_bound)));
         for (var obj in tmp) {
-          filteredrecipes.add(recipe: obj);
-          ids.add(obj.id);
+          filteredrecipes.remove(recipe: obj);
+          ids.remove(obj.id);
         }
       }
       return filteredrecipes;
@@ -46,8 +51,12 @@ class Recipes {
     recipes.clear();
   }
 
-  void remove({required int at}) {
+  void removeAt({required int at}) {
     recipes.removeAt(at);
+  }
+
+  void remove({required Recipe recipe}) {
+    recipes.remove(recipe);
   }
 }
 
