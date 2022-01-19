@@ -11,6 +11,7 @@ import 'pages/detail_vc/detail_vc.dart';
 import 'pages/search_vc/search_vc.dart';
 import 'pages/profil/register_list.dart';
 import 'pages/profil/profil.dart';
+import 'pages/edit_vc/recepi_edit_page.dart';
 import 'Model/recipe/recipe_models.dart';
 import 'Model/recipe/load_data.dart';
 import 'Model/user/user_model.dart';
@@ -59,8 +60,13 @@ class MyApp extends StatelessWidget {
             '/search': (context) => const SearchVC(),
             '/uploadrecipe': (context) => NewUploadVC(),
             '/profil': (context) => const ProfilPage(),
+
             '/registerPage': (context) => RegisterList(),
             '/login': (context) => const LoginVC()
+
+            '/registerPage': (context) => const RegisterList(),
+            '/edit': (context) => RecepiEditPage(),
+
           },
 
           theme: ThemeData(

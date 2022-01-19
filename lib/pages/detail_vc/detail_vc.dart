@@ -23,8 +23,21 @@ class _DetailVCState extends State<DetailVC> {
             .recipe; //type is Recipe
 
     return Scaffold(
+
         appBar: AppBar(
           title: Text(recipe.recipename),
+          actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () => {
+              Navigator.pushNamed(
+                context,
+                '/edit',
+                arguments: RecipeArgument(recipe),
+              )
+            },
+          ),
+        ],
         ),
         body: Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -91,6 +104,7 @@ class _DetailVCState extends State<DetailVC> {
             });
           });
         },
+
       ),
       alignment: Alignment.bottomRight,
     );
