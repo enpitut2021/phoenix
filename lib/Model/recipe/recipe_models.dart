@@ -56,7 +56,6 @@ class Recipes {
     recipes.removeAt(at);
   }
 
-
   void remove({required String id}) {
     recipes.removeWhere((element) => element.id == id);
   }
@@ -86,10 +85,10 @@ class Recipes {
         explain: [],
         spices: [],
         time: 100);
+  }
 
   void _remove({required Recipe recipe}) {
     recipes.remove(recipe);
-
   }
 }
 

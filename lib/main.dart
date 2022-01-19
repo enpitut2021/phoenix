@@ -60,13 +60,9 @@ class MyApp extends StatelessWidget {
             '/search': (context) => const SearchVC(),
             '/uploadrecipe': (context) => NewUploadVC(),
             '/profil': (context) => const ProfilPage(),
-
-            '/registerPage': (context) => RegisterList(),
-            '/login': (context) => const LoginVC()
-
+            '/login': (context) => const LoginVC(),
             '/registerPage': (context) => const RegisterList(),
             '/edit': (context) => RecepiEditPage(),
-
           },
 
           theme: ThemeData(

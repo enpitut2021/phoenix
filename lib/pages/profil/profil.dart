@@ -32,18 +32,18 @@ class _ProfilPageState extends State<ProfilPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('プロフィール'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () => {
-              Navigator.pushNamed((context), '/login').then((value) {
-                setState(() {
-                  userName = value.toString();
-                });
-              })
-            },
-          ),
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: const Icon(Icons.settings),
+        //     onPressed: () => {
+        //       Navigator.pushNamed((context), '/login').then((value) {
+        //         setState(() {
+        //           userName = value.toString();
+        //         });
+        //       })
+        //     },
+        //   ),
+        // ],
       ),
       body: Column(
         children: <Widget>[

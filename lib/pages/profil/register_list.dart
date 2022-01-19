@@ -3,8 +3,7 @@ import 'package:phoenix/Model/recipe/recipe_models.dart';
 
 class RegisterList extends StatefulWidget {
   // Recipes uploadRecipes;
-
-  RegisterList({Key? key}) : super(key: key);
+  const RegisterList({Key? key}) : super(key: key);
 
   @override
   _SuggestRegisterListState createState() => _SuggestRegisterListState();
