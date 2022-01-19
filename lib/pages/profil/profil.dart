@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:phoenix/Model/recipe/recipe_models.dart';
 import 'package:phoenix/Model/recipe/load_data.dart';
+import 'package:phoenix/common_widget/check_login.dart';
 import 'package:phoenix/pages/profil/profill_option_bar.dart';
 import 'package:phoenix/pages/profil/show_recent_recipes.dart';
 
@@ -19,38 +20,10 @@ class _ProfilPageState extends State<ProfilPage> {
   Recipes uploadRecipes = Recipes();
   Recipes recentRecipes = Recipes();
   int cookCount = 0;
-
   @override
   void initState() {
     super.initState();
-    if (user != null) {
-      userName = user!.displayName!;
-      final _usersInfo =
-          FirebaseFirestore.instance.collection('Users').doc(user!.uid);
-      List<String> _recipesId = [];
-      List<String> _recentRecipesId = [];
-
-      _usersInfo.snapshots().map((snapshot) {
-        final _data = snapshot.data()!;
-        cookCount = _data['cook_count'] as int;
-        _recipesId = _data['you_upload_recipes_id'] as List<String>;
-        _recentRecipesId = _data['recent_recipes_id'] as List<String>;
-      });
-
-      for (String recipeId in _recipesId) {
-        final _recipe =
-            LoadRecipes.loadFirestoreAssetAt(recipeId).then((recipe) {
-          uploadRecipes.add(recipe: recipe);
-        });
-      }
-
-      for (String recipeId in _recentRecipesId) {
-        final _recipe =
-            LoadRecipes.loadFirestoreAssetAt(recipeId).then((recipe) {
-          recentRecipes.add(recipe: recipe);
-        });
-      }
-    }
+    _fetch();
   }
 
   @override
@@ -91,9 +64,56 @@ class _ProfilPageState extends State<ProfilPage> {
             alignment: Alignment.center,
             color: Colors.orange,
           ),
-          RecentRecipes(recipes: recentRecipes),
+          RecentRecipes(recipes: recentRecipes, delete: _deleteRecentRecipe),
         ],
       ),
     );
+  }
+
+  Future<void> _fetch() async {
+    await checkLoginStatus().then((status) async {
+      if (status) {
+        userName = user!.displayName!;
+        final _usersInfo =
+            FirebaseFirestore.instance.collection('Users').doc(user!.uid);
+        List<dynamic> _recipesId = [];
+        List<dynamic> _recentRecipesId = [];
+
+        await _usersInfo.get().then((data) {
+          cookCount = data['cook_count'] as int;
+          _recipesId = data['you_upload_recipes_id'].cast<String>();
+          _recentRecipesId = data['favorit_recipes_id'].cast<String>();
+        });
+
+        for (String recipeId in _recipesId) {
+          await LoadRecipes.loadFirestoreAssetAt(recipeId).then((recipe) {
+            uploadRecipes.add(recipe: recipe);
+          });
+        }
+
+        for (String recipeId in _recentRecipesId) {
+          await LoadRecipes.loadFirestoreAssetAt(recipeId).then((recipe) {
+            recentRecipes.add(recipe: recipe);
+          });
+        }
+      }
+      setState(() {
+        print("Hello world");
+      });
+    });
+    return Future<void>.value();
+  }
+
+  void _deleteRecentRecipe({required String recipeID}) {
+    setState(() {
+      final user = FirebaseAuth.instance.currentUser;
+      final userInfo =
+          FirebaseFirestore.instance.collection('Users').doc(user!.uid);
+
+      recentRecipes.remove(id: recipeID);
+      userInfo.update({
+        'favorit_recipes_id': recentRecipes.getRecipeIDs(),
+      });
+    });
   }
 }

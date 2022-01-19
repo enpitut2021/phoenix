@@ -1,9 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:phoenix/Model/recipe/recipe_models.dart';
+import 'package:phoenix/common_widget/alert_action.dart';
+import 'package:phoenix/common_widget/check_login.dart';
 
 class RecentRecipes extends StatefulWidget {
   Recipes recipes;
-  RecentRecipes({Key? key, required this.recipes}) : super(key: key);
+  final Function delete;
+  RecentRecipes({Key? key, required this.recipes, required this.delete})
+      : super(key: key);
 
   @override
   _RecentRecipesState createState() => _RecentRecipesState();
@@ -38,13 +44,11 @@ class _RecentRecipesState extends State<RecentRecipes> {
             Stack(
               alignment: Alignment.topLeft,
               children: [
-                Container(
-                  child: Image.network(
-                    recipe.imageurl,
-                    fit: BoxFit.cover,
-                  ),
-                  width: width / 3,
-                  height: width / 3,
+                Image.network(
+                  recipe.imageurl,
+                  fit: BoxFit.fitHeight,
+                  width: width / 4,
+                  height: width / 4,
                 ),
               ],
             ),
@@ -52,7 +56,7 @@ class _RecentRecipesState extends State<RecentRecipes> {
               child: Container(
                 child: Text(
                   recipe.recipename,
-                  style: const TextStyle(fontSize: 24),
+                  style: const TextStyle(fontSize: 10),
                 ),
                 decoration: BoxDecoration(
                   color: Colors.orange,
@@ -68,6 +72,22 @@ class _RecentRecipesState extends State<RecentRecipes> {
             '/detail',
             arguments: RecipeArgument(recipe),
           );
+        },
+        onLongPress: () {
+          setState(() {
+            checkLoginStatus().then((status) {
+              if (status) {
+                ErrorAction.woringMessage(context, "このレシピをお気に入りから削除ますがよろしいですか？")
+                    .then((yes) {
+                  if (yes) {
+                    widget.delete(recipeID: recipe.id);
+                  }
+                });
+              } else {
+                ErrorAction.errorMessage(context, "ログインが確認できませんでした。");
+              }
+            });
+          });
         },
       ),
     );

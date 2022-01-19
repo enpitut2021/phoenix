@@ -2,13 +2,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
-
 ///package~
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 //my library
 import 'recipe_models.dart';
@@ -20,7 +16,8 @@ class LoadRecipes {
         await FirebaseFirestore.instance.collection('recipes').get();
 
     for (final _data in _loadData.docs) {
-      Recipe recipe = _reconstructRecipe(_data);
+      Recipe recipe =
+          _reconstructRecipe(_data as DocumentSnapshot<Map<String, dynamic>>);
       recipes.add(recipe: recipe);
     }
     return recipes;
@@ -33,12 +30,13 @@ class LoadRecipes {
         .doc(recipeId)
         .get();
 
-    _recipe = _reconstructRecipe(recipeDoc as QueryDocumentSnapshot<Object?>);
+    _recipe = _reconstructRecipe(recipeDoc);
 
     return Future<Recipe>.value(_recipe);
   }
 
-  static Recipe _reconstructRecipe(QueryDocumentSnapshot<Object?> _data) {
+  static Recipe _reconstructRecipe(
+      DocumentSnapshot<Map<String, dynamic>> _data) {
     List<Foodstuff> ingredients = [];
     for (var element in _data['ingredients']) {
       ingredients.add(Foodstuff(
@@ -72,7 +70,7 @@ class LoadRecipes {
     int time = _data['time'];
 
     Recipe recipe = Recipe(
-      id: _data['id'].toString(),
+      id: _data.id,
       recipename: _data['recipe_name'],
       imageurl: _data['imageurl'],
       ingredients: ingredients,

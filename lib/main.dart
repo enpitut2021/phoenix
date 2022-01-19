@@ -32,8 +32,10 @@ class UserState extends ChangeNotifier {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   //for dbug
-  FirebaseAuth.instance.signOut();
+  // FirebaseAuth.instance.signOut();
+
   runApp(MyApp());
 }
 
@@ -56,7 +58,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             '/': (context) => const SuggestRecipes(),
-            '/detail': (context) => DetailVC(),
+            '/detail': (context) => const DetailVC(),
             '/search': (context) => const SearchVC(),
             '/uploadrecipe': (context) => NewUploadVC(),
             '/profil': (context) => const ProfilPage(),

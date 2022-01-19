@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -46,8 +47,21 @@ class Recipes {
     recipes.clear();
   }
 
-  void remove({required int at}) {
+  void removeAt({required int at}) {
     recipes.removeAt(at);
+  }
+
+  void remove({required String id}) {
+    recipes.removeWhere((element) => element.id == id);
+  }
+
+  List<String> getRecipeIDs() {
+    List<String> ids = [];
+    for (var recipe in recipes) {
+      String tmpID = recipe.id;
+      ids.add(tmpID);
+    }
+    return ids;
   }
 
   Recipe get({required int at}) {

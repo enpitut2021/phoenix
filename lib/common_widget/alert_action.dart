@@ -63,4 +63,46 @@ class ErrorAction {
     );
     return Future<String>.value(errorMessage);
   }
+
+  static Future<bool> woringMessage(
+      BuildContext context, String message) async {
+    bool yes = true;
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(
+                message,
+                textAlign: TextAlign.center,
+              ),
+              actions: <Widget>[
+                Container(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    child: const Text("はい"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    child: const Text("いいえ"),
+                    onPressed: () {
+                      yes = false;
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+    return Future<bool>.value(yes);
+  }
 }
