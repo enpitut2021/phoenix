@@ -98,6 +98,7 @@ class _ProfilPageState extends State<ProfilPage> {
         }
       }
       setState(() {
+        // ignore: avoid_print
         print("Hello world");
       });
     });

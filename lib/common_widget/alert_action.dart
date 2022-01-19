@@ -36,9 +36,10 @@ class ButtonAction {
 }
 
 class ErrorAction {
-  static Future<String> errorMessage(BuildContext context, String message) {
+  static Future<String> errorMessage(
+      BuildContext context, String message) async {
     String errorMessage = "empty_error";
-    showDialog(
+    await showDialog(
       context: context,
       builder: (context) {
         return StatefulBuilder(
