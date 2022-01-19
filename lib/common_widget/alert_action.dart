@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class ButtonAction {
-  Future<String> buttonPressed(context) {
+  static Future<String> buttonPressed(context, message) async {
     String addword = "";
-    showDialog(
+    await showDialog(
       context: context,
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text('リストに追加'),
+              title: Text(message),
               actions: <Widget>[
                 TextFormField(
                   onFieldSubmitted: (String str) {
@@ -36,9 +36,10 @@ class ButtonAction {
 }
 
 class ErrorAction {
-  static Future<String> errorMessage(BuildContext context, String message) {
+  static Future<String> errorMessage(
+      BuildContext context, String message) async {
     String errorMessage = "empty_error";
-    showDialog(
+    await showDialog(
       context: context,
       builder: (context) {
         return StatefulBuilder(
@@ -62,5 +63,47 @@ class ErrorAction {
       },
     );
     return Future<String>.value(errorMessage);
+  }
+
+  static Future<bool> woringMessage(
+      BuildContext context, String message) async {
+    bool yes = true;
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(
+                message,
+                textAlign: TextAlign.center,
+              ),
+              actions: <Widget>[
+                Container(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    child: const Text("はい"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    child: const Text("いいえ"),
+                    onPressed: () {
+                      yes = false;
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+    return Future<bool>.value(yes);
   }
 }

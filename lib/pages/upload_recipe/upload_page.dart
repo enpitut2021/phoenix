@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:phoenix/Model/recipe/recipe_models.dart';
 import 'package:phoenix/common_widget/alert_action.dart';
+import 'package:phoenix/common_widget/check_login.dart';
 import 'package:phoenix/common_widget/image_operation.dart';
 import 'package:phoenix/pages/upload_recipe/upload_body.dart';
 
@@ -114,7 +116,32 @@ class _UpLoadBodyState extends State<UpLoadBody> {
                     .collection('recipes')
                     .doc(value.id)
                     .update({'imageurl': recipe.imageurl});
-                Navigator.pop(context);
+
+                await checkLoginStatus().then((status) async {
+                  if (status) {
+                    final user = FirebaseAuth.instance.currentUser;
+                    final userInfo = FirebaseFirestore.instance
+                        .collection('Users')
+                        .doc(user!.uid);
+
+                    List<String> makeRecipes = [];
+                    await userInfo.get().then((data) {
+                      makeRecipes =
+                          data['you_upload_recipes_id'].cast<String>();
+                      makeRecipes.add(value.id);
+
+                      // ignore: avoid_print
+                      print(makeRecipes);
+                    });
+                    userInfo.update({
+                      'you_upload_recipes_id': makeRecipes,
+                    });
+                  }
+                });
+                ErrorAction.errorMessage(context, "投稿してくれてありがとう！")
+                    .then((value) {
+                  Navigator.pop(context);
+                });
               });
             } else {
               ErrorAction.errorMessage(context, "画像の入力がまだです");

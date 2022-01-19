@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -7,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Recipes {
   List<Recipe> recipes = [];
-  Recipes({required recipes});
+  Recipes({recipes});
 
   Recipes filterrecipe(
       {required List<String> contains, required int time_bound}) {
@@ -35,7 +36,7 @@ class Recipes {
                 //recipe.aleadyExist(ids) &&
                 (recipe.time > time_bound)));
         for (var obj in tmp) {
-          filteredrecipes.remove(recipe: obj);
+          filteredrecipes._remove(recipe: obj);
           ids.remove(obj.id);
         }
       }
@@ -55,8 +56,40 @@ class Recipes {
     recipes.removeAt(at);
   }
 
-  void remove({required Recipe recipe}) {
+
+  void remove({required String id}) {
+    recipes.removeWhere((element) => element.id == id);
+  }
+
+  List<String> getRecipeIDs() {
+    List<String> ids = [];
+    for (var recipe in recipes) {
+      String tmpID = recipe.id;
+      ids.add(tmpID);
+    }
+    return ids;
+  }
+
+  Recipe get({required int at}) {
+    try {
+      return recipes[at];
+    } catch (e) {
+      print("要素数エラーダァ");
+    }
+    return Recipe(
+        id: '',
+        recipename: '',
+        imageurl: '',
+        ingredients: [],
+        cookmethod: [],
+        cookwares: [],
+        explain: [],
+        spices: [],
+        time: 100);
+
+  void _remove({required Recipe recipe}) {
     recipes.remove(recipe);
+
   }
 }
 
@@ -106,24 +139,6 @@ class Recipe {
       foodsufslist.add(fd.name + " " + fd.amount);
     }
     return foodsufslist;
-  }
-
-  Future<int> createDocumentID(int userid) async {
-    int tmp = userid + 10000; //userid:4 + recipeid:4
-    try {
-      await FirebaseFirestore.instance
-          .collection('recipe')
-          .orderBy('id', descending: true)
-          .limit(1)
-          .get()
-          .then((value) => {
-                tmp += (value.docs[0].get('id') + 1) as int,
-                id = tmp.toString(),
-              });
-      return Future<int>.value(tmp);
-    } catch (e) {
-      return Future<int>.value(0);
-    }
   }
 
   Future<DocumentReference<Map<String, dynamic>>> uploadRecipe() async {
