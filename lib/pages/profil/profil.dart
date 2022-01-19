@@ -1,4 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:phoenix/Model/recipe/recipe_models.dart';
+import 'package:phoenix/Model/recipe/load_data.dart';
+import 'package:phoenix/common_widget/check_login.dart';
+import 'package:phoenix/pages/profil/profill_option_bar.dart';
+import 'package:phoenix/pages/profil/show_recent_recipes.dart';
 
 class ProfilPage extends StatefulWidget {
   const ProfilPage({Key? key}) : super(key: key);
@@ -8,108 +15,106 @@ class ProfilPage extends StatefulWidget {
 }
 
 class _ProfilPageState extends State<ProfilPage> {
+  final user = FirebaseAuth.instance.currentUser;
+  String userName = "未設定";
+  Recipes uploadRecipes = Recipes();
+  Recipes recentRecipes = Recipes();
+  int cookCount = 0;
+  @override
+  void initState() {
+    super.initState();
+    _fetch();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('プロフィール'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () => {},
-          ),
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: const Icon(Icons.settings),
+        //     onPressed: () => {
+        //       Navigator.pushNamed((context), '/login').then((value) {
+        //         setState(() {
+        //           userName = value.toString();
+        //         });
+        //       })
+        //     },
+        //   ),
+        // ],
       ),
       body: Column(
         children: <Widget>[
           Container(
-            child: const Text(
-              "名前",
-              style: TextStyle(fontSize: 20),
+            child: Text(
+              userName,
+              style: const TextStyle(fontSize: 20),
             ),
             alignment: Alignment.center,
             color: Colors.orange,
           ),
-          _goto_friedlist_or_registerrecipe(context),
+          ProfillOption(cookCount: cookCount, uploadRecipes: uploadRecipes),
           Container(
             child: const Text(
-              "最近作ったメニュー",
+              "お気に入りにしたレシピ達！！！",
               style: TextStyle(fontSize: 20),
             ),
             alignment: Alignment.center,
             color: Colors.orange,
           ),
-          _recentlyReciped(<int>[1, 2, 3, 4, 5, 6, 7, 8, 9])
+          RecentRecipes(recipes: recentRecipes, delete: _deleteRecentRecipe),
         ],
       ),
     );
   }
-}
 
-// ignore: non_constant_identifier_names
-Widget _goto_friedlist_or_registerrecipe(BuildContext context) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
-      Container(
-        child: ElevatedButton(
-          child: const Icon(Icons.person),
-          style: ElevatedButton.styleFrom(
-            primary: Colors.white,
-            shape: const CircleBorder(
-              side: BorderSide(
-                color: Colors.black,
-                width: 1,
-                style: BorderStyle.solid,
-              ),
-            ),
-          ),
-          onPressed: () {
-            Navigator.pushNamed((context), '/friendList');
-          },
-        ),
-        alignment: Alignment.center,
-      ),
-      Container(
-        child: Row(
-            children: const <Widget>[Icon(Icons.restaurant), Text(": 15回")]),
-        alignment: Alignment.center,
-      ),
-      Container(
-        child: ElevatedButton(
-          child: const Icon(Icons.document_scanner_sharp),
-          style: ElevatedButton.styleFrom(
-            primary: Colors.white,
-            shape: const CircleBorder(
-              side: BorderSide(
-                color: Colors.black,
-                width: 1,
-                style: BorderStyle.solid,
-              ),
-            ),
-          ),
-          onPressed: () {
-            Navigator.pushNamed((context), '/registerPage');
-          },
-        ),
-        alignment: Alignment.center,
-      ),
-    ],
-  );
-}
+  Future<void> _fetch() async {
+    await checkLoginStatus().then((status) async {
+      if (status) {
+        userName = user!.displayName!;
+        final _usersInfo =
+            FirebaseFirestore.instance.collection('Users').doc(user!.uid);
+        List<dynamic> _recipesId = [];
+        List<dynamic> _recentRecipesId = [];
 
-Widget _recentlyReciped(List<int> ids) {
-  return Expanded(
-      child: GridView.count(
-    crossAxisCount: 3,
-    children: List.generate(9, (index) {
-      return Container(
-          child: Text('$index'),
-          color: Colors.grey,
-          alignment: Alignment.center,
-          margin: const EdgeInsets.fromLTRB(5, 5, 5, 5));
-    }),
-  ));
+        await _usersInfo.get().then((data) {
+          cookCount = data['cook_count'] as int;
+          _recipesId = data['you_upload_recipes_id'].cast<String>();
+          _recentRecipesId = data['favorit_recipes_id'].cast<String>();
+        });
+
+        for (String recipeId in _recipesId) {
+          await LoadRecipes.loadFirestoreAssetAt(recipeId).then((recipe) {
+            uploadRecipes.add(recipe: recipe);
+          });
+        }
+
+        for (String recipeId in _recentRecipesId) {
+          await LoadRecipes.loadFirestoreAssetAt(recipeId).then((recipe) {
+            recentRecipes.add(recipe: recipe);
+          });
+        }
+      }
+      setState(() {
+        // ignore: avoid_print
+        print("Hello world");
+      });
+    });
+    return Future<void>.value();
+  }
+
+  void _deleteRecentRecipe({required String recipeID}) {
+    setState(() {
+      final user = FirebaseAuth.instance.currentUser;
+      final userInfo =
+          FirebaseFirestore.instance.collection('Users').doc(user!.uid);
+
+      recentRecipes.remove(id: recipeID);
+      userInfo.update({
+        'favorit_recipes_id': recentRecipes.getRecipeIDs(),
+      });
+    });
+  }
 }

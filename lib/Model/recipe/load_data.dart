@@ -2,75 +2,90 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
-
 ///package~
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 //my library
 import 'recipe_models.dart';
 
 class LoadRecipes {
-  late Recipes recipes;
-
-  Future<dynamic> loadFirestoreAsset() async {
-    recipes = Recipes(recipes: []);
+  static Future<dynamic> loadFirestoreAsset() async {
+    Recipes recipes = Recipes(recipes: []);
     final QuerySnapshot _loadData =
         await FirebaseFirestore.instance.collection('recipes').get();
 
     for (final _data in _loadData.docs) {
-      List<Foodstuff> ingredients = [];
-      for (var element in _data['ingredients']) {
-        ingredients.add(Foodstuff(
-          name: element['ingredient'],
-          amount: element['quantity'],
-        ));
-      }
-      List<Foodstuff> spices = [];
-      for (var element in _data['spices']) {
-        spices.add(Foodstuff(
-          name: element['spice'],
-          amount: element['amount'],
-        ));
-      }
-
-      List<String> explain = [];
-      for (var element in _data['explain']) {
-        explain.add(element.toString());
-      }
-
-      List<String> cookwares = [];
-      for (var element in _data['cookwares']) {
-        cookwares.add(element.toString());
-      }
-
-      List<String> cookmethod = [];
-      for (var element in _data['method']) {
-        cookmethod.add(element.toString());
-      }
-
-      int time = _data['time'];
-
-      Recipe recipe = Recipe(
-        id: _data.id,
-        recipename: _data['recipe_name'],
-        imageurl: _data['imageurl'],
-        ingredients: ingredients,
-        spices: spices,
-        explain: explain,
-        cookwares: cookwares,
-        cookmethod: cookmethod,
-        time: time,
-      );
+      Recipe recipe =
+          _reconstructRecipe(_data as DocumentSnapshot<Map<String, dynamic>>);
       recipes.add(recipe: recipe);
     }
     return recipes;
   }
 
-  Future<dynamic> loadJsonAsset() async {
+  static Future<Recipe> loadFirestoreAssetAt(String recipeId) async {
+    Recipe _recipe;
+    final recipeDoc = await FirebaseFirestore.instance
+        .collection('recipes')
+        .doc(recipeId)
+        .get();
+
+    _recipe = _reconstructRecipe(recipeDoc);
+
+    return Future<Recipe>.value(_recipe);
+  }
+
+  static Recipe _reconstructRecipe(
+      DocumentSnapshot<Map<String, dynamic>> _data) {
+    List<Foodstuff> ingredients = [];
+    for (var element in _data['ingredients']) {
+      ingredients.add(Foodstuff(
+        name: element['ingredient'],
+        amount: element['quantity'],
+      ));
+    }
+    List<Foodstuff> spices = [];
+    for (var element in _data['spices']) {
+      spices.add(Foodstuff(
+        name: element['spice'],
+        amount: element['amount'],
+      ));
+    }
+
+
+    List<String> explain = [];
+    for (var element in _data['explain']) {
+      explain.add(element.toString());
+    }
+
+    List<String> cookwares = [];
+    for (var element in _data['cookwares']) {
+      cookwares.add(element.toString());
+    }
+
+    List<String> cookmethod = [];
+    for (var element in _data['method']) {
+      cookmethod.add(element.toString());
+    }
+
+    int time = _data['time'];
+
+    Recipe recipe = Recipe(
+      id: _data.id,
+      recipename: _data['recipe_name'],
+      imageurl: _data['imageurl'],
+      ingredients: ingredients,
+      spices: spices,
+      explain: explain,
+      cookwares: cookwares,
+      cookmethod: cookmethod,
+      time: time,
+    );
+    return recipe;
+  }
+
+  static Future<dynamic> loadJsonAsset() async {
+    Recipes recipes = Recipes(recipes: []);
     final String _loadData =
         await rootBundle.loadString('lib/recipe/recipe.json');
     final jsonResponse = json.decode(_loadData);
