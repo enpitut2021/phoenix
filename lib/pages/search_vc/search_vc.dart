@@ -32,11 +32,23 @@ class _SearchVCState extends State<SearchVC> {
             decoration: new InputDecoration(
                 labelText: '（例）卵　醤油',
                 hintStyle: TextStyle(color: Colors.white30)),
+            onChanged: (value) {
+              if (value != '') {
+                String tmp = toHira(value);
+                searchwords = tmp.split('　');
+                if (searchwords.length == 1) {
+                  searchwords = tmp.split(' ');
+                }
+              }
+            },
             onFieldSubmitted: (value) {
               if (value != '') {
                 setState(() {
                   String tmp = toHira(value);
                   searchwords = tmp.split('　');
+                  if (searchwords.length == 1) {
+                    searchwords = tmp.split(' ');
+                  }
                 });
               }
             },
